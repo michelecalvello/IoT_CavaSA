@@ -1,0 +1,1833 @@
+{
+  "catalog_version": "0.4",
+  "generated": "2026-10-02T18:02:15+01:00",
+  "conventions": {
+    "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con ora legale) non è usata.",
+    "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
+    "depth_m": "Profondità sotto il piano campagna, positiva verso il basso, in metri.",
+    "coordinates": "WGS84 (EPSG:4326), gradi decimali.",
+    "data_format": "File CSV con intestazione. Dati originali: time,value,flag (un file per serie e per anno). Aggregati: time,value,[min],max,n,coverage. time = 'YYYY-MM-DD HH:MM' in UTC+1. flag: 0 valido, 1 sospetto, 2 errato. Aggregati calcolati sui soli flag < 2.",
+    "aggregation_labels": "Grandezze istantanee: etichetta = inizio intervallo. Pioggia: ogni dato è riferito all'intervallo che termina al timestamp; l'etichetta oraria/giornaliera indica l'inizio del periodo di cumulo (es. giorno '2024-10-01' = pioggia da 2024-10-01 00:00 esclusa a 2024-10-02 00:00 inclusa).",
+    "derived_series": "Serie con 'derived_from' sono calcolate da altre serie (pipeline/derive_cumulative.py). Pioggia cumulata (variabile rain_cum): cumulo dal 1 gennaio ore 00:00; il dato di pioggia delle 00:00 del 1 gennaio chiude l'anno precedente. Aggregati (data/agg): value = cumulata a fine intervallo, etichetta = inizio intervallo; colonne time,value,n,coverage,flag. flag 1 = cumulata sottostimata per dati mancanti (soglia in qc_rules.json -> cumulative)."
+  },
+  "variables": {
+    "rain": {
+      "label_it": "Pioggia",
+      "label_en": "Rainfall",
+      "unit": "mm",
+      "aggregation": "sum",
+      "plot": "bar",
+      "notes": "Altezza di pioggia caduta nell'intervallo che termina al timestamp."
+    },
+    "vwc": {
+      "label_it": "Contenuto d'acqua volumetrico",
+      "label_en": "Volumetric water content",
+      "unit": "m3/m3",
+      "aggregation": "mean",
+      "plot": "line"
+    },
+    "psi": {
+      "label_it": "Potenziale matriciale",
+      "label_en": "Matric potential",
+      "unit": "kPa",
+      "aggregation": "mean",
+      "plot": "line",
+      "notes": "Valori negativi = suzione. TEROS 21: accuratezza dichiarata tra -9 e -100 kPa; valori > -9 kPa (prossimi alla saturazione) sono indicativi."
+    },
+    "t_soil": {
+      "label_it": "Temperatura del suolo",
+      "label_en": "Soil temperature",
+      "unit": "°C",
+      "aggregation": "mean",
+      "plot": "line"
+    },
+    "rain_cum": {
+      "label_it": "Pioggia cumulata dal 1° gennaio",
+      "label_en": "Year-to-date rainfall",
+      "unit": "mm",
+      "aggregation": "last",
+      "plot": "line",
+      "notes": "Pioggia cumulata dal 1 gennaio ore 00:00 dell'anno corrente (si azzera ogni anno). Tratteggiata dove i dati mancanti rendono la cumulata sottostimata."
+    }
+  },
+  "stations": [
+    {
+      "station_id": "SAL_NV",
+      "name": "Salerno – Meter NV",
+      "site": "Salerno",
+      "municipality": "Salerno (SA)",
+      "lat": 40.6930886,
+      "lon": 14.7605388,
+      "elevation_m": 247,
+      "owner": "Università di Salerno",
+      "external_code": "Z6-28531",
+      "notes": "Datalogger METER (ID Z6-28531) con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale matriciale e temperatura del suolo) a tre profondità.",
+      "distance_km": {
+        "SAL_V": 0.01,
+        "CF_21521": 3.39,
+        "CF_18925": 4.14,
+        "CF_18957": 1.66
+      }
+    },
+    {
+      "station_id": "SAL_V",
+      "name": "Salerno – Meter V",
+      "site": "Salerno",
+      "municipality": "Salerno (SA)",
+      "lat": 40.6931392,
+      "lon": 14.7605476,
+      "elevation_m": 255,
+      "owner": "Università di Salerno",
+      "external_code": "Z6-28525",
+      "notes": "Datalogger METER (ID Z6-28525) con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale matriciale e temperatura del suolo) a tre profondità.",
+      "distance_km": {
+        "SAL_NV": 0.01,
+        "CF_21521": 3.38,
+        "CF_18925": 4.13,
+        "CF_18957": 1.67
+      }
+    },
+    {
+      "station_id": "CF_21521",
+      "name": "Cologna (CF 21521)",
+      "site": "Cologna",
+      "municipality": "Cologna (Pellezzano, SA)",
+      "lat": 40.720981,
+      "lon": 14.776627,
+      "elevation_m": 125,
+      "owner": "Centro Funzionale Multirischi – Regione Campania",
+      "external_code": "21521",
+      "notes": "Stazione della rete regionale; dati forniti con sola colonna 'Time UTC+1'. Coordinate originali UTM 33N: E 481135, N 4507808.",
+      "distance_km": {
+        "SAL_NV": 3.39,
+        "SAL_V": 3.38,
+        "CF_18925": 1.92,
+        "CF_18957": 5.05
+      }
+    },
+    {
+      "station_id": "CF_18925",
+      "name": "Pellezzano (CF 18925)",
+      "site": "Pellezzano",
+      "municipality": "Pellezzano (SA)",
+      "lat": 40.73023,
+      "lon": 14.757317,
+      "elevation_m": 356,
+      "owner": "Centro Funzionale Multirischi – Regione Campania",
+      "external_code": "18925",
+      "notes": "Stazione della rete regionale; dati forniti con sola colonna 'Time UTC+1'. Coordinate originali UTM 33N: E 479507, N 4508839.",
+      "distance_km": {
+        "SAL_NV": 4.14,
+        "SAL_V": 4.13,
+        "CF_21521": 1.92,
+        "CF_18957": 5.65
+      }
+    },
+    {
+      "station_id": "CF_18957",
+      "name": "Salerno Genio Civile (CF 18957)",
+      "site": "Salerno",
+      "municipality": "Salerno (SA)",
+      "lat": 40.679616,
+      "lon": 14.75201,
+      "elevation_m": 28,
+      "owner": "Centro Funzionale Multirischi – Regione Campania",
+      "external_code": "18957",
+      "notes": "Stazione della rete regionale; dati forniti con sola colonna 'Time UTC+1'. Coordinate originali UTM 33N: E 479043, N 4503222.",
+      "distance_km": {
+        "SAL_NV": 1.66,
+        "SAL_V": 1.67,
+        "CF_21521": 5.05,
+        "CF_18925": 5.65
+      }
+    }
+  ],
+  "instruments": [
+    {
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "manufacturer": "METER Group",
+      "type": "Datalogger con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale, temperatura)"
+    },
+    {
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "manufacturer": "METER Group",
+      "type": "Datalogger con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale, temperatura)"
+    },
+    {
+      "instrument_id": "CF_21521_RAIN",
+      "station_id": "CF_21521",
+      "manufacturer": "Centro Funzionale Regione Campania",
+      "type": "Pluviometro"
+    },
+    {
+      "instrument_id": "CF_18925_RAIN",
+      "station_id": "CF_18925",
+      "manufacturer": "Centro Funzionale Regione Campania",
+      "type": "Pluviometro"
+    },
+    {
+      "instrument_id": "CF_18957_RAIN",
+      "station_id": "CF_18957",
+      "manufacturer": "Centro Funzionale Regione Campania",
+      "type": "Pluviometro"
+    }
+  ],
+  "series": [
+    {
+      "series_id": "CF_18925_RAIN",
+      "instrument_id": "CF_18925_RAIN",
+      "station_id": "CF_18925",
+      "variable": "rain",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia – Pellezzano (CF 18925)",
+      "unit": "mm",
+      "aggregation": "sum",
+      "step_min": 10.0,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "min": 0.0,
+      "max": 9.4,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Anno 2025 completo (passo 10 min). Totale annuo 2025: 1227 mm (356 m); correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
+        "Alcuni timestamp con millisecondi spuri (es. 00:10:00.001): arrotondati al minuto."
+      ],
+      "sources": [
+        {
+          "file": "PELLEZZANO_PLUVIOMETRO_CF_2025.xlsx",
+          "year": 2025,
+          "sheet": "Foglio1",
+          "column": "Rain (mm)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_18925_RAIN/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_18925_RAIN_1h.csv",
+        "agg_1d": "data/agg/CF_18925_RAIN_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52559,
+        "n_valid": 52559,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "CF_18925_RAINCUM",
+      "instrument_id": "CF_18925_RAIN",
+      "station_id": "CF_18925",
+      "variable": "rain_cum",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata dal 1° gennaio – Pellezzano (CF 18925)",
+      "unit": "mm",
+      "aggregation": "last",
+      "step_min": 10.0,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "min": 0.0,
+      "max": 1227.4,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da CF_18925_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
+        "Totali annui: 2025: 1227.4 mm."
+      ],
+      "sources": [],
+      "derived_from": "CF_18925_RAIN",
+      "cumulative_years": [
+        {
+          "year": 2025,
+          "total_mm": 1227.4,
+          "n": 52559,
+          "first": "2025-01-01 00:10",
+          "last": "2025-12-31 23:50",
+          "missing_hours": 0.0,
+          "complete": true
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_18925_RAINCUM/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_18925_RAINCUM_1h.csv",
+        "agg_1d": "data/agg/CF_18925_RAINCUM_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52559,
+        "n_valid": 52559,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "CF_18957_RAIN",
+      "instrument_id": "CF_18957_RAIN",
+      "station_id": "CF_18957",
+      "variable": "rain",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia – Salerno Genio Civile (CF 18957)",
+      "unit": "mm",
+      "aggregation": "sum",
+      "step_min": 10.0,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "min": 0.0,
+      "max": 12.0,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Anno 2025 completo (passo 10 min). Totale annuo 2025: 987 mm (28 m); correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
+        "Alcuni timestamp con millisecondi spuri (es. 00:10:00.001): arrotondati al minuto."
+      ],
+      "sources": [
+        {
+          "file": "SALERNO_GENIO_CIVILE_PLUVIOMETRO_CF_2025.xlsx",
+          "year": 2025,
+          "sheet": "Foglio1",
+          "column": "Rain (mm)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_18957_RAIN/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_18957_RAIN_1h.csv",
+        "agg_1d": "data/agg/CF_18957_RAIN_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52559,
+        "n_valid": 52559,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "CF_18957_RAINCUM",
+      "instrument_id": "CF_18957_RAIN",
+      "station_id": "CF_18957",
+      "variable": "rain_cum",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata dal 1° gennaio – Salerno Genio Civile (CF 18957)",
+      "unit": "mm",
+      "aggregation": "last",
+      "step_min": 10.0,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "min": 0.0,
+      "max": 987.4,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da CF_18957_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
+        "Totali annui: 2025: 987.4 mm."
+      ],
+      "sources": [],
+      "derived_from": "CF_18957_RAIN",
+      "cumulative_years": [
+        {
+          "year": 2025,
+          "total_mm": 987.4,
+          "n": 52559,
+          "first": "2025-01-01 00:10",
+          "last": "2025-12-31 23:50",
+          "missing_hours": 0.0,
+          "complete": true
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_18957_RAINCUM/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_18957_RAINCUM_1h.csv",
+        "agg_1d": "data/agg/CF_18957_RAINCUM_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52559,
+        "n_valid": 52559,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "CF_21521_RAIN",
+      "instrument_id": "CF_21521_RAIN",
+      "station_id": "CF_21521",
+      "variable": "rain",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia – Cologna (CF 21521)",
+      "unit": "mm",
+      "aggregation": "sum",
+      "step_min": 10.0,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52475,
+      "min": 0.0,
+      "max": 11.4,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Anno 2025 completo (passo 10 min). Totale annuo 2025: 1167 mm (125 m); correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
+        "Lacune: 2025-02-12 ~08:10–09:40 (1,5 h) e 2025-11-19 ~10:50–23:40 (12,8 h).",
+        "Alcuni timestamp con millisecondi spuri (es. 23:49:59.999): arrotondati al minuto."
+      ],
+      "sources": [
+        {
+          "file": "COLOGNA_PLUVIOMETRO_CF_2025.xlsx",
+          "year": 2025,
+          "sheet": "Foglio1",
+          "column": "Rain (mm)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_21521_RAIN/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_21521_RAIN_1h.csv",
+        "agg_1d": "data/agg/CF_21521_RAIN_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52475,
+        "n_valid": 52475,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "CF_21521_RAINCUM",
+      "instrument_id": "CF_21521_RAIN",
+      "station_id": "CF_21521",
+      "variable": "rain_cum",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata dal 1° gennaio – Cologna (CF 21521)",
+      "unit": "mm",
+      "aggregation": "last",
+      "step_min": 10.0,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52475,
+      "min": 0.0,
+      "max": 1166.6,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da CF_21521_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
+        "Totali annui: 2025: 1166.6 mm."
+      ],
+      "sources": [],
+      "derived_from": "CF_21521_RAIN",
+      "cumulative_years": [
+        {
+          "year": 2025,
+          "total_mm": 1166.6,
+          "n": 52475,
+          "first": "2025-01-01 00:10",
+          "last": "2025-12-31 23:50",
+          "missing_hours": 14.0,
+          "complete": true
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_21521_RAINCUM/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_21521_RAINCUM_1h.csv",
+        "agg_1d": "data/agg/CF_21521_RAINCUM_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52475,
+        "n_valid": 52475,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_PSI_015",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "psi",
+      "depth_m": 0.15,
+      "sensor_model": "TEROS 21",
+      "logger_port": 5,
+      "label": "Potenziale matriciale 15 cm – Salerno – Meter NV",
+      "unit": "kPa",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": -3291.5,
+      "max": -0.1,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Gap 2025-12-18 ~02:40 (10,7 h) condiviso da tutte le serie della stazione."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port5-15cm-T21",
+          "column": "Port5-T21-15cm (kPa)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_PSI_015/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_PSI_015_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_PSI_015_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_PSI_030",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "psi",
+      "depth_m": 0.3,
+      "sensor_model": "TEROS 21",
+      "logger_port": 6,
+      "label": "Potenziale matriciale 30 cm – Salerno – Meter NV",
+      "unit": "kPa",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": -1718.3,
+      "max": -0.1,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port6-30cm-T21",
+          "column": "Port6-T21-30cm (kPa)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_PSI_030/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_PSI_030_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_PSI_030_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_PSI_060",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "psi",
+      "depth_m": 0.6,
+      "sensor_model": "TEROS 21",
+      "logger_port": 4,
+      "label": "Potenziale matriciale 60 cm – Salerno – Meter NV",
+      "unit": "kPa",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": -1372.4,
+      "max": -0.4,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port4-60cm-T10",
+          "column": "Port4-T21-60cm (kPa)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_PSI_060/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_PSI_060_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_PSI_060_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_TSOIL_015",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "t_soil",
+      "depth_m": 0.15,
+      "sensor_model": "TEROS 21",
+      "logger_port": 5,
+      "label": "Temperatura del suolo 15 cm – Salerno – Meter NV",
+      "unit": "°C",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": 7.1,
+      "max": 40.0,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port5-15cm-T21",
+          "column": "Port5-T21-15cm (°C)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_TSOIL_015/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_TSOIL_015_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_TSOIL_015_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_TSOIL_030",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "t_soil",
+      "depth_m": 0.3,
+      "sensor_model": "TEROS 21",
+      "logger_port": 6,
+      "label": "Temperatura del suolo 30 cm – Salerno – Meter NV",
+      "unit": "°C",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": 11.0,
+      "max": 30.5,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port6-30cm-T21",
+          "column": "Port6-T21-30cm (°C)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_TSOIL_030/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_TSOIL_030_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_TSOIL_030_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_TSOIL_060",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "t_soil",
+      "depth_m": 0.6,
+      "sensor_model": "TEROS 21",
+      "logger_port": 4,
+      "label": "Temperatura del suolo 60 cm – Salerno – Meter NV",
+      "unit": "°C",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": 13.4,
+      "max": 28.3,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port4-60cm-T10",
+          "column": "Port4-T21-60cm (°C)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_TSOIL_060/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_TSOIL_060_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_TSOIL_060_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_VWC_015",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "vwc",
+      "depth_m": 0.15,
+      "sensor_model": "TEROS 10",
+      "logger_port": 1,
+      "label": "Contenuto d'acqua volumetrico 15 cm – Salerno – Meter NV",
+      "unit": "m3/m3",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": 0.02,
+      "max": 0.259,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port1-15cm-T10",
+          "column": "Port1-T10-15cm"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_VWC_015/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_VWC_015_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_VWC_015_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_VWC_030",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "vwc",
+      "depth_m": 0.3,
+      "sensor_model": "TEROS 10",
+      "logger_port": 3,
+      "label": "Contenuto d'acqua volumetrico 30 cm – Salerno – Meter NV",
+      "unit": "m3/m3",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": 0.051,
+      "max": 0.383,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port3-30cm-T10",
+          "column": "Port3-T10-30cm"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_VWC_030/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_VWC_030_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_VWC_030_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_NV_VWC_060",
+      "instrument_id": "SAL_NV_METER",
+      "station_id": "SAL_NV",
+      "variable": "vwc",
+      "depth_m": 0.6,
+      "sensor_model": "TEROS 10",
+      "logger_port": 2,
+      "label": "Contenuto d'acqua volumetrico 60 cm – Salerno – Meter NV",
+      "unit": "m3/m3",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "min": 0.108,
+      "max": 0.315,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_NV_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port2-60cm-T10",
+          "column": "Port2-T10-60cm"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_NV_VWC_060/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_NV_VWC_060_1h.csv",
+        "agg_1d": "data/agg/SAL_NV_VWC_060_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 96198,
+        "n_valid": 96198,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "SAL_V_PSI_015",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "psi",
+      "depth_m": 0.15,
+      "sensor_model": "TEROS 21",
+      "logger_port": 6,
+      "label": "Potenziale matriciale 15 cm – Salerno – Meter V",
+      "unit": "kPa",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": -2306.7,
+      "max": -0.1,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30).",
+        "Gap 2025-12-17 16:20 – 2025-12-18 17:25 (25 h) condiviso da tutte le serie della stazione."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port6-15cm-T21",
+          "column": "Port6-T21-15cm (kPa)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_PSI_015/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_PSI_015_1h.csv",
+        "agg_1d": "data/agg/SAL_V_PSI_015_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_PSI_035",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "psi",
+      "depth_m": 0.35,
+      "sensor_model": "TEROS 21",
+      "logger_port": 3,
+      "label": "Potenziale matriciale 35 cm – Salerno – Meter V",
+      "unit": "kPa",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": -2131.5,
+      "max": -1.6,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port3-35cm-T21",
+          "column": "Port3-T21-35cm (kPa)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_PSI_035/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_PSI_035_1h.csv",
+        "agg_1d": "data/agg/SAL_V_PSI_035_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_PSI_060",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "psi",
+      "depth_m": 0.6,
+      "sensor_model": "TEROS 21",
+      "logger_port": 5,
+      "label": "Potenziale matriciale 60 cm – Salerno – Meter V",
+      "unit": "kPa",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": -1952.1,
+      "max": -5.4,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port5-60cm-T10",
+          "column": "Port5-T21-60cm (kPa)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_PSI_060/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_PSI_060_1h.csv",
+        "agg_1d": "data/agg/SAL_V_PSI_060_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_TSOIL_015",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "t_soil",
+      "depth_m": 0.15,
+      "sensor_model": "TEROS 21",
+      "logger_port": 6,
+      "label": "Temperatura del suolo 15 cm – Salerno – Meter V",
+      "unit": "°C",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": 8.4,
+      "max": 24.6,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port6-15cm-T21",
+          "column": "Port6-T21-15cm (°C)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_TSOIL_015/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_TSOIL_015_1h.csv",
+        "agg_1d": "data/agg/SAL_V_TSOIL_015_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_TSOIL_035",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "t_soil",
+      "depth_m": 0.35,
+      "sensor_model": "TEROS 21",
+      "logger_port": 3,
+      "label": "Temperatura del suolo 35 cm – Salerno – Meter V",
+      "unit": "°C",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": 12.0,
+      "max": 22.8,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port3-35cm-T21",
+          "column": "Port3-T21-35cm (°C)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_TSOIL_035/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_TSOIL_035_1h.csv",
+        "agg_1d": "data/agg/SAL_V_TSOIL_035_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_TSOIL_060",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "t_soil",
+      "depth_m": 0.6,
+      "sensor_model": "TEROS 21",
+      "logger_port": 5,
+      "label": "Temperatura del suolo 60 cm – Salerno – Meter V",
+      "unit": "°C",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": 13.2,
+      "max": 19.5,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port5-60cm-T10",
+          "column": "Port5-T21-60cm (°C)"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_TSOIL_060/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_TSOIL_060_1h.csv",
+        "agg_1d": "data/agg/SAL_V_TSOIL_060_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_VWC_015",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "vwc",
+      "depth_m": 0.15,
+      "sensor_model": "TEROS 10",
+      "logger_port": 4,
+      "label": "Contenuto d'acqua volumetrico 15 cm – Salerno – Meter V",
+      "unit": "m3/m3",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": 0.016,
+      "max": 0.162,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port4-15cm-T10",
+          "column": "Port4-T10-15cm"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_VWC_015/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_VWC_015_1h.csv",
+        "agg_1d": "data/agg/SAL_V_VWC_015_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_VWC_035",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "vwc",
+      "depth_m": 0.35,
+      "sensor_model": "TEROS 10",
+      "logger_port": 2,
+      "label": "Contenuto d'acqua volumetrico 35 cm – Salerno – Meter V",
+      "unit": "m3/m3",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": 0.052,
+      "max": 0.21,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port2-35cm-T10",
+          "column": "Port2-T10-35cm"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_VWC_035/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_VWC_035_1h.csv",
+        "agg_1d": "data/agg/SAL_V_VWC_035_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    },
+    {
+      "series_id": "SAL_V_VWC_060",
+      "instrument_id": "SAL_V_METER",
+      "station_id": "SAL_V",
+      "variable": "vwc",
+      "depth_m": 0.6,
+      "sensor_model": "TEROS 10",
+      "logger_port": 1,
+      "label": "Contenuto d'acqua volumetrico 60 cm – Salerno – Meter V",
+      "unit": "m3/m3",
+      "aggregation": "mean",
+      "step_min": 5.0,
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "min": 0.025,
+      "max": 0.179,
+      "status": "active",
+      "gaps_over_24h": [
+        {
+          "from": "2025-12-17T16:20+01:00",
+          "to": "2025-12-18T17:25+01:00",
+          "hours": 25.1
+        }
+      ],
+      "qc_notes": [
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+      ],
+      "sources": [
+        {
+          "file": "Salerno_Meter_V_2025.xlsx",
+          "year": 2025,
+          "sheet": "Port1-60cm-T10",
+          "column": "Port1-T10-60cm"
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/SAL_V_VWC_060/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/SAL_V_VWC_060_1h.csv",
+        "agg_1d": "data/agg/SAL_V_VWC_060_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 95989,
+        "n_valid": 95989,
+        "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 15
+      }
+    }
+  ],
+  "source_files": [
+    {
+      "series_id": "CF_18925_RAIN",
+      "file": "PELLEZZANO_PLUVIOMETRO_CF_2025.xlsx",
+      "year": 2025,
+      "sheet": "Foglio1",
+      "column": "Rain (mm)",
+      "time_column": "Time UTC+1",
+      "local_time_column": null,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "n_rows": 52559,
+      "step_min": 10.0,
+      "gaps_over_1h": 0,
+      "max_gap_h": 0.2,
+      "min": 0.0,
+      "max": 9.4,
+      "mean": 0.0234
+    },
+    {
+      "series_id": "SAL_V_VWC_015",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port4-15cm-T10",
+      "column": "Port4-T10-15cm",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": 0.016,
+      "max": 0.162,
+      "mean": 0.0488
+    },
+    {
+      "series_id": "SAL_V_VWC_035",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port2-35cm-T10",
+      "column": "Port2-T10-35cm",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": 0.052,
+      "max": 0.21,
+      "mean": 0.1267
+    },
+    {
+      "series_id": "SAL_V_VWC_060",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port1-60cm-T10",
+      "column": "Port1-T10-60cm",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": 0.025,
+      "max": 0.179,
+      "mean": 0.0897
+    },
+    {
+      "series_id": "SAL_V_PSI_015",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port6-15cm-T21",
+      "column": "Port6-T21-15cm (kPa)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": -2306.7,
+      "max": -0.1,
+      "mean": -556.3677
+    },
+    {
+      "series_id": "SAL_V_TSOIL_015",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port6-15cm-T21",
+      "column": "Port6-T21-15cm (°C)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": 8.4,
+      "max": 24.6,
+      "mean": 16.6305
+    },
+    {
+      "series_id": "SAL_V_PSI_035",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port3-35cm-T21",
+      "column": "Port3-T21-35cm (kPa)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": -2131.5,
+      "max": -1.6,
+      "mean": -644.2926
+    },
+    {
+      "series_id": "SAL_V_TSOIL_035",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port3-35cm-T21",
+      "column": "Port3-T21-35cm (°C)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": 12.0,
+      "max": 22.8,
+      "mean": 17.1926
+    },
+    {
+      "series_id": "SAL_V_PSI_060",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port5-60cm-T10",
+      "column": "Port5-T21-60cm (kPa)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": -1952.1,
+      "max": -5.4,
+      "mean": -685.5247
+    },
+    {
+      "series_id": "SAL_V_TSOIL_060",
+      "file": "Salerno_Meter_V_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port5-60cm-T10",
+      "column": "Port5-T21-60cm (°C)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T14:30+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96004,
+      "n_rows": 96004,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 25.1,
+      "min": 13.2,
+      "max": 19.5,
+      "mean": 16.4187
+    },
+    {
+      "series_id": "CF_21521_RAIN",
+      "file": "COLOGNA_PLUVIOMETRO_CF_2025.xlsx",
+      "year": 2025,
+      "sheet": "Foglio1",
+      "column": "Rain (mm)",
+      "time_column": "Time UTC+1",
+      "local_time_column": null,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52475,
+      "n_rows": 52475,
+      "step_min": 10.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 12.8,
+      "min": 0.0,
+      "max": 11.4,
+      "mean": 0.0222
+    },
+    {
+      "series_id": "SAL_NV_VWC_015",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port1-15cm-T10",
+      "column": "Port1-T10-15cm",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": 0.02,
+      "max": 0.259,
+      "mean": 0.064
+    },
+    {
+      "series_id": "SAL_NV_VWC_030",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port3-30cm-T10",
+      "column": "Port3-T10-30cm",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": 0.051,
+      "max": 0.383,
+      "mean": 0.1363
+    },
+    {
+      "series_id": "SAL_NV_VWC_060",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port2-60cm-T10",
+      "column": "Port2-T10-60cm",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": 0.108,
+      "max": 0.315,
+      "mean": 0.2041
+    },
+    {
+      "series_id": "SAL_NV_PSI_015",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port5-15cm-T21",
+      "column": "Port5-T21-15cm (kPa)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": -3291.5,
+      "max": -0.1,
+      "mean": -639.0479
+    },
+    {
+      "series_id": "SAL_NV_TSOIL_015",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port5-15cm-T21",
+      "column": "Port5-T21-15cm (°C)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": 7.1,
+      "max": 40.0,
+      "mean": 21.5549
+    },
+    {
+      "series_id": "SAL_NV_PSI_030",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port6-30cm-T21",
+      "column": "Port6-T21-30cm (kPa)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": -1718.3,
+      "max": -0.1,
+      "mean": -377.019
+    },
+    {
+      "series_id": "SAL_NV_TSOIL_030",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port6-30cm-T21",
+      "column": "Port6-T21-30cm (°C)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": 11.0,
+      "max": 30.5,
+      "mean": 20.6673
+    },
+    {
+      "series_id": "SAL_NV_PSI_060",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port4-60cm-T10",
+      "column": "Port4-T21-60cm (kPa)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": -1372.4,
+      "max": -0.4,
+      "mean": -331.8906
+    },
+    {
+      "series_id": "SAL_NV_TSOIL_060",
+      "file": "Salerno_Meter_NV_2025.xlsx",
+      "year": 2025,
+      "sheet": "Port4-60cm-T10",
+      "column": "Port4-T21-60cm (°C)",
+      "time_column": "Time UTC+1",
+      "local_time_column": "Time",
+      "start": "2025-01-31T12:40+01:00",
+      "end": "2025-12-31T23:55+01:00",
+      "n_values": 96198,
+      "n_rows": 96198,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 10.7,
+      "min": 13.4,
+      "max": 28.3,
+      "mean": 20.4626
+    },
+    {
+      "series_id": "CF_18957_RAIN",
+      "file": "SALERNO_GENIO_CIVILE_PLUVIOMETRO_CF_2025.xlsx",
+      "year": 2025,
+      "sheet": "Foglio1",
+      "column": "Rain (mm)",
+      "time_column": "Time UTC+1",
+      "local_time_column": null,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "n_rows": 52559,
+      "step_min": 10.0,
+      "gaps_over_1h": 0,
+      "max_gap_h": 0.2,
+      "min": 0.0,
+      "max": 12.0,
+      "mean": 0.0188
+    }
+  ],
+  "qc_rules": {
+    "flags": {
+      "0": "valido",
+      "1": "sospetto",
+      "2": "errato"
+    },
+    "range_by_variable": {
+      "_doc": "Valori fuori da [min, max] -> flag 2",
+      "vwc": {
+        "min": 0.0,
+        "max": 0.65
+      },
+      "psi": {
+        "min": -100000,
+        "max": 0.0
+      },
+      "t_soil": {
+        "min": -10.0,
+        "max": 50.0
+      },
+      "rain": {
+        "min": 0.0,
+        "max": 50.0
+      }
+    },
+    "error_codes": {
+      "_doc": "Valori esatti che il sensore usa come codice di errore -> flag 2 (nessuno individuato per questi strumenti)"
+    },
+    "spike_by_series": {
+      "_doc": "Picco isolato: scarto da entrambi i valori adiacenti > threshold, con i due adiacenti entro neighbor_tolerance tra loro -> flag 1. Nessuna serie configurata: le rapide variazioni osservate (es. fronti di bagnamento dei TEROS 21) sono reali."
+    },
+    "cumulative": {
+      "_doc": "Pioggia cumulata dal 1 gennaio (derive_cumulative.py): i buchi tra registrazioni consecutive piu' lunghi di gap_min_minutes (e quelli dall'inizio dell'anno al primo dato) contano come tempo mancante; quando il tempo mancante cumulato nell'anno supera missing_hours_threshold la cumulata e' sottostimata -> flag 1 (tratteggio nel portale).",
+      "gap_min_minutes": 60,
+      "missing_hours_threshold": 24
+    },
+    "windows": []
+  }
+}

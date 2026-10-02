@@ -1,0 +1,39 @@
+{
+  "_doc": "Regole di controllo qualità. Flag: 0 = valido, 1 = sospetto (visibile, incluso negli aggregati), 2 = errato (escluso dagli aggregati). Orari in UTC+1. Modificabile a mano: rieseguire standardize.py dopo ogni modifica.",
+  "flags": {
+    "0": "valido",
+    "1": "sospetto",
+    "2": "errato"
+  },
+  "range_by_variable": {
+    "_doc": "Valori fuori da [min, max] -> flag 2",
+    "vwc": {
+      "min": 0.0,
+      "max": 0.65
+    },
+    "psi": {
+      "min": -100000,
+      "max": 0.0
+    },
+    "t_soil": {
+      "min": -10.0,
+      "max": 50.0
+    },
+    "rain": {
+      "min": 0.0,
+      "max": 50.0
+    }
+  },
+  "error_codes": {
+    "_doc": "Valori esatti che il sensore usa come codice di errore -> flag 2 (nessuno individuato per questi strumenti)"
+  },
+  "spike_by_series": {
+    "_doc": "Picco isolato: scarto da entrambi i valori adiacenti > threshold, con i due adiacenti entro neighbor_tolerance tra loro -> flag 1. Nessuna serie configurata: le rapide variazioni osservate (es. fronti di bagnamento dei TEROS 21) sono reali."
+  },
+  "cumulative": {
+    "_doc": "Pioggia cumulata dal 1 gennaio (derive_cumulative.py): i buchi tra registrazioni consecutive piu' lunghi di gap_min_minutes (e quelli dall'inizio dell'anno al primo dato) contano come tempo mancante; quando il tempo mancante cumulato nell'anno supera missing_hours_threshold la cumulata e' sottostimata -> flag 1 (tratteggio nel portale).",
+    "gap_min_minutes": 60,
+    "missing_hours_threshold": 24
+  },
+  "windows": []
+}
