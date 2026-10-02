@@ -1,6 +1,6 @@
 {
   "catalog_version": "0.4",
-  "generated": "2026-10-02T18:19:48+01:00",
+  "generated": "2026-10-02T18:38:09+01:00",
   "conventions": {
     "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con ora legale) non è usata.",
     "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
@@ -35,7 +35,7 @@
       "notes": "Valori negativi = suzione. TEROS 21: accuratezza dichiarata tra -9 e -100 kPa; valori > -9 kPa (prossimi alla saturazione) sono indicativi."
     },
     "t_soil": {
-      "label_it": "Temperatura del suolo",
+      "label_it": "Temperatura del terreno",
       "label_en": "Soil temperature",
       "unit": "°C",
       "aggregation": "mean",
@@ -61,7 +61,7 @@
       "elevation_m": 247,
       "owner": "Università di Salerno",
       "external_code": "Z6-28531",
-      "notes": "Datalogger METER (ID Z6-28531) con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale matriciale e temperatura del suolo) a tre profondità.",
+      "notes": "Datalogger METER (ID Z6-28531) con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale matriciale e temperatura del terreno) a tre profondità.",
       "distance_km": {
         "SAL_V": 0.01,
         "CF_21521": 3.39,
@@ -79,7 +79,7 @@
       "elevation_m": 255,
       "owner": "Università di Salerno",
       "external_code": "Z6-28525",
-      "notes": "Datalogger METER (ID Z6-28525) con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale matriciale e temperatura del suolo) a tre profondità.",
+      "notes": "Datalogger METER (ID Z6-28525) con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale matriciale e temperatura del terreno) a tre profondità.",
       "distance_km": {
         "SAL_NV": 0.01,
         "CF_21521": 3.38,
@@ -499,7 +499,7 @@
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
         "Gap 2025-12-18 ~02:40 (10,7 h) condiviso da tutte le serie della stazione."
       ],
       "sources": [
@@ -547,7 +547,7 @@
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
       ],
       "sources": [
         {
@@ -594,7 +594,7 @@
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
       ],
       "sources": [
         {
@@ -629,7 +629,7 @@
       "depth_m": 0.15,
       "sensor_model": "TEROS 21",
       "logger_port": 5,
-      "label": "Temperatura del suolo 15 cm – Salerno – Meter NV",
+      "label": "Temperatura del terreno 15 cm – Salerno – Meter NV",
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 5.0,
@@ -676,7 +676,7 @@
       "depth_m": 0.3,
       "sensor_model": "TEROS 21",
       "logger_port": 6,
-      "label": "Temperatura del suolo 30 cm – Salerno – Meter NV",
+      "label": "Temperatura del terreno 30 cm – Salerno – Meter NV",
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 5.0,
@@ -723,7 +723,7 @@
       "depth_m": 0.6,
       "sensor_model": "TEROS 21",
       "logger_port": 4,
-      "label": "Temperatura del suolo 60 cm – Salerno – Meter NV",
+      "label": "Temperatura del terreno 60 cm – Salerno – Meter NV",
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 5.0,
@@ -929,7 +929,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
         "Gap 2025-12-17 16:20 – 2025-12-18 17:25 (25 h) condiviso da tutte le serie della stazione."
       ],
       "sources": [
@@ -983,7 +983,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
       ],
       "sources": [
         {
@@ -1036,7 +1036,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
       ],
       "sources": [
         {
@@ -1071,7 +1071,7 @@
       "depth_m": 0.15,
       "sensor_model": "TEROS 21",
       "logger_port": 6,
-      "label": "Temperatura del suolo 15 cm – Salerno – Meter V",
+      "label": "Temperatura del terreno 15 cm – Salerno – Meter V",
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 5.0,
@@ -1124,7 +1124,7 @@
       "depth_m": 0.35,
       "sensor_model": "TEROS 21",
       "logger_port": 3,
-      "label": "Temperatura del suolo 35 cm – Salerno – Meter V",
+      "label": "Temperatura del terreno 35 cm – Salerno – Meter V",
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 5.0,
@@ -1177,7 +1177,7 @@
       "depth_m": 0.6,
       "sensor_model": "TEROS 21",
       "logger_port": 5,
-      "label": "Temperatura del suolo 60 cm – Salerno – Meter V",
+      "label": "Temperatura del terreno 60 cm – Salerno – Meter V",
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 5.0,

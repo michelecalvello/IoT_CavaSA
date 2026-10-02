@@ -2,7 +2,7 @@
 
 **Portale:** https://michelecalvello.github.io/IoT_CavaSA/
 
-Dati di monitoraggio idrologico (pioggia, contenuto d'acqua, potenziale matriciale e temperatura del suolo) nell'area di Salerno (progetto CavaSA). Università di Salerno – Dipartimento di Ingegneria Civile.
+Dati di monitoraggio idrologico (pioggia, contenuto d'acqua, potenziale matriciale e temperatura del terreno) nell'area di Salerno (progetto CavaSA). Università di Salerno – Dipartimento di Ingegneria Civile.
 
 Riferimento temporale unico: **UTC+1** (ora solare, senza ora legale).
 

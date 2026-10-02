@@ -41,7 +41,7 @@ for _k, (_n, _id, _la, _lo, _el) in METER_STATIONS.items():
         "lat": _la, "lon": _lo, "elevation_m": _el,
         "owner": "Università di Salerno", "external_code": _id,
         "notes": f"Datalogger METER (ID {_id}) con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 "
-                 "(potenziale matriciale e temperatura del suolo) a tre profondità.",
+                 "(potenziale matriciale e temperatura del terreno) a tre profondità.",
     }
 
 # Pluviometri della rete del Centro Funzionale Multirischi (Regione Campania).
@@ -95,7 +95,7 @@ VARIABLES = {
                "unit": "kPa", "aggregation": "mean", "plot": "line",
                "notes": "Valori negativi = suzione. TEROS 21: accuratezza dichiarata tra -9 e -100 kPa; "
                         "valori > -9 kPa (prossimi alla saturazione) sono indicativi."},
-    "t_soil": {"label_it": "Temperatura del suolo", "label_en": "Soil temperature",
+    "t_soil": {"label_it": "Temperatura del terreno", "label_en": "Soil temperature",
                "unit": "°C", "aggregation": "mean", "plot": "line"},
 }
 
@@ -133,7 +133,7 @@ for _code in CF_STATIONS:
     QC_NOTES[f"CF_{_code}_RAIN"].insert(0, "Anno 2025 completo (passo 10 min). Totale annuo 2025: "
         + {"21521": "1167 mm (125 m)", "18925": "1227 mm (356 m)", "18957": "987 mm (28 m)"}[_code]
         + "; correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.")
-_METER_NOTE_PSI = ("Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori "
+_METER_NOTE_PSI = ("Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori "
                    "molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo "
                    "di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, "
                    "2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.")

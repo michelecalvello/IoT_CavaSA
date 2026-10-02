@@ -13,8 +13,8 @@
   const AUTO_RES = (spanDays) => (spanDays > 90 ? "1d" : spanDays > 4 ? "1h" : "raw");
   const RAW_MAX_DAYS = 62;
   const RES_LABEL = { raw: "dato originale", "1h": "oraria", "1d": "giornaliera" };
-  const SHORT = { rain: "Pioggia", rain_cum: "Pioggia cumulata", stage: "Livello idrometrico", vwc: "Contenuto d'acqua", sm: "Umidità suolo (Aranet)",
-                  psi: "Potenziale matriciale", t_soil: "Temperatura suolo" };
+  const SHORT = { rain: "Pioggia", rain_cum: "Pioggia cumulata", stage: "Livello idrometrico", vwc: "Contenuto d'acqua", sm: "Umidità terreno (Aranet)",
+                  psi: "Potenziale matriciale", t_soil: "Temperatura terreno" };
   const UNIT = (u) => u.replace("m3/m3", "m³/m³");
   const DEFAULT = {
     selected: ["CF_18925_RAIN", "SAL_NV_VWC_015", "SAL_NV_VWC_060", "SAL_NV_PSI_030"],
