@@ -1,10 +1,1 @@
 series_id,rule,flag,n,first,last
-SAL_V_PSI_015,timestamp duplicati rimossi,,15,,
-SAL_V_PSI_035,timestamp duplicati rimossi,,15,,
-SAL_V_PSI_060,timestamp duplicati rimossi,,15,,
-SAL_V_TSOIL_015,timestamp duplicati rimossi,,15,,
-SAL_V_TSOIL_035,timestamp duplicati rimossi,,15,,
-SAL_V_TSOIL_060,timestamp duplicati rimossi,,15,,
-SAL_V_VWC_015,timestamp duplicati rimossi,,15,,
-SAL_V_VWC_035,timestamp duplicati rimossi,,15,,
-SAL_V_VWC_060,timestamp duplicati rimossi,,15,,

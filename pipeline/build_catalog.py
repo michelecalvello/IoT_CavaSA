@@ -144,11 +144,6 @@ for _k in METER_STATIONS:
         QC_NOTES[f"SAL_{_k}_VWC_{_x}"] = ["Registrazioni dal 2025-01-31 (installazione)."]
         QC_NOTES[f"SAL_{_k}_TSOIL_{_x}"] = ["Registrazioni dal 2025-01-31 (installazione)."]
 QC_NOTES["SAL_NV_PSI_015"].append("Gap 2025-12-18 ~02:40 (10,7 h) condiviso da tutte le serie della stazione.")
-for _x in ("015", "035", "060"):
-    for _v in ("PSI", "VWC", "TSOIL"):
-        QC_NOTES[f"SAL_V_{_v}_{_x}"].append("2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); "
-            "15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. "
-            "Seguono 2 h di dati mancanti (fino alle 20:30).")
 QC_NOTES["SAL_V_PSI_015"].append("Gap 2025-12-17 16:20 – 2025-12-18 17:25 (25 h) condiviso da tutte le serie della stazione.")
 
 

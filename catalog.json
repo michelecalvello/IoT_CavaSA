@@ -1,6 +1,6 @@
 {
   "catalog_version": "0.4",
-  "generated": "2026-10-02T18:02:15+01:00",
+  "generated": "2026-10-02T18:19:48+01:00",
   "conventions": {
     "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con ora legale) non è usata.",
     "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
@@ -930,7 +930,6 @@
       ],
       "qc_notes": [
         "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30).",
         "Gap 2025-12-17 16:20 – 2025-12-18 17:25 (25 h) condiviso da tutte le serie della stazione."
       ],
       "sources": [
@@ -951,11 +950,11 @@
         "agg_1d": "data/agg/SAL_V_PSI_015_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -984,8 +983,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
       ],
       "sources": [
         {
@@ -1005,11 +1003,11 @@
         "agg_1d": "data/agg/SAL_V_PSI_035_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -1038,8 +1036,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il suolo superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
       ],
       "sources": [
         {
@@ -1059,11 +1056,11 @@
         "agg_1d": "data/agg/SAL_V_PSI_060_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -1092,8 +1089,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione).",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione)."
       ],
       "sources": [
         {
@@ -1113,11 +1109,11 @@
         "agg_1d": "data/agg/SAL_V_TSOIL_015_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -1146,8 +1142,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione).",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione)."
       ],
       "sources": [
         {
@@ -1167,11 +1162,11 @@
         "agg_1d": "data/agg/SAL_V_TSOIL_035_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -1200,8 +1195,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione).",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione)."
       ],
       "sources": [
         {
@@ -1221,11 +1215,11 @@
         "agg_1d": "data/agg/SAL_V_TSOIL_060_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -1254,8 +1248,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione).",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione)."
       ],
       "sources": [
         {
@@ -1275,11 +1268,11 @@
         "agg_1d": "data/agg/SAL_V_VWC_015_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -1308,8 +1301,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione).",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione)."
       ],
       "sources": [
         {
@@ -1329,11 +1321,11 @@
         "agg_1d": "data/agg/SAL_V_VWC_035_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     },
     {
@@ -1362,8 +1354,7 @@
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione).",
-        "2025-07-28 ~19:10: l'orologio del logger torna indietro di ~2 h (19:10 → 17:15 UTC+1); 15 timestamp duplicati (17:15–18:25) con valori identici entro 0,001: si tiene il primo, il secondo è scartato. Seguono 2 h di dati mancanti (fino alle 20:30)."
+        "Registrazioni dal 2025-01-31 (installazione)."
       ],
       "sources": [
         {
@@ -1383,11 +1374,11 @@
         "agg_1d": "data/agg/SAL_V_VWC_060_1d.csv"
       },
       "qc_summary": {
-        "n_total": 95989,
-        "n_valid": 95989,
+        "n_total": 96004,
+        "n_valid": 96004,
         "n_suspect": 0,
         "n_bad": 0,
-        "duplicates_removed": 15
+        "duplicates_removed": 0
       }
     }
   ],
@@ -1424,7 +1415,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": 0.016,
       "max": 0.162,
@@ -1443,7 +1434,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": 0.052,
       "max": 0.21,
@@ -1462,7 +1453,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": 0.025,
       "max": 0.179,
@@ -1481,7 +1472,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": -2306.7,
       "max": -0.1,
@@ -1500,7 +1491,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": 8.4,
       "max": 24.6,
@@ -1519,7 +1510,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": -2131.5,
       "max": -1.6,
@@ -1538,7 +1529,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": 12.0,
       "max": 22.8,
@@ -1557,7 +1548,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": -1952.1,
       "max": -5.4,
@@ -1576,7 +1567,7 @@
       "n_values": 96004,
       "n_rows": 96004,
       "step_min": 5.0,
-      "gaps_over_1h": 2,
+      "gaps_over_1h": 1,
       "max_gap_h": 25.1,
       "min": 13.2,
       "max": 19.5,
