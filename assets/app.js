@@ -6,7 +6,7 @@
   "use strict";
 
   // ---------------------------------------------------------------- costanti
-  const MAX_SERIES = 12;
+  const MAX_SERIES = 20;
   const DAY = 86400000;
   const VAR_ORDER = ["rain", "rain_cum", "stage", "vwc", "sm", "psi", "t_soil", "t_air"];
   const PANEL_WEIGHT = { rain: 0.6 };
