@@ -1,10 +1,3 @@
 series_id,rule,flag,n,first,last
-ERA5_E146_N407_RAIN,valori negativi di arrotondamento numerico azzerati,0,99,,
-ERA5_E146_N408_RAIN,valori negativi di arrotondamento numerico azzerati,0,103,,
-ERA5_E147_N407_RAIN,valori negativi di arrotondamento numerico azzerati,0,109,,
-ERA5_E147_N408_RAIN,valori negativi di arrotondamento numerico azzerati,0,109,,
-ERA5_E148_N407_RAIN,valori negativi di arrotondamento numerico azzerati,0,101,,
-ERA5_E148_N408_RAIN,valori negativi di arrotondamento numerico azzerati,0,105,,
-ERA5_E149_N406_RAIN,valori negativi di arrotondamento numerico azzerati,0,110,,
-ERA5_E149_N407_RAIN,valori negativi di arrotondamento numerico azzerati,0,95,,
-ERA5_E149_N408_RAIN,valori negativi di arrotondamento numerico azzerati,0,95,,
+ERA5_E147_N407_RAIN,valori negativi di arrotondamento numerico azzerati,0,333,,
+ERA5_E148_N407_RAIN,valori negativi di arrotondamento numerico azzerati,0,328,,

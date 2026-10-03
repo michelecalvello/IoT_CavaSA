@@ -1,6 +1,6 @@
 {
   "catalog_version": "0.4",
-  "generated": "2026-10-03T10:35:29+01:00",
+  "generated": "2026-10-03T11:03:35+01:00",
   "conventions": {
     "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con ora legale) non è usata.",
     "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
@@ -150,50 +150,6 @@
       }
     },
     {
-      "station_id": "ERA5_E146_N407",
-      "name": "ERA5-Land · 14.6°E 40.7°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.7,
-      "lon": 14.6,
-      "elevation_m": null,
-      "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "ERA5-Land",
-      "notes": "Pixel ERA5-Land 0,1° (~9 km): media sull'area del pixel, non misura puntuale. Dati scaricati da Google Earth Engine (collezione ECMWF/ERA5_LAND/HOURLY).",
-      "sample_points": null,
-      "distance_km": {
-        "SAL_NV": 13.56,
-        "SAL_V": 13.56,
-        "CF_21521": 15.07,
-        "CF_18925": 13.68,
-        "CF_18957": 13.02
-      }
-    },
-    {
-      "station_id": "ERA5_E146_N408",
-      "name": "ERA5-Land · 14.6°E 40.8°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.8,
-      "lon": 14.6,
-      "elevation_m": null,
-      "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "ERA5-Land",
-      "notes": "Pixel ERA5-Land 0,1° (~9 km): media sull'area del pixel, non misura puntuale. Dati scaricati da Google Earth Engine (collezione ECMWF/ERA5_LAND/HOURLY).",
-      "sample_points": null,
-      "distance_km": {
-        "SAL_NV": 18.01,
-        "SAL_V": 18.0,
-        "CF_21521": 17.28,
-        "CF_18925": 15.35,
-        "CF_18957": 18.53
-      }
-    },
-    {
       "station_id": "ERA5_E147_N407",
       "name": "ERA5-Land · 14.7°E 40.7°N",
       "site": "Area di Salerno",
@@ -213,28 +169,6 @@
         "CF_21521": 6.87,
         "CF_18925": 5.89,
         "CF_18957": 4.94
-      }
-    },
-    {
-      "station_id": "ERA5_E147_N408",
-      "name": "ERA5-Land · 14.7°E 40.8°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.8,
-      "lon": 14.7,
-      "elevation_m": null,
-      "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "ERA5-Land",
-      "notes": "Pixel ERA5-Land 0,1° (~9 km): media sull'area del pixel, non misura puntuale. Dati scaricati da Google Earth Engine (collezione ECMWF/ERA5_LAND/HOURLY).",
-      "sample_points": null,
-      "distance_km": {
-        "SAL_NV": 12.94,
-        "SAL_V": 12.93,
-        "CF_21521": 10.9,
-        "CF_18925": 9.14,
-        "CF_18957": 14.09
       }
     },
     {
@@ -260,157 +194,11 @@
       }
     },
     {
-      "station_id": "ERA5_E148_N408",
-      "name": "ERA5-Land · 14.8°E 40.8°N",
+      "station_id": "SMAP_E1472_N4070",
+      "name": "SMAP L4 · 14.72°E 40.70°N",
       "site": "Area di Salerno",
       "municipality": null,
-      "lat": 40.8,
-      "lon": 14.8,
-      "elevation_m": null,
-      "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "ERA5-Land",
-      "notes": "Pixel ERA5-Land 0,1° (~9 km): media sull'area del pixel, non misura puntuale. Dati scaricati da Google Earth Engine (collezione ECMWF/ERA5_LAND/HOURLY).",
-      "sample_points": null,
-      "distance_km": {
-        "SAL_NV": 12.34,
-        "SAL_V": 12.34,
-        "CF_21521": 9.0,
-        "CF_18925": 8.55,
-        "CF_18957": 13.98
-      }
-    },
-    {
-      "station_id": "ERA5_E149_N406",
-      "name": "ERA5-Land · 14.9°E 40.6°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.6,
-      "lon": 14.9,
-      "elevation_m": null,
-      "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "ERA5-Land",
-      "notes": "Pixel ERA5-Land 0,1° (~9 km): media sull'area del pixel, non misura puntuale. Dati scaricati da Google Earth Engine (collezione ECMWF/ERA5_LAND/HOURLY).",
-      "sample_points": null,
-      "distance_km": {
-        "SAL_NV": 15.67,
-        "SAL_V": 15.67,
-        "CF_21521": 17.01,
-        "CF_18925": 18.83,
-        "CF_18957": 15.31
-      }
-    },
-    {
-      "station_id": "ERA5_E149_N407",
-      "name": "ERA5-Land · 14.9°E 40.7°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.7,
-      "lon": 14.9,
-      "elevation_m": null,
-      "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "ERA5-Land",
-      "notes": "Pixel ERA5-Land 0,1° (~9 km): media sull'area del pixel, non misura puntuale. Dati scaricati da Google Earth Engine (collezione ECMWF/ERA5_LAND/HOURLY).",
-      "sample_points": null,
-      "distance_km": {
-        "SAL_NV": 11.78,
-        "SAL_V": 11.78,
-        "CF_21521": 10.66,
-        "CF_18925": 12.49,
-        "CF_18957": 12.68
-      }
-    },
-    {
-      "station_id": "ERA5_E149_N408",
-      "name": "ERA5-Land · 14.9°E 40.8°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.8,
-      "lon": 14.9,
-      "elevation_m": null,
-      "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "ERA5-Land",
-      "notes": "Pixel ERA5-Land 0,1° (~9 km): media sull'area del pixel, non misura puntuale. Dati scaricati da Google Earth Engine (collezione ECMWF/ERA5_LAND/HOURLY).",
-      "sample_points": null,
-      "distance_km": {
-        "SAL_NV": 16.71,
-        "SAL_V": 16.71,
-        "CF_21521": 13.61,
-        "CF_18925": 14.3,
-        "CF_18957": 18.29
-      }
-    },
-    {
-      "station_id": "SMAP_E1464_N4062",
-      "name": "SMAP L4 · 14.64°E 40.62°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.6186,
-      "lon": 14.6436,
-      "elevation_m": null,
-      "owner": "NASA – SMAP Level 4 (GMAO)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "SMAP L4",
-      "notes": "Pixel SMAP L4 (griglia EASE ~9 km): media sull'area del pixel, non misura puntuale. Medie su 3 h con etichetta a metà intervallo (01:30 UTC = 02:30 UTC+1). Dati scaricati da Google Earth Engine (collezione NASA/SMAP/SPL4SMGP).",
-      "sample_points": [
-        [
-          14.6436,
-          40.6186
-        ]
-      ],
-      "distance_km": {
-        "SAL_NV": 12.88,
-        "SAL_V": 12.88,
-        "CF_21521": 15.98,
-        "CF_18925": 15.69,
-        "CF_18957": 11.39
-      }
-    },
-    {
-      "station_id": "SMAP_E1464_N4074",
-      "name": "SMAP L4 · 14.64°E 40.74°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.7398,
-      "lon": 14.6436,
-      "elevation_m": null,
-      "owner": "NASA – SMAP Level 4 (GMAO)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "SMAP L4",
-      "notes": "Pixel SMAP L4 (griglia EASE ~9 km): media sull'area del pixel, non misura puntuale. Medie su 3 h con etichetta a metà intervallo (01:30 UTC = 02:30 UTC+1). Dati scaricati da Google Earth Engine (collezione NASA/SMAP/SPL4SMGP). Il pixel comprende 2 punti di campionamento GEE con valori identici (lon, lat: 14.6436, 40.6994; 14.6436, 40.7803); posizione indicativa (baricentro dei punti).",
-      "sample_points": [
-        [
-          14.6436,
-          40.6994
-        ],
-        [
-          14.6436,
-          40.7803
-        ]
-      ],
-      "distance_km": {
-        "SAL_NV": 11.14,
-        "SAL_V": 11.14,
-        "CF_21521": 11.4,
-        "CF_18925": 9.64,
-        "CF_18957": 11.33
-      }
-    },
-    {
-      "station_id": "SMAP_E1472_N4062",
-      "name": "SMAP L4 · 14.72°E 40.62°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.6186,
+      "lat": 40.6994,
       "lon": 14.7244,
       "elevation_m": null,
       "owner": "NASA – SMAP Level 4 (GMAO)",
@@ -421,116 +209,42 @@
       "sample_points": [
         [
           14.7244,
-          40.6186
+          40.6994
         ]
       ],
       "distance_km": {
-        "SAL_NV": 8.83,
-        "SAL_V": 8.83,
-        "CF_21521": 12.21,
-        "CF_18925": 12.72,
-        "CF_18957": 7.17
+        "SAL_NV": 3.13,
+        "SAL_V": 3.13,
+        "CF_21521": 5.01,
+        "CF_18925": 4.41,
+        "CF_18957": 3.2
       }
     },
     {
-      "station_id": "SMAP_E1472_N4074",
-      "name": "SMAP L4 · 14.72°E 40.74°N",
+      "station_id": "SMAP_E1481_N4070",
+      "name": "SMAP L4 · 14.81°E 40.70°N",
       "site": "Area di Salerno",
       "municipality": null,
-      "lat": 40.7398,
-      "lon": 14.7244,
+      "lat": 40.6994,
+      "lon": 14.8053,
       "elevation_m": null,
       "owner": "NASA – SMAP Level 4 (GMAO)",
       "external_code": null,
       "kind": "grid",
       "product": "SMAP L4",
-      "notes": "Pixel SMAP L4 (griglia EASE ~9 km): media sull'area del pixel, non misura puntuale. Medie su 3 h con etichetta a metà intervallo (01:30 UTC = 02:30 UTC+1). Dati scaricati da Google Earth Engine (collezione NASA/SMAP/SPL4SMGP). Il pixel comprende 2 punti di campionamento GEE con valori identici (lon, lat: 14.7244, 40.6994; 14.7244, 40.7803); posizione indicativa (baricentro dei punti).",
-      "sample_points": [
-        [
-          14.7244,
-          40.6994
-        ],
-        [
-          14.7244,
-          40.7803
-        ]
-      ],
-      "distance_km": {
-        "SAL_NV": 6.02,
-        "SAL_V": 6.02,
-        "CF_21521": 4.87,
-        "CF_18925": 2.97,
-        "CF_18957": 7.09
-      }
-    },
-    {
-      "station_id": "SMAP_E1485_N4062",
-      "name": "SMAP L4 · 14.85°E 40.62°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.6186,
-      "lon": 14.8457,
-      "elevation_m": null,
-      "owner": "NASA – SMAP Level 4 (GMAO)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "SMAP L4",
-      "notes": "Pixel SMAP L4 (griglia EASE ~9 km): media sull'area del pixel, non misura puntuale. Medie su 3 h con etichetta a metà intervallo (01:30 UTC = 02:30 UTC+1). Dati scaricati da Google Earth Engine (collezione NASA/SMAP/SPL4SMGP). Il pixel comprende 2 punti di campionamento GEE con valori identici (lon, lat: 14.8053, 40.6186; 14.8861, 40.6186); posizione indicativa (baricentro dei punti).",
-      "sample_points": [
-        [
-          14.8053,
-          40.6186
-        ],
-        [
-          14.8861,
-          40.6186
-        ]
-      ],
-      "distance_km": {
-        "SAL_NV": 10.96,
-        "SAL_V": 10.97,
-        "CF_21521": 12.79,
-        "CF_18925": 14.48,
-        "CF_18957": 10.42
-      }
-    },
-    {
-      "station_id": "SMAP_E1485_N4074",
-      "name": "SMAP L4 · 14.85°E 40.74°N",
-      "site": "Area di Salerno",
-      "municipality": null,
-      "lat": 40.7398,
-      "lon": 14.8457,
-      "elevation_m": null,
-      "owner": "NASA – SMAP Level 4 (GMAO)",
-      "external_code": null,
-      "kind": "grid",
-      "product": "SMAP L4",
-      "notes": "Pixel SMAP L4 (griglia EASE ~9 km): media sull'area del pixel, non misura puntuale. Medie su 3 h con etichetta a metà intervallo (01:30 UTC = 02:30 UTC+1). Dati scaricati da Google Earth Engine (collezione NASA/SMAP/SPL4SMGP). Il pixel comprende 4 punti di campionamento GEE con valori identici (lon, lat: 14.8053, 40.6994; 14.8053, 40.7803; 14.8861, 40.6994; 14.8861, 40.7803); posizione indicativa (baricentro dei punti).",
+      "notes": "Pixel SMAP L4 (griglia EASE ~9 km): media sull'area del pixel, non misura puntuale. Medie su 3 h con etichetta a metà intervallo (01:30 UTC = 02:30 UTC+1). Dati scaricati da Google Earth Engine (collezione NASA/SMAP/SPL4SMGP).",
       "sample_points": [
         [
           14.8053,
           40.6994
-        ],
-        [
-          14.8053,
-          40.7803
-        ],
-        [
-          14.8861,
-          40.6994
-        ],
-        [
-          14.8861,
-          40.7803
         ]
       ],
       "distance_km": {
-        "SAL_NV": 8.86,
-        "SAL_V": 8.86,
-        "CF_21521": 6.18,
-        "CF_18925": 7.52,
-        "CF_18957": 10.35
+        "SAL_NV": 3.84,
+        "SAL_V": 3.84,
+        "CF_21521": 3.41,
+        "CF_18925": 5.3,
+        "CF_18957": 5.0
       }
     }
   ],
@@ -566,26 +280,8 @@
       "type": "Pluviometro"
     },
     {
-      "instrument_id": "ERA5_E146_N407_MODEL",
-      "station_id": "ERA5_E146_N407",
-      "manufacturer": "ECMWF / Copernicus C3S",
-      "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
-    },
-    {
-      "instrument_id": "ERA5_E146_N408_MODEL",
-      "station_id": "ERA5_E146_N408",
-      "manufacturer": "ECMWF / Copernicus C3S",
-      "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
-    },
-    {
       "instrument_id": "ERA5_E147_N407_MODEL",
       "station_id": "ERA5_E147_N407",
-      "manufacturer": "ECMWF / Copernicus C3S",
-      "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
-    },
-    {
-      "instrument_id": "ERA5_E147_N408_MODEL",
-      "station_id": "ERA5_E147_N408",
       "manufacturer": "ECMWF / Copernicus C3S",
       "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
     },
@@ -596,62 +292,14 @@
       "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
     },
     {
-      "instrument_id": "ERA5_E148_N408_MODEL",
-      "station_id": "ERA5_E148_N408",
-      "manufacturer": "ECMWF / Copernicus C3S",
-      "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
-    },
-    {
-      "instrument_id": "ERA5_E149_N406_MODEL",
-      "station_id": "ERA5_E149_N406",
-      "manufacturer": "ECMWF / Copernicus C3S",
-      "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
-    },
-    {
-      "instrument_id": "ERA5_E149_N407_MODEL",
-      "station_id": "ERA5_E149_N407",
-      "manufacturer": "ECMWF / Copernicus C3S",
-      "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
-    },
-    {
-      "instrument_id": "ERA5_E149_N408_MODEL",
-      "station_id": "ERA5_E149_N408",
-      "manufacturer": "ECMWF / Copernicus C3S",
-      "type": "Rianalisi ERA5-Land oraria (collezione GEE ECMWF/ERA5_LAND/HOURLY), pixel 0,1° (~9 km)"
-    },
-    {
-      "instrument_id": "SMAP_E1464_N4062_MODEL",
-      "station_id": "SMAP_E1464_N4062",
+      "instrument_id": "SMAP_E1472_N4070_MODEL",
+      "station_id": "SMAP_E1472_N4070",
       "manufacturer": "NASA GMAO",
       "type": "Prodotto SMAP L4 Soil Moisture (collezione GEE NASA/SMAP/SPL4SMGP), pixel ~9 km, medie su 3 h"
     },
     {
-      "instrument_id": "SMAP_E1464_N4074_MODEL",
-      "station_id": "SMAP_E1464_N4074",
-      "manufacturer": "NASA GMAO",
-      "type": "Prodotto SMAP L4 Soil Moisture (collezione GEE NASA/SMAP/SPL4SMGP), pixel ~9 km, medie su 3 h"
-    },
-    {
-      "instrument_id": "SMAP_E1472_N4062_MODEL",
-      "station_id": "SMAP_E1472_N4062",
-      "manufacturer": "NASA GMAO",
-      "type": "Prodotto SMAP L4 Soil Moisture (collezione GEE NASA/SMAP/SPL4SMGP), pixel ~9 km, medie su 3 h"
-    },
-    {
-      "instrument_id": "SMAP_E1472_N4074_MODEL",
-      "station_id": "SMAP_E1472_N4074",
-      "manufacturer": "NASA GMAO",
-      "type": "Prodotto SMAP L4 Soil Moisture (collezione GEE NASA/SMAP/SPL4SMGP), pixel ~9 km, medie su 3 h"
-    },
-    {
-      "instrument_id": "SMAP_E1485_N4062_MODEL",
-      "station_id": "SMAP_E1485_N4062",
-      "manufacturer": "NASA GMAO",
-      "type": "Prodotto SMAP L4 Soil Moisture (collezione GEE NASA/SMAP/SPL4SMGP), pixel ~9 km, medie su 3 h"
-    },
-    {
-      "instrument_id": "SMAP_E1485_N4074_MODEL",
-      "station_id": "SMAP_E1485_N4074",
+      "instrument_id": "SMAP_E1481_N4070_MODEL",
+      "station_id": "SMAP_E1481_N4070",
       "manufacturer": "NASA GMAO",
       "type": "Prodotto SMAP L4 Soil Moisture (collezione GEE NASA/SMAP/SPL4SMGP), pixel ~9 km, medie su 3 h"
     }
@@ -962,528 +610,6 @@
       }
     },
     {
-      "series_id": "ERA5_E146_N407_RAIN",
-      "instrument_id": "ERA5_E146_N407_MODEL",
-      "station_id": "ERA5_E146_N407",
-      "variable": "rain",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Pioggia – ERA5-Land · 14.6°E 40.7°N",
-      "unit": "mm",
-      "aggregation": "sum",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 10.167,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1220 mm."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "total_precipitation_hourly"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N407_RAIN/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N407_RAIN_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N407_RAIN_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N407_RAINCUM",
-      "instrument_id": "ERA5_E146_N407_MODEL",
-      "station_id": "ERA5_E146_N407",
-      "variable": "rain_cum",
-      "depth_m": null,
-      "sensor_model": null,
-      "logger_port": null,
-      "label": "Pioggia cumulata dal 1° gennaio – ERA5-Land · 14.6°E 40.7°N",
-      "unit": "mm",
-      "aggregation": "last",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 1219.9,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Serie derivata da ERA5_E146_N407_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1219.9 mm."
-      ],
-      "sources": [],
-      "derived_from": "ERA5_E146_N407_RAIN",
-      "cumulative_years": [
-        {
-          "year": 2024,
-          "total_mm": 1219.9,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
-          "last": "2025-01-01 00:00",
-          "missing_hours": 0.0,
-          "complete": true
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N407_RAINCUM/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N407_RAINCUM_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N407_RAINCUM_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N407_TAIR",
-      "instrument_id": "ERA5_E146_N407_MODEL",
-      "station_id": "ERA5_E146_N407",
-      "variable": "t_air",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Temperatura dell'aria (2 m) – ERA5-Land · 14.6°E 40.7°N",
-      "unit": "°C",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 4.63,
-      "max": 31.94,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "temperature_2m"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N407_TAIR/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N407_TAIR_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N407_TAIR_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N407_VWC_007",
-      "instrument_id": "ERA5_E146_N407_MODEL",
-      "station_id": "ERA5_E146_N407",
-      "variable": "vwc",
-      "depth_m": 0.07,
-      "depth_range_m": [
-        0.0,
-        0.07
-      ],
-      "layer_label": "0–7 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–7 cm – ERA5-Land · 14.6°E 40.7°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1322,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_1"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N407_VWC_007/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N407_VWC_007_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N407_VWC_007_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N407_VWC_028",
-      "instrument_id": "ERA5_E146_N407_MODEL",
-      "station_id": "ERA5_E146_N407",
-      "variable": "vwc",
-      "depth_m": 0.28,
-      "depth_range_m": [
-        0.07,
-        0.28
-      ],
-      "layer_label": "7–28 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 7–28 cm – ERA5-Land · 14.6°E 40.7°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1522,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_2"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N407_VWC_028/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N407_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N407_VWC_028_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N408_RAIN",
-      "instrument_id": "ERA5_E146_N408_MODEL",
-      "station_id": "ERA5_E146_N408",
-      "variable": "rain",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Pioggia – ERA5-Land · 14.6°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "sum",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 8.755,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1197 mm."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "total_precipitation_hourly"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N408_RAIN/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N408_RAIN_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N408_RAIN_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N408_RAINCUM",
-      "instrument_id": "ERA5_E146_N408_MODEL",
-      "station_id": "ERA5_E146_N408",
-      "variable": "rain_cum",
-      "depth_m": null,
-      "sensor_model": null,
-      "logger_port": null,
-      "label": "Pioggia cumulata dal 1° gennaio – ERA5-Land · 14.6°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "last",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 1196.93,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Serie derivata da ERA5_E146_N408_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1196.9 mm."
-      ],
-      "sources": [],
-      "derived_from": "ERA5_E146_N408_RAIN",
-      "cumulative_years": [
-        {
-          "year": 2024,
-          "total_mm": 1196.93,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
-          "last": "2025-01-01 00:00",
-          "missing_hours": 0.0,
-          "complete": true
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N408_RAINCUM/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N408_RAINCUM_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N408_RAINCUM_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N408_TAIR",
-      "instrument_id": "ERA5_E146_N408_MODEL",
-      "station_id": "ERA5_E146_N408",
-      "variable": "t_air",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Temperatura dell'aria (2 m) – ERA5-Land · 14.6°E 40.8°N",
-      "unit": "°C",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 1.58,
-      "max": 34.25,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "temperature_2m"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N408_TAIR/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N408_TAIR_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N408_TAIR_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N408_VWC_007",
-      "instrument_id": "ERA5_E146_N408_MODEL",
-      "station_id": "ERA5_E146_N408",
-      "variable": "vwc",
-      "depth_m": 0.07,
-      "depth_range_m": [
-        0.0,
-        0.07
-      ],
-      "layer_label": "0–7 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–7 cm – ERA5-Land · 14.6°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1364,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_1"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N408_VWC_007/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N408_VWC_007_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N408_VWC_007_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E146_N408_VWC_028",
-      "instrument_id": "ERA5_E146_N408_MODEL",
-      "station_id": "ERA5_E146_N408",
-      "variable": "vwc",
-      "depth_m": 0.28,
-      "depth_range_m": [
-        0.07,
-        0.28
-      ],
-      "layer_label": "7–28 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 7–28 cm – ERA5-Land · 14.6°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1512,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_2"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E146_N408_VWC_028/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E146_N408_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E146_N408_VWC_028_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
       "series_id": "ERA5_E147_N407_RAIN",
       "instrument_id": "ERA5_E147_N407_MODEL",
       "station_id": "ERA5_E147_N407",
@@ -1497,21 +623,33 @@
       "unit": "mm",
       "aggregation": "sum",
       "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
+      "start": "2024-01-11T10:00+01:00",
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23743,
       "min": 0.0,
       "max": 11.966,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1295 mm."
+        "Totali annui (dati disponibili): 2024: 1210 mm; 2025: 1175 mm; 2026: 734 mm."
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "total_precipitation_hourly"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "total_precipitation_hourly"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "total_precipitation_hourly"
         }
@@ -1521,14 +659,15 @@
         "raw": "data/raw/ERA5_E147_N407_RAIN/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E147_N407_RAIN_1h.csv",
         "agg_1d": "data/agg/ERA5_E147_N407_RAIN_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23743,
+        "n_valid": 23743,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -1546,28 +685,48 @@
       "unit": "mm",
       "aggregation": "last",
       "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
+      "start": "2024-01-11T10:00+01:00",
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23743,
       "min": 0.0,
-      "max": 1295.05,
+      "max": 1209.66,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Serie derivata da ERA5_E147_N407_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1295.0 mm."
+        "Totali annui: 2024: 1209.7 mm (incompleto); 2025: 1174.8 mm; 2026: 734.0 mm (incompleto).",
+        "2024: circa 251 h di dati mancanti nell'anno (prima del primo dato o in lacune > 60 min); dal 2024-01-11 10:00 la cumulata è sottostimata (flag 1, tratteggio). Totale 1209.7 mm = valore minimo.",
+        "2026: circa 30 h di dati mancanti nell'anno (prima del primo dato o in lacune > 60 min); dal 2026-09-27 18:00 la cumulata è sottostimata (flag 1, tratteggio). Totale 734.0 mm = valore minimo."
       ],
       "sources": [],
       "derived_from": "ERA5_E147_N407_RAIN",
       "cumulative_years": [
         {
           "year": 2024,
-          "total_mm": 1295.05,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
+          "total_mm": 1209.66,
+          "n": 8533,
+          "first": "2024-01-11 10:00",
           "last": "2025-01-01 00:00",
+          "missing_hours": 251.0,
+          "complete": false
+        },
+        {
+          "year": 2025,
+          "total_mm": 1174.82,
+          "n": 8760,
+          "first": "2025-01-01 01:00",
+          "last": "2026-01-01 00:00",
           "missing_hours": 0.0,
           "complete": true
+        },
+        {
+          "year": 2026,
+          "total_mm": 734.03,
+          "n": 6450,
+          "first": "2026-01-01 01:00",
+          "last": "2026-09-28 00:00",
+          "missing_hours": 30.0,
+          "complete": false
         }
       ],
       "data": {
@@ -1575,15 +734,16 @@
         "raw": "data/raw/ERA5_E147_N407_RAINCUM/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E147_N407_RAINCUM_1h.csv",
         "agg_1d": "data/agg/ERA5_E147_N407_RAINCUM_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
+        "n_total": 23743,
+        "n_valid": 15208,
+        "n_suspect": 8535,
         "n_bad": 0,
         "duplicates_removed": 0
       }
@@ -1602,11 +762,11 @@
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 4.22,
-      "max": 33.18,
+      "start": "2024-01-11T10:00+01:00",
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23743,
+      "min": 3.16,
+      "max": 33.77,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -1614,8 +774,20 @@
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "temperature_2m"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "temperature_2m"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "temperature_2m"
         }
@@ -1625,14 +797,15 @@
         "raw": "data/raw/ERA5_E147_N407_TAIR/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E147_N407_TAIR_1h.csv",
         "agg_1d": "data/agg/ERA5_E147_N407_TAIR_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23743,
+        "n_valid": 23743,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -1655,9 +828,9 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
+      "start": "2024-01-11T10:00+01:00",
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23743,
       "min": 0.121,
       "max": 0.439,
       "status": "active",
@@ -1667,8 +840,20 @@
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_1"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_1"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "volumetric_soil_water_layer_1"
         }
@@ -1678,14 +863,15 @@
         "raw": "data/raw/ERA5_E147_N407_VWC_007/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E147_N407_VWC_007_1h.csv",
         "agg_1d": "data/agg/ERA5_E147_N407_VWC_007_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23743,
+        "n_valid": 23743,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -1708,270 +894,9 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1519,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_2"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E147_N407_VWC_028/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E147_N407_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E147_N407_VWC_028_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E147_N408_RAIN",
-      "instrument_id": "ERA5_E147_N408_MODEL",
-      "station_id": "ERA5_E147_N408",
-      "variable": "rain",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Pioggia – ERA5-Land · 14.7°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "sum",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 10.594,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1269 mm."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "total_precipitation_hourly"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E147_N408_RAIN/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E147_N408_RAIN_1h.csv",
-        "agg_1d": "data/agg/ERA5_E147_N408_RAIN_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E147_N408_RAINCUM",
-      "instrument_id": "ERA5_E147_N408_MODEL",
-      "station_id": "ERA5_E147_N408",
-      "variable": "rain_cum",
-      "depth_m": null,
-      "sensor_model": null,
-      "logger_port": null,
-      "label": "Pioggia cumulata dal 1° gennaio – ERA5-Land · 14.7°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "last",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 1268.6,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Serie derivata da ERA5_E147_N408_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1268.6 mm."
-      ],
-      "sources": [],
-      "derived_from": "ERA5_E147_N408_RAIN",
-      "cumulative_years": [
-        {
-          "year": 2024,
-          "total_mm": 1268.6,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
-          "last": "2025-01-01 00:00",
-          "missing_hours": 0.0,
-          "complete": true
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E147_N408_RAINCUM/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E147_N408_RAINCUM_1h.csv",
-        "agg_1d": "data/agg/ERA5_E147_N408_RAINCUM_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E147_N408_TAIR",
-      "instrument_id": "ERA5_E147_N408_MODEL",
-      "station_id": "ERA5_E147_N408",
-      "variable": "t_air",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Temperatura dell'aria (2 m) – ERA5-Land · 14.7°E 40.8°N",
-      "unit": "°C",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.96,
-      "max": 33.89,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "temperature_2m"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E147_N408_TAIR/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E147_N408_TAIR_1h.csv",
-        "agg_1d": "data/agg/ERA5_E147_N408_TAIR_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E147_N408_VWC_007",
-      "instrument_id": "ERA5_E147_N408_MODEL",
-      "station_id": "ERA5_E147_N408",
-      "variable": "vwc",
-      "depth_m": 0.07,
-      "depth_range_m": [
-        0.0,
-        0.07
-      ],
-      "layer_label": "0–7 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–7 cm – ERA5-Land · 14.7°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1366,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_1"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E147_N408_VWC_007/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E147_N408_VWC_007_1h.csv",
-        "agg_1d": "data/agg/ERA5_E147_N408_VWC_007_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E147_N408_VWC_028",
-      "instrument_id": "ERA5_E147_N408_MODEL",
-      "station_id": "ERA5_E147_N408",
-      "variable": "vwc",
-      "depth_m": 0.28,
-      "depth_range_m": [
-        0.07,
-        0.28
-      ],
-      "layer_label": "7–28 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 7–28 cm – ERA5-Land · 14.7°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
+      "start": "2024-01-11T10:00+01:00",
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23743,
       "min": 0.1516,
       "max": 0.439,
       "status": "active",
@@ -1981,25 +906,38 @@
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_2"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_2"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "volumetric_soil_water_layer_2"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E147_N408_VWC_028/{year}.csv",
+        "raw": "data/raw/ERA5_E147_N407_VWC_028/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
-        "agg_1h": "data/agg/ERA5_E147_N408_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E147_N408_VWC_028_1d.csv"
+        "agg_1h": "data/agg/ERA5_E147_N407_VWC_028_1h.csv",
+        "agg_1d": "data/agg/ERA5_E147_N407_VWC_028_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23743,
+        "n_valid": 23743,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2020,20 +958,32 @@
       "aggregation": "sum",
       "step_min": 60.0,
       "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23994,
       "min": 0.0,
       "max": 12.439,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1331 mm."
+        "Totali annui (dati disponibili): 2024: 1331 mm; 2025: 1191 mm; 2026: 750 mm."
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "total_precipitation_hourly"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "total_precipitation_hourly"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "total_precipitation_hourly"
         }
@@ -2043,14 +993,15 @@
         "raw": "data/raw/ERA5_E148_N407_RAIN/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E148_N407_RAIN_1h.csv",
         "agg_1d": "data/agg/ERA5_E148_N407_RAIN_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2069,15 +1020,16 @@
       "aggregation": "last",
       "step_min": 60.0,
       "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23994,
       "min": 0.0,
       "max": 1331.24,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Serie derivata da ERA5_E148_N407_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1331.2 mm."
+        "Totali annui: 2024: 1331.2 mm; 2025: 1190.7 mm; 2026: 750.0 mm (incompleto).",
+        "2026: circa 30 h di dati mancanti nell'anno (prima del primo dato o in lacune > 60 min); dal 2026-09-27 18:00 la cumulata è sottostimata (flag 1, tratteggio). Totale 750.0 mm = valore minimo."
       ],
       "sources": [],
       "derived_from": "ERA5_E148_N407_RAIN",
@@ -2090,6 +1042,24 @@
           "last": "2025-01-01 00:00",
           "missing_hours": 0.0,
           "complete": true
+        },
+        {
+          "year": 2025,
+          "total_mm": 1190.68,
+          "n": 8760,
+          "first": "2025-01-01 01:00",
+          "last": "2026-01-01 00:00",
+          "missing_hours": 0.0,
+          "complete": true
+        },
+        {
+          "year": 2026,
+          "total_mm": 750.04,
+          "n": 6450,
+          "first": "2026-01-01 01:00",
+          "last": "2026-09-28 00:00",
+          "missing_hours": 30.0,
+          "complete": false
         }
       ],
       "data": {
@@ -2097,15 +1067,16 @@
         "raw": "data/raw/ERA5_E148_N407_RAINCUM/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E148_N407_RAINCUM_1h.csv",
         "agg_1d": "data/agg/ERA5_E148_N407_RAINCUM_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
+        "n_total": 23994,
+        "n_valid": 23992,
+        "n_suspect": 2,
         "n_bad": 0,
         "duplicates_removed": 0
       }
@@ -2125,10 +1096,10 @@
       "aggregation": "mean",
       "step_min": 60.0,
       "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 3.63,
-      "max": 34.07,
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23994,
+      "min": 2.42,
+      "max": 34.95,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -2136,8 +1107,20 @@
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "temperature_2m"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "temperature_2m"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "temperature_2m"
         }
@@ -2147,14 +1130,15 @@
         "raw": "data/raw/ERA5_E148_N407_TAIR/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E148_N407_TAIR_1h.csv",
         "agg_1d": "data/agg/ERA5_E148_N407_TAIR_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2178,8 +1162,8 @@
       "aggregation": "mean",
       "step_min": 60.0,
       "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23994,
       "min": 0.1168,
       "max": 0.439,
       "status": "active",
@@ -2189,8 +1173,20 @@
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_1"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_1"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "volumetric_soil_water_layer_1"
         }
@@ -2200,14 +1196,15 @@
         "raw": "data/raw/ERA5_E148_N407_VWC_007/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E148_N407_VWC_007_1h.csv",
         "agg_1d": "data/agg/ERA5_E148_N407_VWC_007_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2231,9 +1228,9 @@
       "aggregation": "mean",
       "step_min": 60.0,
       "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1535,
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23994,
+      "min": 0.1528,
       "max": 0.439,
       "status": "active",
       "gaps_over_24h": [],
@@ -2242,8 +1239,20 @@
       ],
       "sources": [
         {
-          "file": "cavasa_ERA5Land_2024.csv",
+          "file": "cavasa_ERA5Land.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_2"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_2"
+        },
+        {
+          "file": "cavasa_ERA5Land.csv",
+          "year": 2026,
           "sheet": null,
           "column": "volumetric_soil_water_layer_2"
         }
@@ -2253,1058 +1262,15 @@
         "raw": "data/raw/ERA5_E148_N407_VWC_028/{year}.csv",
         "years": [
           2024,
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/ERA5_E148_N407_VWC_028_1h.csv",
         "agg_1d": "data/agg/ERA5_E148_N407_VWC_028_1d.csv"
       },
       "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E148_N408_RAIN",
-      "instrument_id": "ERA5_E148_N408_MODEL",
-      "station_id": "ERA5_E148_N408",
-      "variable": "rain",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Pioggia – ERA5-Land · 14.8°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "sum",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 10.132,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1277 mm."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "total_precipitation_hourly"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E148_N408_RAIN/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E148_N408_RAIN_1h.csv",
-        "agg_1d": "data/agg/ERA5_E148_N408_RAIN_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E148_N408_RAINCUM",
-      "instrument_id": "ERA5_E148_N408_MODEL",
-      "station_id": "ERA5_E148_N408",
-      "variable": "rain_cum",
-      "depth_m": null,
-      "sensor_model": null,
-      "logger_port": null,
-      "label": "Pioggia cumulata dal 1° gennaio – ERA5-Land · 14.8°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "last",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 1277.1,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Serie derivata da ERA5_E148_N408_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1277.1 mm."
-      ],
-      "sources": [],
-      "derived_from": "ERA5_E148_N408_RAIN",
-      "cumulative_years": [
-        {
-          "year": 2024,
-          "total_mm": 1277.1,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
-          "last": "2025-01-01 00:00",
-          "missing_hours": 0.0,
-          "complete": true
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E148_N408_RAINCUM/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E148_N408_RAINCUM_1h.csv",
-        "agg_1d": "data/agg/ERA5_E148_N408_RAINCUM_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E148_N408_TAIR",
-      "instrument_id": "ERA5_E148_N408_MODEL",
-      "station_id": "ERA5_E148_N408",
-      "variable": "t_air",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Temperatura dell'aria (2 m) – ERA5-Land · 14.8°E 40.8°N",
-      "unit": "°C",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": -0.39,
-      "max": 35.06,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "temperature_2m"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E148_N408_TAIR/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E148_N408_TAIR_1h.csv",
-        "agg_1d": "data/agg/ERA5_E148_N408_TAIR_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E148_N408_VWC_007",
-      "instrument_id": "ERA5_E148_N408_MODEL",
-      "station_id": "ERA5_E148_N408",
-      "variable": "vwc",
-      "depth_m": 0.07,
-      "depth_range_m": [
-        0.0,
-        0.07
-      ],
-      "layer_label": "0–7 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–7 cm – ERA5-Land · 14.8°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1379,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_1"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E148_N408_VWC_007/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E148_N408_VWC_007_1h.csv",
-        "agg_1d": "data/agg/ERA5_E148_N408_VWC_007_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E148_N408_VWC_028",
-      "instrument_id": "ERA5_E148_N408_MODEL",
-      "station_id": "ERA5_E148_N408",
-      "variable": "vwc",
-      "depth_m": 0.28,
-      "depth_range_m": [
-        0.07,
-        0.28
-      ],
-      "layer_label": "7–28 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 7–28 cm – ERA5-Land · 14.8°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1531,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_2"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E148_N408_VWC_028/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E148_N408_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E148_N408_VWC_028_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N406_RAIN",
-      "instrument_id": "ERA5_E149_N406_MODEL",
-      "station_id": "ERA5_E149_N406",
-      "variable": "rain",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Pioggia – ERA5-Land · 14.9°E 40.6°N",
-      "unit": "mm",
-      "aggregation": "sum",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 10.861,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1287 mm."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "total_precipitation_hourly"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N406_RAIN/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N406_RAIN_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N406_RAIN_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N406_RAINCUM",
-      "instrument_id": "ERA5_E149_N406_MODEL",
-      "station_id": "ERA5_E149_N406",
-      "variable": "rain_cum",
-      "depth_m": null,
-      "sensor_model": null,
-      "logger_port": null,
-      "label": "Pioggia cumulata dal 1° gennaio – ERA5-Land · 14.9°E 40.6°N",
-      "unit": "mm",
-      "aggregation": "last",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 1286.74,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Serie derivata da ERA5_E149_N406_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1286.7 mm."
-      ],
-      "sources": [],
-      "derived_from": "ERA5_E149_N406_RAIN",
-      "cumulative_years": [
-        {
-          "year": 2024,
-          "total_mm": 1286.74,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
-          "last": "2025-01-01 00:00",
-          "missing_hours": 0.0,
-          "complete": true
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N406_RAINCUM/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N406_RAINCUM_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N406_RAINCUM_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N406_TAIR",
-      "instrument_id": "ERA5_E149_N406_MODEL",
-      "station_id": "ERA5_E149_N406",
-      "variable": "t_air",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Temperatura dell'aria (2 m) – ERA5-Land · 14.9°E 40.6°N",
-      "unit": "°C",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 3.88,
-      "max": 34.98,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "temperature_2m"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N406_TAIR/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N406_TAIR_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N406_TAIR_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N406_VWC_007",
-      "instrument_id": "ERA5_E149_N406_MODEL",
-      "station_id": "ERA5_E149_N406",
-      "variable": "vwc",
-      "depth_m": 0.07,
-      "depth_range_m": [
-        0.0,
-        0.07
-      ],
-      "layer_label": "0–7 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–7 cm – ERA5-Land · 14.9°E 40.6°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1041,
-      "max": 0.4303,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_1"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N406_VWC_007/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N406_VWC_007_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N406_VWC_007_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N406_VWC_028",
-      "instrument_id": "ERA5_E149_N406_MODEL",
-      "station_id": "ERA5_E149_N406",
-      "variable": "vwc",
-      "depth_m": 0.28,
-      "depth_range_m": [
-        0.07,
-        0.28
-      ],
-      "layer_label": "7–28 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 7–28 cm – ERA5-Land · 14.9°E 40.6°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1777,
-      "max": 0.4303,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_2"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N406_VWC_028/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N406_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N406_VWC_028_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N407_RAIN",
-      "instrument_id": "ERA5_E149_N407_MODEL",
-      "station_id": "ERA5_E149_N407",
-      "variable": "rain",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Pioggia – ERA5-Land · 14.9°E 40.7°N",
-      "unit": "mm",
-      "aggregation": "sum",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 9.56,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1268 mm."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "total_precipitation_hourly"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N407_RAIN/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N407_RAIN_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N407_RAIN_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N407_RAINCUM",
-      "instrument_id": "ERA5_E149_N407_MODEL",
-      "station_id": "ERA5_E149_N407",
-      "variable": "rain_cum",
-      "depth_m": null,
-      "sensor_model": null,
-      "logger_port": null,
-      "label": "Pioggia cumulata dal 1° gennaio – ERA5-Land · 14.9°E 40.7°N",
-      "unit": "mm",
-      "aggregation": "last",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 1268.26,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Serie derivata da ERA5_E149_N407_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1268.3 mm."
-      ],
-      "sources": [],
-      "derived_from": "ERA5_E149_N407_RAIN",
-      "cumulative_years": [
-        {
-          "year": 2024,
-          "total_mm": 1268.26,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
-          "last": "2025-01-01 00:00",
-          "missing_hours": 0.0,
-          "complete": true
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N407_RAINCUM/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N407_RAINCUM_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N407_RAINCUM_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N407_TAIR",
-      "instrument_id": "ERA5_E149_N407_MODEL",
-      "station_id": "ERA5_E149_N407",
-      "variable": "t_air",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Temperatura dell'aria (2 m) – ERA5-Land · 14.9°E 40.7°N",
-      "unit": "°C",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 1.25,
-      "max": 34.82,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "temperature_2m"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N407_TAIR/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N407_TAIR_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N407_TAIR_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N407_VWC_007",
-      "instrument_id": "ERA5_E149_N407_MODEL",
-      "station_id": "ERA5_E149_N407",
-      "variable": "vwc",
-      "depth_m": 0.07,
-      "depth_range_m": [
-        0.0,
-        0.07
-      ],
-      "layer_label": "0–7 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–7 cm – ERA5-Land · 14.9°E 40.7°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1255,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_1"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N407_VWC_007/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N407_VWC_007_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N407_VWC_007_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N407_VWC_028",
-      "instrument_id": "ERA5_E149_N407_MODEL",
-      "station_id": "ERA5_E149_N407",
-      "variable": "vwc",
-      "depth_m": 0.28,
-      "depth_range_m": [
-        0.07,
-        0.28
-      ],
-      "layer_label": "7–28 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 7–28 cm – ERA5-Land · 14.9°E 40.7°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1544,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_2"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N407_VWC_028/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N407_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N407_VWC_028_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N408_RAIN",
-      "instrument_id": "ERA5_E149_N408_MODEL",
-      "station_id": "ERA5_E149_N408",
-      "variable": "rain",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Pioggia – ERA5-Land · 14.9°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "sum",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 8.288,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1223 mm."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "total_precipitation_hourly"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N408_RAIN/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N408_RAIN_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N408_RAIN_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N408_RAINCUM",
-      "instrument_id": "ERA5_E149_N408_MODEL",
-      "station_id": "ERA5_E149_N408",
-      "variable": "rain_cum",
-      "depth_m": null,
-      "sensor_model": null,
-      "logger_port": null,
-      "label": "Pioggia cumulata dal 1° gennaio – ERA5-Land · 14.9°E 40.8°N",
-      "unit": "mm",
-      "aggregation": "last",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.0,
-      "max": 1222.62,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Serie derivata da ERA5_E149_N408_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1222.6 mm."
-      ],
-      "sources": [],
-      "derived_from": "ERA5_E149_N408_RAIN",
-      "cumulative_years": [
-        {
-          "year": 2024,
-          "total_mm": 1222.62,
-          "n": 8784,
-          "first": "2024-01-01 01:00",
-          "last": "2025-01-01 00:00",
-          "missing_hours": 0.0,
-          "complete": true
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N408_RAINCUM/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N408_RAINCUM_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N408_RAINCUM_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N408_TAIR",
-      "instrument_id": "ERA5_E149_N408_MODEL",
-      "station_id": "ERA5_E149_N408",
-      "variable": "t_air",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": null,
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Temperatura dell'aria (2 m) – ERA5-Land · 14.9°E 40.8°N",
-      "unit": "°C",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": -1.68,
-      "max": 35.04,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "temperature_2m"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N408_TAIR/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N408_TAIR_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N408_TAIR_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N408_VWC_007",
-      "instrument_id": "ERA5_E149_N408_MODEL",
-      "station_id": "ERA5_E149_N408",
-      "variable": "vwc",
-      "depth_m": 0.07,
-      "depth_range_m": [
-        0.0,
-        0.07
-      ],
-      "layer_label": "0–7 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–7 cm – ERA5-Land · 14.9°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1351,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_1"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N408_VWC_007/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N408_VWC_007_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N408_VWC_007_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "ERA5_E149_N408_VWC_028",
-      "instrument_id": "ERA5_E149_N408_MODEL",
-      "station_id": "ERA5_E149_N408",
-      "variable": "vwc",
-      "depth_m": 0.28,
-      "depth_range_m": [
-        0.07,
-        0.28
-      ],
-      "layer_label": "7–28 cm",
-      "sensor_model": "ERA5-Land",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 7–28 cm – ERA5-Land · 14.9°E 40.8°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 60.0,
-      "start": "2024-01-01T01:00+01:00",
-      "end": "2025-01-01T00:00+01:00",
-      "n_values": 8784,
-      "min": 0.1547,
-      "max": 0.439,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_ERA5Land_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "volumetric_soil_water_layer_2"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/ERA5_E149_N408_VWC_028/{year}.csv",
-        "years": [
-          2024,
-          2025
-        ],
-        "agg_1h": "data/agg/ERA5_E149_N408_VWC_028_1h.csv",
-        "agg_1d": "data/agg/ERA5_E149_N408_VWC_028_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 8784,
-        "n_valid": 8784,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -4213,9 +2179,9 @@
       }
     },
     {
-      "series_id": "SMAP_E1464_N4062_VWC_005",
-      "instrument_id": "SMAP_E1464_N4062_MODEL",
-      "station_id": "SMAP_E1464_N4062",
+      "series_id": "SMAP_E1472_N4070_VWC_005",
+      "instrument_id": "SMAP_E1472_N4070_MODEL",
+      "station_id": "SMAP_E1472_N4070",
       "variable": "vwc",
       "depth_m": 0.05,
       "depth_range_m": [
@@ -4225,15 +2191,15 @@
       "layer_label": "0–5 cm",
       "sensor_model": "SMAP L4",
       "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.64°E 40.62°N",
+      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.72°E 40.70°N",
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 180.0,
       "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0596,
-      "max": 0.3847,
+      "end": "2026-09-29T20:30+01:00",
+      "n_values": 8009,
+      "min": 0.0407,
+      "max": 0.3999,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -4241,33 +2207,47 @@
       ],
       "sources": [
         {
-          "file": "cavasa_SMAP_L4_2024.csv",
+          "file": "cavasa_SMAP_L4.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "sm_surface"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "sm_surface"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2026,
           "sheet": null,
           "column": "sm_surface"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1464_N4062_VWC_005/{year}.csv",
+        "raw": "data/raw/SMAP_E1472_N4070_VWC_005/{year}.csv",
         "years": [
-          2024
+          2024,
+          2025,
+          2026
         ],
-        "agg_1h": "data/agg/SMAP_E1464_N4062_VWC_005_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1464_N4062_VWC_005_1d.csv"
+        "agg_1h": "data/agg/SMAP_E1472_N4070_VWC_005_1h.csv",
+        "agg_1d": "data/agg/SMAP_E1472_N4070_VWC_005_1d.csv"
       },
       "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
+        "n_total": 8009,
+        "n_valid": 8009,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
       }
     },
     {
-      "series_id": "SMAP_E1464_N4062_VWC_100",
-      "instrument_id": "SMAP_E1464_N4062_MODEL",
-      "station_id": "SMAP_E1464_N4062",
+      "series_id": "SMAP_E1472_N4070_VWC_100",
+      "instrument_id": "SMAP_E1472_N4070_MODEL",
+      "station_id": "SMAP_E1472_N4070",
       "variable": "vwc",
       "depth_m": 1.0,
       "depth_range_m": [
@@ -4277,15 +2257,15 @@
       "layer_label": "0–100 cm",
       "sensor_model": "SMAP L4",
       "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.64°E 40.62°N",
+      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.72°E 40.70°N",
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 180.0,
       "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.1358,
-      "max": 0.3477,
+      "end": "2026-09-29T20:30+01:00",
+      "n_values": 8009,
+      "min": 0.1334,
+      "max": 0.3975,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -4293,48 +2273,62 @@
       ],
       "sources": [
         {
-          "file": "cavasa_SMAP_L4_2024.csv",
+          "file": "cavasa_SMAP_L4.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "sm_rootzone"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "sm_rootzone"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2026,
           "sheet": null,
           "column": "sm_rootzone"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1464_N4062_VWC_100/{year}.csv",
+        "raw": "data/raw/SMAP_E1472_N4070_VWC_100/{year}.csv",
         "years": [
-          2024
+          2024,
+          2025,
+          2026
         ],
-        "agg_1h": "data/agg/SMAP_E1464_N4062_VWC_100_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1464_N4062_VWC_100_1d.csv"
+        "agg_1h": "data/agg/SMAP_E1472_N4070_VWC_100_1h.csv",
+        "agg_1d": "data/agg/SMAP_E1472_N4070_VWC_100_1d.csv"
       },
       "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
+        "n_total": 8009,
+        "n_valid": 8009,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
       }
     },
     {
-      "series_id": "SMAP_E1464_N4062_VWC_PRF",
-      "instrument_id": "SMAP_E1464_N4062_MODEL",
-      "station_id": "SMAP_E1464_N4062",
+      "series_id": "SMAP_E1472_N4070_VWC_PRF",
+      "instrument_id": "SMAP_E1472_N4070_MODEL",
+      "station_id": "SMAP_E1472_N4070",
       "variable": "vwc",
       "depth_m": null,
       "depth_range_m": null,
       "layer_label": "profilo intero",
       "sensor_model": "SMAP L4",
       "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.64°E 40.62°N",
+      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.72°E 40.70°N",
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 180.0,
       "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.1341,
-      "max": 0.3266,
+      "end": "2026-09-29T20:30+01:00",
+      "n_values": 8009,
+      "min": 0.1327,
+      "max": 0.3823,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -4342,33 +2336,47 @@
       ],
       "sources": [
         {
-          "file": "cavasa_SMAP_L4_2024.csv",
+          "file": "cavasa_SMAP_L4.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "sm_profile"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "sm_profile"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2026,
           "sheet": null,
           "column": "sm_profile"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1464_N4062_VWC_PRF/{year}.csv",
+        "raw": "data/raw/SMAP_E1472_N4070_VWC_PRF/{year}.csv",
         "years": [
-          2024
+          2024,
+          2025,
+          2026
         ],
-        "agg_1h": "data/agg/SMAP_E1464_N4062_VWC_PRF_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1464_N4062_VWC_PRF_1d.csv"
+        "agg_1h": "data/agg/SMAP_E1472_N4070_VWC_PRF_1h.csv",
+        "agg_1d": "data/agg/SMAP_E1472_N4070_VWC_PRF_1d.csv"
       },
       "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
+        "n_total": 8009,
+        "n_valid": 8009,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
       }
     },
     {
-      "series_id": "SMAP_E1464_N4074_VWC_005",
-      "instrument_id": "SMAP_E1464_N4074_MODEL",
-      "station_id": "SMAP_E1464_N4074",
+      "series_id": "SMAP_E1481_N4070_VWC_005",
+      "instrument_id": "SMAP_E1481_N4070_MODEL",
+      "station_id": "SMAP_E1481_N4070",
       "variable": "vwc",
       "depth_m": 0.05,
       "depth_range_m": [
@@ -4378,15 +2386,15 @@
       "layer_label": "0–5 cm",
       "sensor_model": "SMAP L4",
       "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.64°E 40.74°N",
+      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.81°E 40.70°N",
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 180.0,
       "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0406,
-      "max": 0.3401,
+      "end": "2026-09-29T20:30+01:00",
+      "n_values": 8009,
+      "min": 0.0519,
+      "max": 0.3958,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -4394,33 +2402,47 @@
       ],
       "sources": [
         {
-          "file": "cavasa_SMAP_L4_2024.csv",
+          "file": "cavasa_SMAP_L4.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "sm_surface"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "sm_surface"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2026,
           "sheet": null,
           "column": "sm_surface"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1464_N4074_VWC_005/{year}.csv",
+        "raw": "data/raw/SMAP_E1481_N4070_VWC_005/{year}.csv",
         "years": [
-          2024
+          2024,
+          2025,
+          2026
         ],
-        "agg_1h": "data/agg/SMAP_E1464_N4074_VWC_005_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1464_N4074_VWC_005_1d.csv"
+        "agg_1h": "data/agg/SMAP_E1481_N4070_VWC_005_1h.csv",
+        "agg_1d": "data/agg/SMAP_E1481_N4070_VWC_005_1d.csv"
       },
       "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
+        "n_total": 8009,
+        "n_valid": 8009,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
       }
     },
     {
-      "series_id": "SMAP_E1464_N4074_VWC_100",
-      "instrument_id": "SMAP_E1464_N4074_MODEL",
-      "station_id": "SMAP_E1464_N4074",
+      "series_id": "SMAP_E1481_N4070_VWC_100",
+      "instrument_id": "SMAP_E1481_N4070_MODEL",
+      "station_id": "SMAP_E1481_N4070",
       "variable": "vwc",
       "depth_m": 1.0,
       "depth_range_m": [
@@ -4430,627 +2452,15 @@
       "layer_label": "0–100 cm",
       "sensor_model": "SMAP L4",
       "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.64°E 40.74°N",
+      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.81°E 40.70°N",
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 180.0,
       "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0779,
-      "max": 0.2857,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–100 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_rootzone"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1464_N4074_VWC_100/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1464_N4074_VWC_100_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1464_N4074_VWC_100_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1464_N4074_VWC_PRF",
-      "instrument_id": "SMAP_E1464_N4074_MODEL",
-      "station_id": "SMAP_E1464_N4074",
-      "variable": "vwc",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": "profilo intero",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.64°E 40.74°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0775,
-      "max": 0.2718,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato profilo intero) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_profile"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1464_N4074_VWC_PRF/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1464_N4074_VWC_PRF_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1464_N4074_VWC_PRF_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1472_N4062_VWC_005",
-      "instrument_id": "SMAP_E1472_N4062_MODEL",
-      "station_id": "SMAP_E1472_N4062",
-      "variable": "vwc",
-      "depth_m": 0.05,
-      "depth_range_m": [
-        0.0,
-        0.05
-      ],
-      "layer_label": "0–5 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.72°E 40.62°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0553,
-      "max": 0.3903,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–5 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_surface"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1472_N4062_VWC_005/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1472_N4062_VWC_005_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1472_N4062_VWC_005_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1472_N4062_VWC_100",
-      "instrument_id": "SMAP_E1472_N4062_MODEL",
-      "station_id": "SMAP_E1472_N4062",
-      "variable": "vwc",
-      "depth_m": 1.0,
-      "depth_range_m": [
-        0.0,
-        1.0
-      ],
-      "layer_label": "0–100 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.72°E 40.62°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.1315,
-      "max": 0.3518,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–100 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_rootzone"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1472_N4062_VWC_100/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1472_N4062_VWC_100_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1472_N4062_VWC_100_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1472_N4062_VWC_PRF",
-      "instrument_id": "SMAP_E1472_N4062_MODEL",
-      "station_id": "SMAP_E1472_N4062",
-      "variable": "vwc",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": "profilo intero",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.72°E 40.62°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.1307,
-      "max": 0.3303,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato profilo intero) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_profile"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1472_N4062_VWC_PRF/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1472_N4062_VWC_PRF_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1472_N4062_VWC_PRF_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1472_N4074_VWC_005",
-      "instrument_id": "SMAP_E1472_N4074_MODEL",
-      "station_id": "SMAP_E1472_N4074",
-      "variable": "vwc",
-      "depth_m": 0.05,
-      "depth_range_m": [
-        0.0,
-        0.05
-      ],
-      "layer_label": "0–5 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.72°E 40.74°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0531,
-      "max": 0.3936,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–5 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_surface"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1472_N4074_VWC_005/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1472_N4074_VWC_005_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1472_N4074_VWC_005_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1472_N4074_VWC_100",
-      "instrument_id": "SMAP_E1472_N4074_MODEL",
-      "station_id": "SMAP_E1472_N4074",
-      "variable": "vwc",
-      "depth_m": 1.0,
-      "depth_range_m": [
-        0.0,
-        1.0
-      ],
-      "layer_label": "0–100 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.72°E 40.74°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.1338,
-      "max": 0.3634,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–100 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_rootzone"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1472_N4074_VWC_100/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1472_N4074_VWC_100_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1472_N4074_VWC_100_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1472_N4074_VWC_PRF",
-      "instrument_id": "SMAP_E1472_N4074_MODEL",
-      "station_id": "SMAP_E1472_N4074",
-      "variable": "vwc",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": "profilo intero",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.72°E 40.74°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.1328,
-      "max": 0.3405,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato profilo intero) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_profile"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1472_N4074_VWC_PRF/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1472_N4074_VWC_PRF_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1472_N4074_VWC_PRF_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1485_N4062_VWC_005",
-      "instrument_id": "SMAP_E1485_N4062_MODEL",
-      "station_id": "SMAP_E1485_N4062",
-      "variable": "vwc",
-      "depth_m": 0.05,
-      "depth_range_m": [
-        0.0,
-        0.05
-      ],
-      "layer_label": "0–5 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.85°E 40.62°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0725,
-      "max": 0.4022,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–5 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_surface"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1485_N4062_VWC_005/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1485_N4062_VWC_005_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1485_N4062_VWC_005_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1485_N4062_VWC_100",
-      "instrument_id": "SMAP_E1485_N4062_MODEL",
-      "station_id": "SMAP_E1485_N4062",
-      "variable": "vwc",
-      "depth_m": 1.0,
-      "depth_range_m": [
-        0.0,
-        1.0
-      ],
-      "layer_label": "0–100 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.85°E 40.62°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.162,
-      "max": 0.3836,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–100 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_rootzone"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1485_N4062_VWC_100/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1485_N4062_VWC_100_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1485_N4062_VWC_100_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1485_N4062_VWC_PRF",
-      "instrument_id": "SMAP_E1485_N4062_MODEL",
-      "station_id": "SMAP_E1485_N4062",
-      "variable": "vwc",
-      "depth_m": null,
-      "depth_range_m": null,
-      "layer_label": "profilo intero",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.85°E 40.62°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.1601,
-      "max": 0.3597,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato profilo intero) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_profile"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1485_N4062_VWC_PRF/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1485_N4062_VWC_PRF_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1485_N4062_VWC_PRF_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1485_N4074_VWC_005",
-      "instrument_id": "SMAP_E1485_N4074_MODEL",
-      "station_id": "SMAP_E1485_N4074",
-      "variable": "vwc",
-      "depth_m": 0.05,
-      "depth_range_m": [
-        0.0,
-        0.05
-      ],
-      "layer_label": "0–5 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–5 cm – SMAP L4 · 14.85°E 40.74°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
-      "min": 0.0624,
-      "max": 0.3897,
-      "status": "active",
-      "gaps_over_24h": [],
-      "qc_notes": [
-        "Contenuto d'acqua SMAP L4 (strato 0–5 cm) come media del pixel (~9 km) su intervalli di 3 h; l'etichetta temporale è il punto medio dell'intervallo. Confronto con i sensori in situ solo indicativo. Strato 'profilo intero': dalla superficie al substrato del modello (profondità variabile)."
-      ],
-      "sources": [
-        {
-          "file": "cavasa_SMAP_L4_2024.csv",
-          "year": 2024,
-          "sheet": null,
-          "column": "sm_surface"
-        }
-      ],
-      "data": {
-        "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1485_N4074_VWC_005/{year}.csv",
-        "years": [
-          2024
-        ],
-        "agg_1h": "data/agg/SMAP_E1485_N4074_VWC_005_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1485_N4074_VWC_005_1d.csv"
-      },
-      "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
-        "n_suspect": 0,
-        "n_bad": 0,
-        "duplicates_removed": 0
-      }
-    },
-    {
-      "series_id": "SMAP_E1485_N4074_VWC_100",
-      "instrument_id": "SMAP_E1485_N4074_MODEL",
-      "station_id": "SMAP_E1485_N4074",
-      "variable": "vwc",
-      "depth_m": 1.0,
-      "depth_range_m": [
-        0.0,
-        1.0
-      ],
-      "layer_label": "0–100 cm",
-      "sensor_model": "SMAP L4",
-      "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico 0–100 cm – SMAP L4 · 14.85°E 40.74°N",
-      "unit": "m3/m3",
-      "aggregation": "mean",
-      "step_min": 180.0,
-      "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
+      "end": "2026-09-29T20:30+01:00",
+      "n_values": 8009,
       "min": 0.1398,
-      "max": 0.3651,
+      "max": 0.3965,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -5058,48 +2468,62 @@
       ],
       "sources": [
         {
-          "file": "cavasa_SMAP_L4_2024.csv",
+          "file": "cavasa_SMAP_L4.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "sm_rootzone"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "sm_rootzone"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2026,
           "sheet": null,
           "column": "sm_rootzone"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1485_N4074_VWC_100/{year}.csv",
+        "raw": "data/raw/SMAP_E1481_N4070_VWC_100/{year}.csv",
         "years": [
-          2024
+          2024,
+          2025,
+          2026
         ],
-        "agg_1h": "data/agg/SMAP_E1485_N4074_VWC_100_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1485_N4074_VWC_100_1d.csv"
+        "agg_1h": "data/agg/SMAP_E1481_N4070_VWC_100_1h.csv",
+        "agg_1d": "data/agg/SMAP_E1481_N4070_VWC_100_1d.csv"
       },
       "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
+        "n_total": 8009,
+        "n_valid": 8009,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
       }
     },
     {
-      "series_id": "SMAP_E1485_N4074_VWC_PRF",
-      "instrument_id": "SMAP_E1485_N4074_MODEL",
-      "station_id": "SMAP_E1485_N4074",
+      "series_id": "SMAP_E1481_N4070_VWC_PRF",
+      "instrument_id": "SMAP_E1481_N4070_MODEL",
+      "station_id": "SMAP_E1481_N4070",
       "variable": "vwc",
       "depth_m": null,
       "depth_range_m": null,
       "layer_label": "profilo intero",
       "sensor_model": "SMAP L4",
       "logger_port": null,
-      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.85°E 40.74°N",
+      "label": "Contenuto d'acqua volumetrico profilo intero – SMAP L4 · 14.81°E 40.70°N",
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 180.0,
       "start": "2024-01-01T02:30+01:00",
-      "end": "2024-12-31T23:30+01:00",
-      "n_values": 2928,
+      "end": "2026-09-29T20:30+01:00",
+      "n_values": 8009,
       "min": 0.1384,
-      "max": 0.3424,
+      "max": 0.3807,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
@@ -5107,24 +2531,38 @@
       ],
       "sources": [
         {
-          "file": "cavasa_SMAP_L4_2024.csv",
+          "file": "cavasa_SMAP_L4.csv",
           "year": 2024,
+          "sheet": null,
+          "column": "sm_profile"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2025,
+          "sheet": null,
+          "column": "sm_profile"
+        },
+        {
+          "file": "cavasa_SMAP_L4.csv",
+          "year": 2026,
           "sheet": null,
           "column": "sm_profile"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
-        "raw": "data/raw/SMAP_E1485_N4074_VWC_PRF/{year}.csv",
+        "raw": "data/raw/SMAP_E1481_N4070_VWC_PRF/{year}.csv",
         "years": [
-          2024
+          2024,
+          2025,
+          2026
         ],
-        "agg_1h": "data/agg/SMAP_E1485_N4074_VWC_PRF_1h.csv",
-        "agg_1d": "data/agg/SMAP_E1485_N4074_VWC_PRF_1d.csv"
+        "agg_1h": "data/agg/SMAP_E1481_N4070_VWC_PRF_1h.csv",
+        "agg_1d": "data/agg/SMAP_E1481_N4070_VWC_PRF_1d.csv"
       },
       "qc_summary": {
-        "n_total": 2928,
-        "n_valid": 2928,
+        "n_total": 8009,
+        "n_valid": 8009,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0

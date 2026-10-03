@@ -2,9 +2,9 @@
 ingest_gee.py — passo 2b: prodotti a griglia scaricati da Google Earth Engine (ERA5-Land, SMAP L4).
 
 Legge   : OUT_DIR/catalog.json, qc_rules.json, CSV GEE in INPUT_DIR
-            cavasa_ERA5Land_<anno>.csv  time,lon,lat,volumetric_soil_water_layer_1,volumetric_soil_water_layer_2,
+            cavasa_ERA5Land[_<anno>].csv  time,lon,lat,volumetric_soil_water_layer_1,volumetric_soil_water_layer_2,
                                         total_precipitation_hourly,temperature_2m
-            cavasa_SMAP_L4_<anno>.csv   time,lon,lat,sm_surface,sm_rootzone,sm_profile
+            cavasa_SMAP_L4[_<anno>].csv   time,lon,lat,sm_surface,sm_rootzone,sm_profile
 Scrive  : data/raw/<serie>/<anno>.csv, data/agg/<serie>_{1h,1d}.csv, data/qc_log.csv,
           catalog.json e series.csv (stazioni "griglia", strumenti, serie)
 
@@ -26,7 +26,8 @@ CONVERSIONI
 
 MODALITÀ INCREMENTALE: i CSV annuali già elaborati non servono più. Per ogni serie si uniscono i dati nuovi
 a quelli già presenti in data/raw (a parità di istante vince il dato nuovo), si rifanno QC e aggregati.
-Aggiungere un anno = passare il solo nuovo CSV. Dopo l'ingestione rieseguire derive_cumulative.py.
+Aggiungere un periodo = passare il solo nuovo CSV (anche multi-anno, es. cavasa_ERA5Land.csv).
+REPLACE_PRODUCTS=ERA5,SMAP sostituisce integralmente i dati del prodotto (nuova esportazione con altri punti). Dopo l'ingestione rieseguire derive_cumulative.py.
 """
 import glob, json, math, os, re
 import numpy as np
@@ -46,7 +47,7 @@ UTC_TO_LOCAL = pd.Timedelta(hours=1)          # UTC -> UTC+1
 # ----------------------------------------------------------------------------
 PRODUCTS = {
     "ERA5": {
-        "pattern": r"^cavasa_ERA5Land_(\d{4})\.csv$",
+        "pattern": r"^cavasa_ERA5Land(?:_\d{4})?\.csv$",
         "name": "ERA5-Land",
         "owner": "ECMWF – Copernicus Climate Change Service (ERA5-Land)",
         "manufacturer": "ECMWF / Copernicus C3S",
@@ -71,7 +72,7 @@ PRODUCTS = {
         },
     },
     "SMAP": {
-        "pattern": r"^cavasa_SMAP_L4_(\d{4})\.csv$",
+        "pattern": r"^cavasa_SMAP_L4(?:_\d{4})?\.csv$",
         "name": "SMAP L4",
         "owner": "NASA – SMAP Level 4 (GMAO)",
         "manufacturer": "NASA GMAO",
@@ -107,6 +108,26 @@ def dist_km(a, b):
 
 
 catalog = json.load(open(CATALOG, encoding="utf-8"))
+# REPLACE_PRODUCTS=ERA5,SMAP: elimina prima tutte le stazioni/serie/dati (anche derivati) di quei prodotti, poi reingerisce
+for _p in [x for x in os.environ.get("REPLACE_PRODUCTS", "").split(",") if x]:
+    _ids = {s["station_id"] for s in catalog["stations"] if s["station_id"].startswith(_p + "_")}
+    for _s in [s for s in catalog["series"] if s["station_id"] in _ids]:
+        for _d in glob.glob(os.path.join(OUT_DIR, "data", "raw", _s["series_id"])):
+            for _f in glob.glob(os.path.join(_d, "*")):
+                os.remove(_f)
+            os.rmdir(_d)
+        for _f in glob.glob(os.path.join(OUT_DIR, "data", "agg", _s["series_id"] + "_*.csv")):
+            os.remove(_f)
+    catalog["series"] = [s for s in catalog["series"] if s["station_id"] not in _ids]
+    catalog["stations"] = [s for s in catalog["stations"] if s["station_id"] not in _ids]
+    catalog["instruments"] = [i for i in catalog["instruments"] if i["station_id"] not in _ids]
+    _qc = os.path.join(OUT_DIR, "data", "qc_log.csv")
+    if os.path.exists(_qc):
+        _l = pd.read_csv(_qc); _l[~_l["series_id"].str.startswith(_p + "_")].to_csv(_qc, index=False)
+    _fl = os.path.join(OUT_DIR, "series.csv")
+    if os.path.exists(_fl):
+        _f = pd.read_csv(_fl, encoding="utf-8-sig"); _f[~_f["station_id"].isin(_ids)].to_csv(_fl, index=False, encoding="utf-8-sig")
+    print(f"{_p}: rimossi {len(_ids)} pixel e relative serie")
 rules = json.load(open(RULES, encoding="utf-8"))
 catalog["variables"] = {**catalog["variables"], **{k: v for k, v in NEW_VARIABLE.items() if k not in catalog["variables"]}}
 variables = catalog["variables"]
@@ -152,7 +173,6 @@ for key, P in PRODUCTS.items():
         m = re.match(P["pattern"], fname)
         if not m:
             continue
-        year = int(m[1])
         d = read_gee(path, key)
         print(f"{fname}: {len(d)} righe, {d['station_id'].nunique()} pixel, {d['time'].min()} → {d['time'].max()} (UTC+1)")
         for st, g in d.groupby("station_id"):
@@ -164,7 +184,8 @@ for key, P in PRODUCTS.items():
                 v = conv(pd.to_numeric(g[col], errors="coerce"))
                 part = pd.DataFrame({"time": g["time"], "value": v}).dropna()
                 new_data.setdefault(sid, []).append(part)
-                new_files.setdefault(sid, {})[year] = {"file": fname, "year": year, "sheet": None, "column": col}
+                for year in sorted(part["time"].dt.year.unique().tolist()):       # il file può coprire più anni
+                    new_files.setdefault(sid, {})[year] = {"file": fname, "year": int(year), "sheet": None, "column": col}
                 if col == "total_precipitation_hourly":
                     n_neg = int((pd.to_numeric(g[col], errors="coerce") < 0).sum())
                     if n_neg:

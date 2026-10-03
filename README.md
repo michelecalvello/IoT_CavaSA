@@ -79,7 +79,7 @@ data/qc_log.csv         elenco dei valori segnalati e regola applicata
   Centro Funzionale Multirischi della Protezione Civile – Regione Campania. Anno 2025, passo 10 min.
   Coordinate originali UTM 33N (EPSG:32633), convertite in WGS84.
 
-- Pixel ERA5-Land (ECMWF/Copernicus C3S) e SMAP L4 (NASA GMAO) scaricati da Google Earth Engine, anno 2024.
+- Pixel ERA5-Land (ECMWF/Copernicus C3S) e SMAP L4 (NASA GMAO) scaricati da Google Earth Engine, 1.1.2024 – fine set. 2026 (2 pixel ERA5-Land, 2 pixel SMAP L4 vicini alla zona di studio).
 
 ## Portale web
 
