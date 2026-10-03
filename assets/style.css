@@ -79,6 +79,8 @@ button.link { border: 0; background: none; color: var(--accent); padding: 0; fon
                    box-shadow: 0 0 0 1px var(--border); }
 .map-legend .dot.unisa { background: var(--s1); }
 .map-legend .dot.cf { background: var(--s2); }
+.map-legend .dot.era5 { background: var(--s3); }
+.map-legend .dot.smap { background: var(--s4); }
 .map-legend .lg { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .st-elev { font-weight: 400; color: var(--muted); margin-left: 4px; }
 

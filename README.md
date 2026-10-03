@@ -12,6 +12,7 @@ Riferimento temporale unico: **UTC+1** (ora solare, senza ora legale).
 export INPUT_DIR=<cartella con i file Excel>   OUT_DIR=.
 python pipeline/build_catalog.py    # catalog.json + series.csv
 python pipeline/standardize.py      # data/ + arricchisce catalog.json
+python pipeline/ingest_gee.py       # prodotti a griglia da Google Earth Engine (ERA5-Land, SMAP L4)
 python pipeline/derive_cumulative.py  # serie derivate: pioggia cumulata dal 1 gennaio
 ```
 
@@ -22,6 +23,23 @@ Per aggiungere un anno a una serie esistente servono tutti i suoi file Excel.
 Per aggiungere uno strumento: stazione in `STATIONS`, strumento in `INSTRUMENTS`
 (con `file_pattern`), regola in `classify()` dentro `pipeline/build_catalog.py`; eventuali
 regole QC in `pipeline/qc_rules.json`. Poi rieseguire i due script.
+
+### Prodotti a griglia (Google Earth Engine): ERA5-Land e SMAP L4
+
+`ingest_gee.py` legge i CSV esportati da GEE in `INPUT_DIR` (`cavasa_ERA5Land_<anno>.csv`, `cavasa_SMAP_L4_<anno>.csv`)
+e crea una **stazione "griglia"** (`kind: "grid"`) per ogni pixel distinto.
+- ERA5-Land (0,1°, orario): stazioni `ERA5_E<lon×10>_N<lat×10>`; coordinate agganciate al centro pixel.
+  Serie: `VWC_007` (strato 0–7 cm), `VWC_028` (7–28 cm), `RAIN` (m→mm), `TAIR` (K→°C, variabile `t_air`).
+- SMAP L4 (~9 km, medie su 3 h, etichetta a metà intervallo): stazioni `SMAP_E<lon×100>_N<lat×100>`.
+  Serie: `VWC_005` (0–5 cm), `VWC_100` (0–100 cm), `VWC_PRF` (intero profilo fino al substrato).
+  I punti campionati da GEE possono cadere nello stesso pixel nativo (serie identiche): si tiene un solo pixel
+  per gruppo, posto nel baricentro dei punti (`sample_points` nel catalogo; posizione indicativa).
+- Per le serie a strati il codice a 3 cifre è la profondità inferiore dello strato in cm; lo strato esatto è in `layer_label`.
+- Tempo: GEE fornisce UTC → +1 h = UTC+1 (il dato UTC 23:00 del 31/12 passa al file dell'anno dopo).
+  La pioggia ERA5 è riferita all'ora che termina al timestamp (ipotesi, da verificare con i pluviometri CF).
+- Modalità incrementale: per aggiungere un anno basta passare il nuovo CSV (i dati già in `data/raw` si uniscono, a parità di
+  istante vince il dato nuovo). Poi rieseguire `derive_cumulative.py`.
+- I valori sono medie di pixel (~9 km), non misure puntuali: il confronto con i sensori in situ è indicativo.
 
 ### Pioggia cumulata dal 1 gennaio
 
@@ -60,6 +78,8 @@ data/qc_log.csv         elenco dei valori segnalati e regola applicata
 - Pluviometri 21521 (Cologna, 125 m), 18925 (Pellezzano, 356 m) e 18957 (Salerno Genio Civile, 28 m):
   Centro Funzionale Multirischi della Protezione Civile – Regione Campania. Anno 2025, passo 10 min.
   Coordinate originali UTM 33N (EPSG:32633), convertite in WGS84.
+
+- Pixel ERA5-Land (ECMWF/Copernicus C3S) e SMAP L4 (NASA GMAO) scaricati da Google Earth Engine, anno 2024.
 
 ## Portale web
 

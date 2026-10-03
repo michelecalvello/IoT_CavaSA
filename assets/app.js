@@ -8,13 +8,13 @@
   // ---------------------------------------------------------------- costanti
   const MAX_SERIES = 12;
   const DAY = 86400000;
-  const VAR_ORDER = ["rain", "rain_cum", "stage", "vwc", "sm", "psi", "t_soil"];
+  const VAR_ORDER = ["rain", "rain_cum", "stage", "vwc", "sm", "psi", "t_soil", "t_air"];
   const PANEL_WEIGHT = { rain: 0.6 };
   const AUTO_RES = (spanDays) => (spanDays > 90 ? "1d" : spanDays > 4 ? "1h" : "raw");
   const RAW_MAX_DAYS = 62;
   const RES_LABEL = { raw: "dato originale", "1h": "oraria", "1d": "giornaliera" };
   const SHORT = { rain: "Pioggia", rain_cum: "Pioggia cumulata", stage: "Livello idrometrico", vwc: "Contenuto d'acqua", sm: "Umidità terreno (Aranet)",
-                  psi: "Potenziale matriciale", t_soil: "Temperatura terreno" };
+                  psi: "Potenziale matriciale", t_soil: "Temperatura terreno", t_air: "Temperatura aria (2 m)" };
   const UNIT = (u) => u.replace("m3/m3", "m³/m³");
   const DEFAULT = {
     selected: ["CF_18925_RAIN", "SAL_NV_VWC_015", "SAL_NV_VWC_060", "SAL_NV_PSI_030"],
@@ -127,10 +127,12 @@
     return short ? UNIT(v.unit) : `${SHORT[variable]} (${UNIT(v.unit)})`;
   }
   const panelTitle = (variable) => variable === "psi" && state.logSuction ? "Suzione |ψ|" : catalog.variables[variable].label_it;
+  // profondità del sensore, oppure strato per i prodotti a griglia (es. "0–7 cm", "profilo intero")
+  const depthTxt = (s) => s.layer_label ? ` ${s.layer_label}` : s.depth_m != null ? ` ${Math.round(s.depth_m * 100)} cm` : "";
+  const sortDepth = (s) => s.depth_m ?? (s.layer_label ? 9 : 0);
   function shortLabel(s) {
     const st = stationById[s.station_id];
-    const d = s.depth_m != null ? ` ${Math.round(s.depth_m * 100)} cm` : "";
-    return `${SHORT[s.variable]}${d} · ${st.name.replace(/^Salerno\s*–\s*/, "")}`;
+    return `${SHORT[s.variable]}${depthTxt(s)} · ${st.name.replace(/^Salerno\s*–\s*/, "")}`;
   }
   const fmtNum = (x, variable) => x == null || !isFinite(x) ? "–"
     : variable === "vwc" ? x.toFixed(3) : Math.abs(x) >= 100 ? x.toFixed(0) : x.toFixed(1);
@@ -463,9 +465,12 @@
 
   // ---------------------------------------------------------------- stazioni
   const isCF = (st) => /^CF_/.test(st.station_id);
+  const isGrid = (st) => st.kind === "grid";
   const elevLabel = (st) => st.elevation_m != null ? `${st.elevation_m} m s.l.m.` : "quota n.d.";
-  // ordine: stazioni UNISA, poi rete CF per quota crescente
-  const stationOrder = (a, b) => (isCF(a) - isCF(b)) || ((a.elevation_m ?? 0) - (b.elevation_m ?? 0));
+  // ordine: stazioni UNISA, poi rete CF per quota crescente, poi pixel dei prodotti a griglia (ERA5-Land, SMAP L4)
+  const stRank = (st) => (isGrid(st) ? 2 : isCF(st) ? 1 : 0);
+  const stationOrder = (a, b) => (stRank(a) - stRank(b))
+    || (isGrid(a) ? a.station_id.localeCompare(b.station_id) : (a.elevation_m ?? 0) - (b.elevation_m ?? 0));
 
   // ---------------------------------------------------------------- elenco serie
   function renderSeriesList() {
@@ -479,11 +484,11 @@
       .sort(([a], [b]) => stationOrder(stationById[a], stationById[b]));
     list.innerHTML = ordered.map(([stId, arr]) => `
       <div class="st-group"><div class="st-title">${stationById[stId].name}
-        <span class="st-elev">${stationById[stId].elevation_m != null ? `${stationById[stId].elevation_m} m` : ""}</span></div>
-      ${arr.sort((a, b) => VAR_ORDER.indexOf(a.variable) - VAR_ORDER.indexOf(b.variable) || (a.depth_m ?? 0) - (b.depth_m ?? 0))
+        <span class="st-elev">${stationById[stId].elevation_m != null ? `${stationById[stId].elevation_m} m` : isGrid(stationById[stId]) ? "pixel" : ""}</span></div>
+      ${arr.sort((a, b) => VAR_ORDER.indexOf(a.variable) - VAR_ORDER.indexOf(b.variable) || sortDepth(a) - sortDepth(b))
         .map((s) => {
           const on = state.selected.includes(s.series_id);
-          const d = s.depth_m != null ? ` ${Math.round(s.depth_m * 100)} cm` : "";
+          const d = depthTxt(s);
           return `<div class="s-item" title="${s.label}">
             <label><input type="checkbox" data-sid="${s.series_id}" ${on ? "checked" : ""}>
               <span class="swatch" style="background:${on ? colorOf(s.series_id) : "transparent"}"></span>
@@ -551,10 +556,11 @@
       const grp = groups[`${s.lat.toFixed(4)},${s.lon.toFixed(4)}`].slice().sort((x, y) => x.station_id.localeCompare(y.station_id));
       const spread = grp.length > 1;
       const m = L.circleMarker([s.lat, s.lon], {
-        radius: isCF(s) ? 7 : 8, weight: 2, color: "#ffffff",
-        fillColor: isCF(s) ? css("--s2") : css("--s1"), fillOpacity: 1,
+        radius: isGrid(s) ? 6 : isCF(s) ? 7 : 8, weight: 2, color: "#ffffff",
+        fillColor: isGrid(s) ? css(s.product === "SMAP L4" ? "--s4" : "--s3") : isCF(s) ? css("--s2") : css("--s1"),
+        fillOpacity: isGrid(s) ? 0.85 : 1,
       }).addTo(map);
-      m.bindTooltip(`<b>${s.name}</b><br>${elevLabel(s)}${spread ? "<br>posizione indicativa (a pochi metri da " + (grp.length - 1) + " altra/e stazione/i)" : ""}<br><span style="opacity:.75">clic per filtrare le serie</span>`);
+      m.bindTooltip(`<b>${s.name}</b><br>${isGrid(s) ? `pixel ${s.product} (media di area)` : elevLabel(s)}${spread ? "<br>posizione indicativa (a pochi metri da " + (grp.length - 1) + " altra/e stazione/i)" : ""}<br><span style="opacity:.75">clic per filtrare le serie</span>`);
       m.on("click", () => { state.fStation = s.station_id; $("fStation").value = s.station_id; renderSeriesList(); });
       if (spread) items.push({ m, s, k: grp.indexOf(s), n: grp.length });
       return [s.lat, s.lon];

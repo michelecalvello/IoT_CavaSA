@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Monitoraggio CavaSA</title>
-<meta name="description" content="Portale per la visualizzazione e il confronto dei dati di monitoraggio idrologico nell'area di Salerno (pioggia, contenuto d'acqua, potenziale matriciale e temperatura del terreno).">
+<meta name="description" content="Portale per la visualizzazione e il confronto dei dati di monitoraggio idrologico nell'area di Salerno (pioggia, contenuto d'acqua, potenziale matriciale e temperatura del terreno), con i prodotti a griglia ERA5-Land e SMAP L4.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -12,7 +12,7 @@
 <header class="topbar">
   <div class="brand">
     <h1>Monitoraggio CavaSA</h1>
-    <span class="sub">Pioggia · Terreno — orari in UTC+1</span>
+    <span class="sub">Pioggia · Terreno · Satellite e rianalisi — orari in UTC+1</span>
   </div>
   <button id="themeBtn" class="ghost" type="button" title="Tema chiaro/scuro">◐</button>
 </header>
@@ -23,7 +23,9 @@
       <h2>Stazioni</h2>
       <div id="map" aria-label="Mappa delle stazioni"></div>
       <div class="map-legend small"><span class="lg"><span class="dot unisa"></span>Università di Salerno</span>
-        <span class="lg"><span class="dot cf"></span>Centro Funzionale Campania</span></div>
+        <span class="lg"><span class="dot cf"></span>Centro Funzionale Campania</span>
+        <span class="lg"><span class="dot era5"></span>ERA5-Land (pixel)</span>
+        <span class="lg"><span class="dot smap"></span>SMAP L4 (pixel)</span></div>
       <p id="mapNote" class="muted small"></p>
     </section>
 
@@ -92,7 +94,8 @@
 
 <footer class="foot muted small">
   Dati: Università di Salerno (stazioni Salerno Meter NV e V: sensori METER TEROS 10 e TEROS 21) · Centro Funzionale Multirischi
-  della Protezione Civile, Regione Campania (pluviometri 21521 Cologna, 18925 Pellezzano, 18957 Salerno Genio Civile).
+  della Protezione Civile, Regione Campania (pluviometri 21521 Cologna, 18925 Pellezzano, 18957 Salerno Genio Civile) · ERA5-Land (ECMWF/Copernicus) e
+  SMAP L4 (NASA) da Google Earth Engine: valori medi di pixel (~9 km), non misure puntuali.
   <a href="catalog.json">catalog.json</a> · <a href="https://github.com/michelecalvello/IoT_CavaSA">GitHub</a>
 </footer>
 

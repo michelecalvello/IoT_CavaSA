@@ -82,6 +82,18 @@ for _code, (_n, _m, _utm, _el, _pat) in CF_STATIONS.items():
                                       "type": "Pluviometro", "file_pattern": _pat}
 
 
+# Stazioni/strumenti "griglia" (pixel ERA5-Land, SMAP L4) creati da ingest_gee.py: non derivano da file Excel,
+# si conservano dal catalogo precedente (REBUILD=1 li elimina; poi rieseguire ingest_gee.py).
+_prev_cat = os.path.join(OUT_DIR, "catalog.json")
+if os.path.exists(_prev_cat) and os.environ.get("REBUILD") != "1":
+    _pc = json.load(open(_prev_cat, encoding="utf-8"))
+    for _s in _pc.get("stations", []):
+        if _s.get("kind") == "grid":
+            STATIONS[_s["station_id"]] = {k: v for k, v in _s.items() if k not in ("station_id", "distance_km")}
+    for _i in _pc.get("instruments", []):
+        if _i["station_id"] in STATIONS and STATIONS[_i["station_id"]].get("kind") == "grid":
+            INSTRUMENTS[_i["instrument_id"]] = {k: v for k, v in _i.items() if k != "instrument_id"}
+
 # ----------------------------------------------------------------------------
 # 3. GRANDEZZE (vocabolario controllato)
 # ----------------------------------------------------------------------------
@@ -96,6 +108,8 @@ VARIABLES = {
                "notes": "Valori negativi = suzione. TEROS 21: accuratezza dichiarata tra -9 e -100 kPa; "
                         "valori > -9 kPa (prossimi alla saturazione) sono indicativi."},
     "t_soil": {"label_it": "Temperatura del terreno", "label_en": "Soil temperature",
+               "unit": "°C", "aggregation": "mean", "plot": "line"},
+    "t_air":  {"label_it": "Temperatura dell'aria (2 m)", "label_en": "Air temperature (2 m)",
                "unit": "°C", "aggregation": "mean", "plot": "line"},
 }
 
@@ -152,7 +166,7 @@ QC_NOTES["SAL_V_PSI_015"].append("Gap 2025-12-17 16:20 – 2025-12-18 17:25 (25 
 # ----------------------------------------------------------------------------
 def match_instrument(fname):
     for iid, inst in INSTRUMENTS.items():
-        if re.search(inst["file_pattern"], fname, re.I):
+        if inst.get("file_pattern") and re.search(inst["file_pattern"], fname, re.I):
             return iid
     return None
 
@@ -246,8 +260,9 @@ def dist_km(a, b):
 
 stations_out = []
 for k, st in STATIONS.items():
+    # distanze solo verso le stazioni in situ (le stazioni "griglia" non si elencano tra loro)
     near = {o: dist_km(st, ost) for o, ost in STATIONS.items()
-            if o != k and st["lat"] is not None and ost["lat"] is not None}
+            if o != k and st["lat"] is not None and ost["lat"] is not None and ost.get("kind") != "grid"}
     stations_out.append({"station_id": k, **st, "distance_km": near or None})
 
 catalog = {
