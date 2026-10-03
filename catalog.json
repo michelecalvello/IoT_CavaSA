@@ -1,6 +1,6 @@
 {
   "catalog_version": "0.4",
-  "generated": "2026-10-03T11:03:35+01:00",
+  "generated": "2026-10-03T11:06:33+01:00",
   "conventions": {
     "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con ora legale) non è usata.",
     "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
@@ -623,20 +623,27 @@
       "unit": "mm",
       "aggregation": "sum",
       "step_min": 60.0,
-      "start": "2024-01-11T10:00+01:00",
+      "start": "2024-01-01T01:00+01:00",
       "end": "2026-09-28T00:00+01:00",
-      "n_values": 23743,
+      "n_values": 23994,
       "min": 0.0,
       "max": 11.966,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Pioggia oraria ERA5-Land (total_precipitation_hourly, convertita da m a mm). Ipotesi: il valore si riferisce all'ora che termina al timestamp GEE (convenzione ECMWF), coerente con i pluviometri; da verificare sul confronto con i pluviometri del Centro Funzionale. Valori negativi di arrotondamento numerico azzerati.",
-        "Totali annui (dati disponibili): 2024: 1210 mm; 2025: 1175 mm; 2026: 734 mm."
+        "Totali annui (dati disponibili): 2024: 1295 mm; 2025: 1175 mm; 2026: 734 mm.",
+        "Prime 251 ore del 2024 (2024-01-01 01:00 – 2024-01-11 20:00 UTC+1) assenti nella nuova esportazione: recuperate dalla precedente esportazione 2024 (valori identici nelle ore in comune)."
       ],
       "sources": [
         {
           "file": "cavasa_ERA5Land.csv",
+          "year": 2024,
+          "sheet": null,
+          "column": "total_precipitation_hourly"
+        },
+        {
+          "file": "cavasa_ERA5Land_2024.csv",
           "year": 2024,
           "sheet": null,
           "column": "total_precipitation_hourly"
@@ -666,8 +673,8 @@
         "agg_1d": "data/agg/ERA5_E147_N407_RAIN_1d.csv"
       },
       "qc_summary": {
-        "n_total": 23743,
-        "n_valid": 23743,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -685,17 +692,16 @@
       "unit": "mm",
       "aggregation": "last",
       "step_min": 60.0,
-      "start": "2024-01-11T10:00+01:00",
+      "start": "2024-01-01T01:00+01:00",
       "end": "2026-09-28T00:00+01:00",
-      "n_values": 23743,
+      "n_values": 23994,
       "min": 0.0,
-      "max": 1209.66,
+      "max": 1295.05,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Serie derivata da ERA5_E147_N407_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2024: 1209.7 mm (incompleto); 2025: 1174.8 mm; 2026: 734.0 mm (incompleto).",
-        "2024: circa 251 h di dati mancanti nell'anno (prima del primo dato o in lacune > 60 min); dal 2024-01-11 10:00 la cumulata è sottostimata (flag 1, tratteggio). Totale 1209.7 mm = valore minimo.",
+        "Totali annui: 2024: 1295.0 mm; 2025: 1174.8 mm; 2026: 734.0 mm (incompleto).",
         "2026: circa 30 h di dati mancanti nell'anno (prima del primo dato o in lacune > 60 min); dal 2026-09-27 18:00 la cumulata è sottostimata (flag 1, tratteggio). Totale 734.0 mm = valore minimo."
       ],
       "sources": [],
@@ -703,12 +709,12 @@
       "cumulative_years": [
         {
           "year": 2024,
-          "total_mm": 1209.66,
-          "n": 8533,
-          "first": "2024-01-11 10:00",
+          "total_mm": 1295.05,
+          "n": 8784,
+          "first": "2024-01-01 01:00",
           "last": "2025-01-01 00:00",
-          "missing_hours": 251.0,
-          "complete": false
+          "missing_hours": 0.0,
+          "complete": true
         },
         {
           "year": 2025,
@@ -741,9 +747,9 @@
         "agg_1d": "data/agg/ERA5_E147_N407_RAINCUM_1d.csv"
       },
       "qc_summary": {
-        "n_total": 23743,
-        "n_valid": 15208,
-        "n_suspect": 8535,
+        "n_total": 23994,
+        "n_valid": 23992,
+        "n_suspect": 2,
         "n_bad": 0,
         "duplicates_removed": 0
       }
@@ -762,19 +768,26 @@
       "unit": "°C",
       "aggregation": "mean",
       "step_min": 60.0,
-      "start": "2024-01-11T10:00+01:00",
+      "start": "2024-01-01T01:00+01:00",
       "end": "2026-09-28T00:00+01:00",
-      "n_values": 23743,
+      "n_values": 23994,
       "min": 3.16,
       "max": 33.77,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel."
+        "Temperatura dell'aria a 2 m ERA5-Land (convertita da K a °C), valore istantaneo orario del pixel.",
+        "Prime 251 ore del 2024 (2024-01-01 01:00 – 2024-01-11 20:00 UTC+1) assenti nella nuova esportazione: recuperate dalla precedente esportazione 2024 (valori identici nelle ore in comune)."
       ],
       "sources": [
         {
           "file": "cavasa_ERA5Land.csv",
+          "year": 2024,
+          "sheet": null,
+          "column": "temperature_2m"
+        },
+        {
+          "file": "cavasa_ERA5Land_2024.csv",
           "year": 2024,
           "sheet": null,
           "column": "temperature_2m"
@@ -804,8 +817,8 @@
         "agg_1d": "data/agg/ERA5_E147_N407_TAIR_1d.csv"
       },
       "qc_summary": {
-        "n_total": 23743,
-        "n_valid": 23743,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -828,19 +841,26 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 60.0,
-      "start": "2024-01-11T10:00+01:00",
+      "start": "2024-01-01T01:00+01:00",
       "end": "2026-09-28T00:00+01:00",
-      "n_values": 23743,
+      "n_values": 23994,
       "min": 0.121,
       "max": 0.439,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
+        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 0–7 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario.",
+        "Prime 251 ore del 2024 (2024-01-01 01:00 – 2024-01-11 20:00 UTC+1) assenti nella nuova esportazione: recuperate dalla precedente esportazione 2024 (valori identici nelle ore in comune)."
       ],
       "sources": [
         {
           "file": "cavasa_ERA5Land.csv",
+          "year": 2024,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_1"
+        },
+        {
+          "file": "cavasa_ERA5Land_2024.csv",
           "year": 2024,
           "sheet": null,
           "column": "volumetric_soil_water_layer_1"
@@ -870,8 +890,8 @@
         "agg_1d": "data/agg/ERA5_E147_N407_VWC_007_1d.csv"
       },
       "qc_summary": {
-        "n_total": 23743,
-        "n_valid": 23743,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -894,19 +914,26 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 60.0,
-      "start": "2024-01-11T10:00+01:00",
+      "start": "2024-01-01T01:00+01:00",
       "end": "2026-09-28T00:00+01:00",
-      "n_values": 23743,
+      "n_values": 23994,
       "min": 0.1516,
       "max": 0.439,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario."
+        "Contenuto d'acqua stimato dal modello ERA5-Land (strato 7–28 cm) come media del pixel di 0,1° (~9 km): confronto con i sensori in situ solo indicativo (scala e profondità diverse). Valore istantaneo orario.",
+        "Prime 251 ore del 2024 (2024-01-01 01:00 – 2024-01-11 20:00 UTC+1) assenti nella nuova esportazione: recuperate dalla precedente esportazione 2024 (valori identici nelle ore in comune)."
       ],
       "sources": [
         {
           "file": "cavasa_ERA5Land.csv",
+          "year": 2024,
+          "sheet": null,
+          "column": "volumetric_soil_water_layer_2"
+        },
+        {
+          "file": "cavasa_ERA5Land_2024.csv",
           "year": 2024,
           "sheet": null,
           "column": "volumetric_soil_water_layer_2"
@@ -936,8 +963,8 @@
         "agg_1d": "data/agg/ERA5_E147_N407_VWC_028_1d.csv"
       },
       "qc_summary": {
-        "n_total": 23743,
-        "n_valid": 23743,
+        "n_total": 23994,
+        "n_valid": 23994,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
