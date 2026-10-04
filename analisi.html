@@ -145,6 +145,26 @@
   </section>
 
   <section class="panel">
+    <div class="panel-head"><h2>Terreno a 4 strati: caratteristiche idrauliche ricavate dalle misure</h2>
+      <label class="small">Sito <select id="rSite"><option value="NV">NV (non vegetato)</option><option value="V">V (vegetato)</option></select></label></div>
+    <p class="note" style="margin-top:0">Modello di Richards 1D normale al pendio (β = 30°), base a 1 m, quattro strati con parametri di van Genuchten–Mualem propri: i primi tre monitorati (θ e ψ a 15, 30/35, 60 cm), il quarto (75–100 cm) no. Pioggia: media dei tre pluviometri; evapotraspirazione: PET Hargreaves-Samani × Kc con prelievo nei primi strati; il fondo è una condizione di drenaggio λ·K(h) (λ = 0 roccia impermeabile). Calibrazione inversa su 1/2–15/11/2025, validazione su 15/11–31/12 (stato iniziale dalle osservazioni).</p>
+    <div id="rKpis" class="kpis"></div>
+    <div id="rTable" style="overflow-x:auto"></div>
+    <div class="panel-head" style="margin-top:14px"><h3 style="margin:0;font-size:1rem">Contenuto d'acqua: misura e simulazione</h3></div>
+    <div id="chRth" class="plot"></div>
+    <div class="panel-head" style="margin-top:14px"><h3 style="margin:0;font-size:1rem">Suzione s = −ψ (kPa): misura e simulazione</h3></div>
+    <div id="chRps" class="plot"></div>
+    <div class="panel-head" style="margin-top:14px"><h3 style="margin:0;font-size:1rem">Curve di ritenzione degli strati</h3></div>
+    <div id="chRret" class="plot"></div>
+    <div class="panel-head" style="margin-top:14px"><h3 style="margin:0;font-size:1rem">Quanto è vincolata la conducibilità satura Ks di ogni strato</h3></div>
+    <div id="chRprof" class="plot"></div>
+    <p class="note">Per ogni strato si fissa log₁₀Ks a valori diversi e si ri-ottimizzano tutti gli altri parametri; l'ordinata è il residuo normalizzato (θ con σ = 0,02, log₁₀ψ con σ = 0,3 tra 1 e 100 kPa). Un profilo piatto significa che le misure non distinguono quei valori: si ricava solo un limite (tipicamente inferiore, perché oltre l'intensità di pioggia lo strato non limita l'infiltrazione). Il quarto strato non è profilato: Ks₄ e λ si compensano per costruzione.</p>
+    <div class="panel-head" style="margin-top:14px"><h3 style="margin:0;font-size:1rem">FS a 75 cm con la pressione dei pori simulata (minimo giornaliero)</h3></div>
+    <div id="chRfs" class="plot"></div>
+    <p class="note">Le tre curve sono soluzioni di calibrazione con residuo simile ma Ks e drenaggio basale diversi (parametri c′, φ′, γ come sopra, suction stress con tetto 20 kPa, u = γw·h dove h &gt; 0). La distanza tra le curve misura quanto le misure fino a 60 cm <b>non</b> vincolino la formazione di una falda sospesa nello strato 75–100 cm, che è ciò che decide FS.</p>
+  </section>
+
+  <section class="panel">
     <div class="panel-head"><h2>Letture principali</h2></div>
     <ul class="find" id="findings"></ul>
   </section>
@@ -481,9 +501,74 @@
       base({ xaxis: ax({ title: { text: "Altezza di falda hw sopra la superficie di scorrimento (cm, verticale)", font: { color: css("--text-2"), size: 12 } } }), yaxis: ax({ title: { text: "FS", font: { color: css("--text-2"), size: 12 } }, rangemode: "tozero" }) }));
   }
 
+  // -------------------------------------------------------------- modello a 4 strati
+  const VGθ = (s, q) => { const m = 1 - 1 / q.n; return q.tr + (q.ts - q.tr) * Math.pow(1 + Math.pow(q.al * s, q.n), -m); };
+  const LCOL = ["--s1", "--s2", "--s3", "--s4"];
+  function rParams(d) { return d.params.map((p) => ({ Ks: Math.pow(10, p.lks), lks: p.lks, al_m: Math.pow(10, p.la), n: p.n, ts: p.ts, tr: p.tr })); }
+  function ksRange(site, L) {
+    const pr = J.prof && J.prof[site]; if (!pr || !pr.grid["L" + L]) return null;
+    const g = pr.grid["L" + L], best = Math.min(pr.best_rms, ...Object.values(pr.grid).flat().map((r) => r.rms)), ok = g.filter((r) => r.rms <= best + 0.035).map((r) => r.lks);
+    if (!ok.length) return null;
+    const a = Math.min(...ok), b = Math.max(...ok), pw = (v) => "10<sup>" + v + "</sup>";
+    if (a <= -8 && b >= -4) return "non vincolato";
+    if (b >= -4) return "≥ " + pw(a) + " m/s (solo limite inferiore)";
+    if (a <= -8) return "≤ " + pw(b) + " m/s (solo limite superiore)";
+    return pw(a) + " – " + pw(b) + " m/s";
+  }
+  function chRichards() {
+    const site = $("rSite").value, d = J.r4 && J.r4[site]; if (!d) { $("rTable").innerHTML = "<p class='note'>Dati del modello non disponibili.</p>"; return; }
+    const S = SITE[site], dep = J.params.depths[site], sr = d.series, P = rParams(d);
+    const st = d.starts.slice().sort((a, b) => a.rms - b.rms), bestx = st[0].x;
+    $("rKpis").innerHTML = [
+      `<div class="kpi"><div class="v">${fmt(d.rms_norm, 2)}</div><div class="l">Residuo normalizzato in calibrazione (1 = errore pari a σ attesa)</div></div>`,
+      `<div class="kpi"><div class="v">${dep.map((x) => fmt(d.rmse_theta_cal[x] * 100, 1)).join(" / ")}<small> % vol</small></div><div class="l">RMSE θ in calibrazione a ${dep.join(", ")} cm</div></div>`,
+      `<div class="kpi"><div class="v">${dep.map((x) => fmt(d.rmse_theta_val[x] * 100, 1)).join(" / ")}<small> % vol</small></div><div class="l">RMSE θ in validazione (15/11–31/12)</div></div>`,
+      `<div class="kpi"><div class="v">${fmt((d.balance.runoff_mm) , 0)} · ${fmt(d.balance.aet_mm, 0)} · ${fmt(d.balance.leak_mm, 0)}<small> mm</small></div><div class="l">Su ${fmt(d.balance.P_mm, 0)} mm di pioggia: ruscellamento · evapotraspirazione · drenaggio basale</div></div>`,
+    ].join("");
+    // tabella parametri
+    const lay = d.layers_cm, spread = (k, j) => { const v = st.map((s) => s.x[k * 5 + j]); return [Math.min(...v), Math.max(...v)]; };
+    let h = `<table class="stats"><thead><tr><th>Strato</th><th>Ks (adattamento)</th><th>Ks consentito dalle misure</th><th>α (1/kPa)</th><th>n</th><th>θs</th><th>θr</th></tr></thead><tbody>`;
+    P.forEach((p, k) => {
+      const sp = spread(k, 1), sn = spread(k, 2);
+      const rng = k < 3 ? (ksRange(site, k + 1) || "–") : "non osservabile (si compensa con λ)";
+      h += `<tr><td>${k + 1}: ${lay[k]}–${lay[k + 1]} cm${k === 3 ? " (non monitorato)" : ""}</td><td>${(p.Ks * 3.6e6).toPrecision(2)} mm/h</td><td>${rng}</td>
+        <td>${(p.al_m / 9.81).toPrecision(2)} <span class="muted">(${(Math.pow(10, sp[0]) / 9.81).toPrecision(2)}–${(Math.pow(10, sp[1]) / 9.81).toPrecision(2)})</span></td>
+        <td>${fmt(p.n, 2)} <span class="muted">(${fmt(sn[0], 2)}–${fmt(sn[1], 2)})</span></td><td>${fmt(p.ts, 3)}</td><td>${fmt(p.tr, 3)}</td></tr>`;
+    });
+    h += `</tbody></table><p class="note">Tra parentesi l'intervallo ottenuto dalle diverse partenze della calibrazione. λ = ${fmt(d.lambda, 3)} (frazione di drenaggio libero sul fondo), Kc = ${fmt(d.kc, 2)}${d.kc > 1 ? " (&gt; 1: non è un coefficiente colturale realistico, assorbe la sottostima della PET di Hargreaves e l'errore di pioggia)" : ""}. Il quarto strato ha θs al limite superiore ammesso (0,45) in V: conseguenza dell'assenza di dati.</p>`;
+    $("rTable").innerHTML = h;
+    // serie
+    const t = sr.t, vline = { type: "line", x0: "2025-11-15", x1: "2025-11-15", y0: 0, y1: 1, yref: "paper", line: { color: css("--muted"), dash: "dot", width: 1 } };
+    const tr1 = [], tr2 = [];
+    dep.forEach((dd, i) => {
+      const c = css(LCOL[i]);
+      tr1.push({ type: "scattergl", mode: "lines", x: t, y: sr["th_o_" + dd], name: "misura " + dd + " cm", line: { color: c, width: 1.2 }, connectgaps: false });
+      tr1.push({ type: "scattergl", mode: "lines", x: t, y: sr["th_m_" + dd], name: "modello " + dd + " cm", line: { color: c, width: 1.2, dash: "dot" } });
+      tr2.push({ type: "scattergl", mode: "lines", x: t, y: sr["ps_o_" + dd].map((v) => (v == null ? null : Math.max(-v, 0.1))), name: "misura " + dd + " cm", line: { color: c, width: 1.2 } });
+      tr2.push({ type: "scattergl", mode: "lines", x: t, y: sr["ps_m_" + dd].map((v) => Math.max(-v, 0.1)), name: "modello " + dd + " cm", line: { color: c, width: 1.2, dash: "dot" } });
+    });
+    plot("chRth", tr1, base({ xaxis: ax({ type: "date" }), yaxis: ax({ title: { text: "θ (m³/m³)", font: { color: css("--text-2"), size: 12 } } }), shapes: [vline], hovermode: "x unified" }));
+    plot("chRps", tr2, base({ xaxis: ax({ type: "date" }), yaxis: ax({ title: { text: "Suzione s = −ψ (kPa, scala log; attendibile 1–100)", font: { color: css("--text-2"), size: 12 } }, type: "log", range: [-1, 3.2] }), shapes: [vline], hovermode: "x unified" }));
+    // ritenzione
+    const ss = Array.from({ length: 80 }, (_, i) => Math.pow(10, -1 + i * 0.045)), tr3 = [];
+    P.forEach((p, k) => { const q = { n: p.n, ts: p.ts, tr: p.tr, al: p.al_m / 9.81 };
+      tr3.push({ type: "scatter", mode: "lines", x: ss, y: ss.map((s) => VGθ(s, q)), name: `strato ${k + 1} (${lay[k]}–${lay[k + 1]} cm)`, line: { color: css(LCOL[k]), width: 2, dash: k === 3 ? "dash" : "solid" } }); });
+    plot("chRret", tr3, base({ xaxis: ax({ type: "log", title: { text: "Suzione s = −ψ (kPa)", font: { color: css("--text-2"), size: 12 } } }), yaxis: ax({ title: { text: "θ (m³/m³)", font: { color: css("--text-2"), size: 12 } } }) }));
+    // profilo Ks
+    const pr = J.prof && J.prof[site], tr4 = [];
+    if (pr) Object.keys(pr.grid).forEach((k, i) => { const g = pr.grid[k];
+      tr4.push({ type: "scatter", mode: "lines+markers", x: g.map((r) => r.lks), y: g.map((r) => r.rms), name: "strato " + k.slice(1), line: { color: css(LCOL[i]), width: 2 } }); });
+    tr4.push({ type: "scatter", mode: "lines", x: [-8, -4], y: [pr ? pr.best_rms : 0, pr ? pr.best_rms : 0], name: "adattamento di partenza", line: { color: css("--muted"), dash: "dash", width: 1 }, hoverinfo: "skip" });
+    plot("chRprof", tr4, base({ xaxis: ax({ title: { text: "log₁₀ Ks (m/s)  ·  −8 = 0,04 mm/h, −6 = 3,6 mm/h, −4 = 360 mm/h", font: { color: css("--text-2"), size: 12 } } }), yaxis: ax({ title: { text: "Residuo normalizzato", font: { color: css("--text-2"), size: 12 } } }) }));
+    // FS
+    const tr5 = d.fs.map((f, i) => ({ type: "scatter", mode: "lines", x: f.t, y: f.z75.daily_min, name: `soluzione ${i + 1} (res. ${fmt(f.rms, 2)}, min ${fmt(f.z75.fs_min, 2)})`, line: { color: css(LCOL[i]), width: 1.6 } }));
+    tr5.push({ type: "scatter", mode: "lines", x: [d.fs[0].t[0], d.fs[0].t.slice(-1)[0]], y: [1, 1], name: "FS = 1", line: { color: css("--muted"), dash: "dash", width: 1 }, hoverinfo: "skip" });
+    plot("chRfs", tr5, base({ xaxis: ax({ type: "date" }), yaxis: ax({ title: { text: "FS minimo giornaliero a 75 cm", font: { color: css("--text-2"), size: 12 } }, rangemode: "tozero" }), hovermode: "x unified" }));
+  }
+
   // -------------------------------------------------------------- avvio
   function renderAll() {
-    chStorage(); scatter(); chSeason(); chMonthly(); chDry(); chEvent(); chFS();
+    chStorage(); scatter(); chSeason(); chMonthly(); chDry(); chEvent(); chFS(); chRichards();
   }
   async function init() {
     if (window.Plotly) {
@@ -499,6 +584,12 @@
       return;
     }
     EV = J.events;
+    J.r4 = {}; J.prof = {};
+    await Promise.all(["NV", "V"].flatMap((s) => [
+      fetch(`data/richards4_${s}.json`).then((r) => (r.ok ? r.json() : null)).then((x) => { if (x) J.r4[s] = x; }).catch(() => {}),
+      fetch(`data/richards4_profile_${s}.json`).then((r) => (r.ok ? r.json() : null)).then((x) => { if (x) J.prof[s] = x; }).catch(() => {}),
+    ]));
+    $("rSite").onchange = chRichards;
     $("xSel").innerHTML = Object.entries(XV).map(([k, v]) => `<option value="${k}">${v[0]}</option>`).join("");
     $("xSel").value = "P";
     renderKpis(); renderText(); renderStats(); buildRows(); renderTable(); fillEvSel(); renderAll();

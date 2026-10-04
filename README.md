@@ -110,3 +110,10 @@ a partire dai dati grezzi 2025 dei sensori Meter NV/V e dei tre pluviometri CF.
 adattati alle coppie θ–ψ dello stesso sensore. La pagina calcola nel browser FS(t) = [c′ + (γ z cos²β + σₛ − u) tanφ′] / (γ z sinβ cosβ),
 con σₛ = Se·s (tetto prudenziale modificabile), β = 30°, z = 0,75 m verticale, c′ = 1 kPa, φ′ = 35°, γ = 17 kN/m³ (tutti modificabili),
 e la curva FS in funzione dell'altezza di falda sospesa. Il TEROS 21 non misura pressioni positive: FS da sola suzione è un limite superiore.
+
+### Modello a 4 strati e caratterizzazione idraulica (analisi.html)
+- `pipeline/richards4.py`: Richards 1D (van Genuchten–Mualem, numba) normale al pendio (β = 30°), base a 1 m, 4 strati per sito (NV 0–22,5/22,5–45/45–75/75–100 cm; V 0–25/25–47,5/47,5–75/75–100 cm), pioggia media dei 3 pluviometri, ET = PET Hargreaves × Kc, fondo λ·K(h).
+- `pipeline/richards4_calib.py NV|V`: calibrazione inversa su θ e ψ (1/2–15/11/2025), validazione 15/11–31/12 → `data/richards4_<sito>.json`.
+- `pipeline/richards4_profile.py NV|V`: profilo di identificabilità di Ks per strato → `data/richards4_profile_<sito>.json`.
+- `pipeline/richards4_fs.py`: FS a 75 cm con la pressione dei pori simulata, per ciascuna soluzione di calibrazione.
+Ordine: `richards4_calib.py` → `richards4_profile.py` → `richards4_fs.py`.
