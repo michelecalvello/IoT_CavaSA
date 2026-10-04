@@ -14,6 +14,7 @@ python pipeline/build_catalog.py    # catalog.json + series.csv
 python pipeline/standardize.py      # data/ + arricchisce catalog.json
 python pipeline/ingest_gee.py       # prodotti a griglia da Google Earth Engine (ERA5-Land, SMAP L4)
 python pipeline/derive_cumulative.py  # serie derivate: pioggia cumulata dal 1 gennaio
+python pipeline/analisi_eventi.py   # analisi eventi/stoccaggio 0–75 cm -> data/analisi_eventi.json (per analisi.html)
 ```
 
 Modalità incrementale: `build_catalog.py` e `standardize.py` aggiornano solo i file Excel presenti in `INPUT_DIR`
@@ -94,3 +95,12 @@ data/qc_log.csv         elenco dei valori segnalati e regola applicata
 - Statistiche e esportazione CSV dell'intervallo visibile; lo stato della vista è nell'URL (condivisibile).
 
 Per provarlo in locale: `python -m http.server` nella radice del repo e aprire http://localhost:8000.
+
+### Analisi eventi e immagazzinamento (`analisi.html`)
+
+Pagina statica collegata al portale (stessa grafica, Plotly). Legge `data/analisi_eventi.json`, prodotto da `pipeline/analisi_eventi.py`
+a partire dai dati grezzi 2025 dei sensori Meter NV/V e dei tre pluviometri CF.
+- Eventi di pioggia: pausa asciutta ≥ 6 h, P ≥ 5 mm (media dei pluviometri 21521, 18925, 18957).
+- Stoccaggio 0–75 cm = Σ VWC × spessore di strato (NV: 0–22,5 / 22,5–45 / 45–75 cm; V: 0–25 / 25–47,5 / 47,5–75 cm).
+- Per ogni evento: P, durata, intensità massima (10 min, 30 min, 1 h), pioggia antecedente (3 e 7 giorni), stoccaggio iniziale, ΔS al picco e a fine finestra (48 h dopo la pioggia o inizio evento successivo).
+- Rieseguire lo script dopo ogni aggiornamento dei dati in `data/raw`.

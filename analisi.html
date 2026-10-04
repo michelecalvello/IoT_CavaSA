@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analisi eventi e immagazzinamento – CavaSA</title>
+<meta name="description" content="Analisi degli eventi pluviometrici e dell'acqua immagazzinata nei primi 75 cm di terreno nei siti NV (non vegetato) e V (vegetato) a Salerno, anno 2025.">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page { max-width: 1480px; margin: 0 auto; padding: 16px 20px 8px; display: flex; flex-direction: column; gap: 16px; }
+  .topbar .nav { display: flex; align-items: center; gap: 10px; }
+  .topbar a.back { text-decoration: none; font-size: 13px; border: 1px solid var(--border); border-radius: 6px; padding: 5px 9px; color: var(--text); }
+  .topbar a.back:hover { border-color: var(--text-2); }
+  .lead { color: var(--text-2); margin: 0; max-width: 980px; }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .kpi .v { font-size: 24px; font-weight: 650; line-height: 1.15; }
+  .kpi .v small { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .kpi .l { color: var(--text-2); font-size: 12px; margin-top: 2px; }
+  .kpi .sw { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .plot { height: 420px; min-height: 260px; }
+  .plot.tall { height: 640px; }
+  .plot.hero { height: 480px; }
+  .ctrl { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 8px; }
+  .ctrl label { display: flex; align-items: center; gap: 6px; color: var(--text-2); font-size: 13px; }
+  .panel > p.note { margin: 6px 0 0; color: var(--text-2); font-size: 12.5px; }
+  .evmeta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--text-2); margin: 0 0 8px; }
+  .evmeta b { color: var(--text); font-weight: 650; }
+  .sw2 { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
+  table.stat td, table.stat th { text-align: right; }
+  #statsBox table td, #statsBox table th { white-space: normal; }
+  table.stat td:first-child, table.stat th:first-child { text-align: left; }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--text); }
+  tbody tr.clk { cursor: pointer; }
+  tbody tr.clk:hover td { background: var(--bg); }
+  .pos { color: var(--s3); } .neg { color: var(--bad); }
+  ul.find { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+  ul.find li { max-width: 1100px; }
+  .twocol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .tbl-scroll { max-height: 520px; overflow: auto; }
+  thead th { position: sticky; top: 0; background: var(--surface); z-index: 1; }
+  @media (max-width: 1000px) { .grid2, .twocol { grid-template-columns: 1fr; } .plot.hero { height: 420px; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <h1>Analisi eventi e immagazzinamento</h1>
+    <span class="sub">Pioggia → stoccaggio 0–75 cm · siti NV e V · anno 2025 · orari in UTC+1</span>
+  </div>
+  <div class="nav">
+    <a class="back" href="index.html">← Portale dati</a>
+    <button id="themeBtn" class="ghost" type="button" title="Tema chiaro/scuro">◐</button>
+  </div>
+</header>
+
+<main class="page" id="page">
+  <p class="lead" id="lead">Caricamento…</p>
+  <div class="kpis" id="kpis"></div>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Acqua immagazzinata nei primi 75 cm e pioggia giornaliera</h2></div>
+    <div id="chStorage" class="plot hero"></div>
+    <p class="note">Stoccaggio = somma di VWC × spessore dello strato (sensori a 15, 30/35, 60 cm; strati 0–22,5 / 22,5–45 / 45–75 cm in NV e 0–25 / 25–47,5 / 47,5–75 cm in V). Le linee tratteggiate sono il massimo osservato (percentile 99,5) usato come riferimento di “serbatoio pieno”. Pioggia: media dei tre pluviometri CF.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Cosa decide quanta acqua resta nel terreno</h2></div>
+    <div class="ctrl">
+      <label>Asse X
+        <select id="xSel"></select>
+      </label>
+      <label>Asse Y
+        <select id="ySel">
+          <option value="dS">Incremento di stoccaggio ΔS (picco, mm)</option>
+          <option value="dS_end">ΔS a fine finestra (dopo drenaggio, mm)</option>
+          <option value="eff">Efficienza ΔS / P</option>
+          <option value="loss">P − ΔS (mm, non trattenuti)</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" id="logX"> X logaritmico</label>
+    </div>
+    <div id="chScatter" class="plot tall"></div>
+    <p class="note">Un punto = un evento (≥ 5 mm). Cerchi: settembre–aprile; rombi: maggio–agosto. ΔS è il massimo dello stoccaggio nelle 48 h dopo la fine della pioggia (o fino all’evento successivo) meno lo stoccaggio iniziale. Quando P non spiega ΔS (ΔS/P &gt; 1) vedi le note sui limiti in fondo.</p>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-head"><h2>Per periodo: pioggia degli eventi e acqua trattenuta</h2></div>
+      <div id="chSeason" class="plot"></div>
+      <p class="note">Somma, per periodo, delle piogge degli eventi ≥ 5 mm e degli incrementi ΔS; il numero sulle barre è ΔS/P.</p>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Bilancio mensile (0–75 cm)</h2>
+        <select id="mSite" aria-label="Sito"><option value="NV">NV</option><option value="V">V</option></select></div>
+      <div id="chMonthly" class="plot"></div>
+      <p class="note">“Perdite” = P − ΔS<sub>mese</sub>: evapotraspirazione + drenaggio sotto i 75 cm + ruscellamento (non separabili con questi sensori).</p>
+    </section>
+  </div>
+
+  <div class="grid2">
+    <section class="panel">
+      <div class="panel-head"><h2>Svuotamento in tempo asciutto</h2></div>
+      <div id="chDry" class="plot"></div>
+      <p class="note">Variazione giornaliera di stoccaggio nei giorni senza pioggia (nessuna pioggia nel giorno e nei 2 precedenti e nel successivo). Punti: giorni singoli; simboli grandi: mediana (e intervallo interquartile) per classe di riempimento.</p>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><h2>Statistiche di sintesi</h2></div>
+      <div class="table-wrap" id="statsBox"></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Esplora un evento</h2></div>
+    <div class="ctrl"><label>Evento (≥ 10 mm) <select id="evSel"></select></label></div>
+    <p class="evmeta" id="evMeta"></p>
+    <div id="chEvent" class="plot tall"></div>
+    <p class="note">Dati orari. VWC: linea continua = strato superficiale, tratteggiata = intermedio, punteggiata = 60 cm. Colore arancio = NV, verde = V.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Tabella degli eventi</h2><button id="csvBtn" type="button">Esporta CSV</button></div>
+    <div class="table-wrap tbl-scroll"><table id="evTable" class="stat"></table></div>
+    <p class="note">Clic sull’intestazione per ordinare; clic su una riga (eventi ≥ 10 mm) per aprirla nell’esploratore. P = media dei 3 pluviometri; P vic. = pluviometro più vicino (CF 18957, 1,7 km); I10/I60 = intensità massima su 10 min / 1 h; API7 = pioggia nei 7 giorni precedenti.</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Letture principali</h2></div>
+    <ul class="find" id="findings"></ul>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Metodo e limiti</h2></div>
+    <ul class="find" id="limits"></ul>
+  </section>
+</main>
+
+<footer class="foot muted small page" style="display:block">
+  Dati: Università di Salerno (stazioni Salerno Meter NV e V) · Centro Funzionale Multirischi, Regione Campania (pluviometri 21521, 18925, 18957).
+  Elaborazione: <code>pipeline/analisi_eventi.py</code> → <code>data/analisi_eventi.json</code>. Generato: <span id="gen"></span>.
+</footer>
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const SITE = { NV: { name: "NV (non vegetato)", c: "--s2" }, V: { name: "V (vegetato)", c: "--s3" } };
+  const MONTHS = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+  const XV = {
+    P: ["Pioggia dell'evento P (media 3 pluviometri)", "mm"],
+    P_near: ["Pioggia al pluviometro più vicino (CF 18957)", "mm"],
+    I10: ["Intensità massima su 10 min", "mm/h"],
+    I30: ["Intensità massima su 30 min", "mm/h"],
+    I60: ["Intensità massima su 1 h", "mm/h"],
+    Imean: ["Intensità media dell'evento", "mm/h"],
+    dur_h: ["Durata dell'evento", "h"],
+    API7: ["Pioggia nei 7 giorni precedenti", "mm"],
+    S0: ["Stoccaggio iniziale S0", "mm"],
+    D0: ["Deficit iniziale (Smax − S0)", "mm"],
+  };
+  const YV = {
+    dS: ["Incremento di stoccaggio ΔS (picco)", "mm"],
+    dS_end: ["ΔS a fine finestra", "mm"],
+    eff: ["Efficienza ΔS / P", ""],
+    loss: ["P − ΔS", "mm"],
+  };
+  let J = null, EV = [], rows = [], sortKey = "ev", sortDir = 1, currentEv = null;
+
+  const fmt = (v, d = 1) => (v == null || Number.isNaN(v) ? "–" : Number(v).toFixed(d));
+  const season = (m) => (m >= 5 && m <= 8 ? "dry" : "wet");
+
+  function base(extra = {}) {
+    const ax = (o = {}) => ({ gridcolor: css("--grid"), zerolinecolor: css("--grid"), linecolor: css("--border"),
+      tickfont: { color: css("--text-2"), size: 11 }, title: { font: { color: css("--text-2"), size: 12 } }, ...o });
+    return Object.assign({
+      paper_bgcolor: css("--surface"), plot_bgcolor: css("--surface"),
+      font: { family: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", color: css("--text") },
+      margin: { l: 58, r: 18, t: 28, b: 46 },
+      legend: { orientation: "h", x: 0, y: 1.0, yanchor: "bottom", font: { size: 12, color: css("--text-2") } },
+      hoverlabel: { bgcolor: css("--surface"), bordercolor: css("--border"), font: { color: css("--text"), size: 12 } },
+      xaxis: ax(), yaxis: ax(),
+    }, extra);
+  }
+  const ax = (o = {}) => ({ gridcolor: css("--grid"), zerolinecolor: css("--grid"), linecolor: css("--border"),
+    tickfont: { color: css("--text-2"), size: 11 }, title: { font: { color: css("--text-2"), size: 12 } }, ...o });
+  const cfg = { responsive: true, displaylogo: false, locale: "it", modeBarButtonsToRemove: ["lasso2d", "select2d"] };
+  const plot = (id, tr, lay) => Plotly.react($(id), tr, lay, cfg);
+
+  // -------------------------------------------------------------- KPI e testo
+  function renderKpis() {
+    const S = J.stats, ev = EV;
+    const sites = ["NV", "V"];
+    const nEv = new Set(ev.map((e) => e.ev)).size;
+    const Ptot = ev.filter((e) => e.site === "NV").reduce((a, e) => a + e.P, 0);
+    const k = [];
+    k.push(`<div class="kpi"><div class="v">${nEv}<small> eventi ≥ ${J.params.min_P} mm</small></div><div class="l">${J.params.year}, pausa minima ${J.params.gap_h} h · ${fmt(Ptot, 0)} mm totali negli eventi</div></div>`);
+    sites.forEach((s) => k.push(`<div class="kpi"><div class="v"><span class="sw" style="background:${css(SITE[s].c)}"></span>${fmt(S[s].Smin, 0)}–${fmt(S[s].Smax, 0)}<small> mm</small></div><div class="l">${SITE[s].name}: stoccaggio 0–75 cm, minimo–massimo osservato</div></div>`));
+    sites.forEach((s) => k.push(`<div class="kpi"><div class="v"><span class="sw" style="background:${css(SITE[s].c)}"></span>${fmt(S[s].eff_sum * 100, 0)} → ${fmt(S[s].retained.eff_end_sum * 100, 0)}<small> % di P</small></div><div class="l">${SITE[s].name}: acqua immagazzinata al picco → dopo 24–48 h di drenaggio (eventi ≥ 10 mm)</div></div>`));
+    sites.forEach((s) => k.push(`<div class="kpi"><div class="v"><span class="sw" style="background:${css(SITE[s].c)}"></span>${fmt(S[s].resp_P_min, 0)}<small> mm</small></div><div class="l">${SITE[s].name}: pioggia minima di un evento con ΔS ≥ 5 mm (${S[s].resp_n} eventi su ${S[s].n})</div></div>`));
+    $("kpis").innerHTML = k.join("");
+  }
+
+  function renderText() {
+    const S = J.stats, N = S.NV, V = S.V;
+    $("lead").innerHTML = `Quanta acqua di pioggia entra e <b>resta</b> nei primi 75 cm di terreno, nel sito non vegetato (NV) e in quello vegetato (V), e da cosa dipende (cumulata, intensità, durata, stato iniziale). Dati 2025 dal ${J.daily.t[0].slice(8, 10)}/${J.daily.t[0].slice(5, 7)}, con ${new Set(EV.map((e) => e.ev)).size} eventi analizzabili.`;
+    $("gen").textContent = J.generated.replace("T", " ").slice(0, 16) + " UTC+1";
+    const f = [];
+    f.push(`<b>La cumulata dell'evento è il fattore dominante.</b> Correlazione di Spearman tra P e ΔS: ${fmt(N.spearman_dS.P, 2)} in NV e ${fmt(V.spearman_dS.P, 2)} in V. Una semplice proporzionalità ΔS = k·P spiega il ${fmt(N.model_lin.r2 * 100, 0)} % (NV, k = ${fmt(N.model_lin.k, 2)}) e il ${fmt(V.model_lin.r2 * 100, 0)} % (V, k = ${fmt(V.model_lin.k, 2)}) della varianza.`);
+    f.push(`<b>Il terreno si comporta come un serbatoio con capienza limitata.</b> Il modello “a secchio” ΔS = min(k·P, deficit iniziale) fa meglio: R² ${fmt(N.model_bucket.r2, 2)} in NV (k = ${fmt(N.model_bucket.k, 2)}) e ${fmt(V.model_bucket.r2, 2)} in V (k = ${fmt(V.model_bucket.k, 2)}). In V l'incremento nei grandi eventi (P ≥ 20 mm) ha mediana ${fmt(V.P_ge20.dS_med, 0)} mm e massimo ${fmt(V.P_ge20.dS_max, 0)} mm; in NV mediana ${fmt(N.P_ge20.dS_med, 0)} mm e massimo ${fmt(N.P_ge20.dS_max, 0)} mm.`);
+    const nHi = EV.filter((e) => e.site === "NV" && e.I60 >= 15).length;
+    f.push(`<b>L'intensità massima conta poco, a parità di cumulata.</b> Correlazione di ΔS con I60: ${fmt(N.spearman_dS.I60, 2)} (NV) e ${fmt(V.spearman_dS.I60, 2)} (V); sul residuo del modello a secchio ${fmt(N.resid_corr.I60, 2)} e ${fmt(V.resid_corr.I60, 2)}. La durata (${fmt(N.spearman_dS.dur_h, 2)} / ${fmt(V.spearman_dS.dur_h, 2)}) e, in V, la pioggia dei 7 giorni precedenti (residuo ${fmt(V.resid_corr.API7, 2)}) pesano di più, ma con ${N.n} eventi per sito e solo ${nHi} eventi con I60 ≥ 15 mm/h la conclusione sull'intensità è debole.`);
+    f.push(`<b>NV assorbe molto, ma ne cede in fretta; V assorbe poco e trattiene.</b> Al picco ΣΔS/ΣP è ${fmt(N.eff_sum * 100, 0)} % in NV e ${fmt(V.eff_sum * 100, 0)} % in V. Dopo 24–48 h di drenaggio (eventi ≥ 10 mm) restano ${fmt(N.retained.eff_end_sum * 100, 0)} % di P in NV e ${fmt(V.retained.eff_end_sum * 100, 0)} % in V: in NV rimane in mediana il ${fmt(N.retained.frac_kept_med * 100, 0)} % dell'incremento di picco, in V il ${fmt(V.retained.frac_kept_med * 100, 0)} %. In V servono almeno ${fmt(V.resp_P_min, 0)} mm per un incremento ≥ 5 mm (in NV ${fmt(N.resp_P_min, 0)} mm), il picco arriva in mediana ${fmt(V.tpeak_med_h, 0)} h dopo l'inizio (NV: ${fmt(N.tpeak_med_h, 0)} h) e la capienza osservata è ${fmt(V.Smax - V.Smin, 0)} mm contro ${fmt(N.Smax - N.Smin, 0)} mm.`);
+    const med = (a) => { const x = a.slice().sort((p, q) => p - q); return x.length ? x[Math.floor((x.length - 1) / 2)] : null; };
+    const small = (site, dry) => EV.filter((e) => e.site === site && e.P >= 5 && e.P <= 12.5 && (e.month >= 5 && e.month <= 8) === dry);
+    const sN = [small("NV", true), small("NV", false)], sV = [small("V", true), small("V", false)];
+    const maxDryP = Math.max(...EV.filter((e) => e.site === "NV" && e.month >= 5 && e.month <= 8).map((e) => e.P));
+    f.push(`<b>Stagionalità.</b> In maggio–agosto i ${N.seasons["Mag–Ago"].n} eventi (${fmt(N.seasons["Mag–Ago"].P, 0)} mm) non aggiungono praticamente nulla (NV ${fmt(N.seasons["Mag–Ago"].eff * 100, 0)} %, V ${fmt(V.seasons["Mag–Ago"].eff * 100, 0)} %), ma sono tutti piccoli (≤ ${fmt(maxDryP, 0)} mm): per separare l'effetto stagione da quello della cumulata conviene confrontare eventi di 5–12 mm. In NV l'efficienza mediana è ${fmt(med(sN[0].map((e) => e.eff)) * 100, 0)} % in estate (n = ${sN[0].length}, S0 ≈ ${fmt(med(sN[0].map((e) => e.S0)), 0)} mm) contro ${fmt(med(sN[1].map((e) => e.eff)) * 100, 0)} % negli altri mesi (n = ${sN[1].length}, S0 ≈ ${fmt(med(sN[1].map((e) => e.S0)), 0)} mm); in V è ${fmt(med(sV[0].map((e) => e.eff)) * 100, 0)} % e ${fmt(med(sV[1].map((e) => e.eff)) * 100, 0)} %: sotto ~12 mm gli incrementi sono di pochi mm (mediana ≈ 3 mm in NV con terreno umido, nulla in V). Da settembre a novembre la resa sale a ${fmt(N.seasons["Set–Nov"].eff * 100, 0)} % in NV e ${fmt(V.seasons["Set–Nov"].eff * 100, 0)} % in V.`);
+    const dN = J.depletion.NV, dV = J.depletion.V, lo = (d) => d[0], hi = (d) => d[d.length - 1];
+    f.push(`<b>Svuotamento.</b> Nei giorni asciutti lo stoccaggio scende di ${fmt(-hi(dN).rate, 1)} mm/g in NV (classe di riempimento ${fmt(hi(dN).f_lo * 100, 0)}–${fmt(hi(dN).f_hi * 100, 0)} %) e di ${fmt(-hi(dV).rate, 1)} mm/g in V (${fmt(hi(dV).f_lo * 100, 0)}–${fmt(hi(dV).f_hi * 100, 0)} %): drenaggio più evapotraspirazione. Quando il serbatoio è quasi vuoto la perdita scende a ${fmt(-lo(dN).rate, 1)} mm/g (NV) e ${fmt(-lo(dV).rate, 1)} mm/g (V).`);
+    $("findings").innerHTML = f.map((x) => `<li>${x}</li>`).join("");
+    const L = [
+      "<b>Stoccaggio.</b> Calcolato dai VWC puntuali di tre sensori per sito, estesi agli strati interi: è una stima, non una misura. I 75 cm sono il limite inferiore dell'ultimo strato.",
+      "<b>Efficienza ΔS/P &gt; 1.</b> In diversi eventi grandi in NV l'incremento supera la pioggia misurata (fino a ~1,5). Cause possibili, non separabili con questi dati: sottostima dei pluviometri (vento, ~1,7–4 km di distanza dal sito), afflussi laterali o ruscellamento verso il sito, flusso preferenziale che bagna il sensore più del resto dello strato. Va letta come efficienza apparente.",
+      "<b>Differenze NV/V.</b> Il confronto V/NV mescola effetto della vegetazione (intercettazione, assorbimento radicale) e differenze del terreno e dell'installazione dei sensori (V ha VWC massimi molto inferiori): non si possono attribuire solo alla vegetazione.",
+      "<b>Pioggia di riferimento.</b> Media di 3 pluviometri a 1,7–4,1 km; nei temporali convettivi lo scarto fra pluviometri è grande (colonne “P min/max” nel CSV). Le intensità sono quelle della media e quindi attenuate.",
+      "<b>Picco e acqua in transito.</b> Lo stoccaggio di picco può superare il riferimento “serbatoio pieno” (es. 23/12 in NV: ~212 mm contro 175): include acqua in transito che drena in poche ore. “Quanto resta” va letto su ΔS a fine finestra, non sul picco.",
+      "<b>ΔS e finestra.</b> ΔS è il picco entro 48 h dalla fine della pioggia o fino all'inizio dell'evento successivo (eventi ravvicinati hanno finestre più corte: colonna <code>post_h</code> nel CSV). ΔS a fine finestra include il drenaggio avvenuto nel frattempo.",
+      `<b>Solo il 2025.</b> ${N.n} eventi per sito con dati dal 31/1; in estate pochi eventi (${N.seasons["Mag–Ago"].n} da maggio ad agosto). Le percentuali stagionali sono indicative.`,
+    ];
+    $("limits").innerHTML = L.map((x) => `<li>${x}</li>`).join("");
+  }
+
+  // -------------------------------------------------------------- grafici
+  function chStorage() {
+    const d = J.daily, S = J.stats, tr = [];
+    tr.push({ type: "bar", x: d.t, y: d.rain, name: "Pioggia (mm/g)", marker: { color: css("--s1") }, yaxis: "y2", hovertemplate: "%{y:.1f} mm<extra>Pioggia</extra>" });
+    ["NV", "V"].forEach((s) => tr.push({ type: "scatter", mode: "lines", x: d.t, y: d["S_" + s], name: "Stoccaggio " + SITE[s].name, line: { color: css(SITE[s].c), width: 2 }, connectgaps: false, hovertemplate: "%{y:.0f} mm<extra>" + s + "</extra>" }));
+    const shapes = ["NV", "V"].map((s) => ({ type: "line", xref: "paper", x0: 0, x1: 1, yref: "y", y0: S[s].Smax, y1: S[s].Smax, line: { color: css(SITE[s].c), width: 1, dash: "dot" } }));
+    plot("chStorage", tr, base({
+      xaxis: ax({ type: "date", anchor: "y" }),
+      yaxis: ax({ domain: [0, 0.72], title: { text: "Stoccaggio 0–75 cm (mm)", font: { color: css("--text-2"), size: 12 } }, rangemode: "tozero" }),
+      yaxis2: ax({ domain: [0.78, 1], autorange: "reversed", title: { text: "Pioggia (mm/g)", font: { color: css("--text-2"), size: 12 } } }),
+      shapes, hovermode: "x unified", margin: { l: 62, r: 18, t: 28, b: 40 },
+    }));
+  }
+
+  function scatter() {
+    const xk = $("xSel").value, yk = $("ySel").value, tr = [], shapes = [];
+    let xmax = 0;
+    ["NV", "V"].forEach((s) => {
+      ["wet", "dry"].forEach((se) => {
+        const d = EV.filter((e) => e.site === s && season(e.month) === se && e[yk] != null);
+        if (!d.length) return;
+        d.forEach((e) => (xmax = Math.max(xmax, e[xk])));
+        tr.push({
+          type: "scatter", mode: "markers", x: d.map((e) => e[xk]), y: d.map((e) => e[yk]),
+          name: SITE[s].name + (se === "dry" ? " · mag–ago" : " · set–apr"),
+          marker: { color: css(SITE[s].c), symbol: se === "dry" ? "diamond" : "circle", size: 10, opacity: 0.85, line: { color: css("--surface"), width: 1 } },
+          text: d.map((e) => `${e.ev}<br>P ${fmt(e.P)} mm (vic. ${fmt(e.P_near)}) · ${fmt(e.dur_h)} h<br>I10 ${fmt(e.I10)} · I60 ${fmt(e.I60)} mm/h · API7 ${fmt(e.API7, 0)} mm<br>S0 ${fmt(e.S0, 0)} mm · D0 ${fmt(e.D0, 0)} mm<br>ΔS ${fmt(e.dS)} mm · ΔS/P ${fmt(e.eff, 2)}`),
+          hovertemplate: "%{text}<extra></extra>",
+        });
+      });
+      if (xk === "P" && yk === "dS") {
+        const k = J.stats[s].model_lin.k;
+        tr.push({ type: "scatter", mode: "lines", x: [0, xmax || 150], y: [0, k * (xmax || 150)], name: `${s}: ΔS = ${fmt(k, 2)}·P`, line: { color: css(SITE[s].c), width: 1.5, dash: "dash" }, hoverinfo: "skip" });
+      }
+    });
+    if (xk === "P" && yk === "dS") shapes.push({ type: "line", xref: "x", yref: "y", x0: 0, y0: 0, x1: xmax, y1: xmax, line: { color: css("--muted"), width: 1, dash: "dot" } });
+    if (yk === "eff") shapes.push({ type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 1, y1: 1, line: { color: css("--muted"), width: 1, dash: "dot" } });
+    const xt = XV[xk][0] + (XV[xk][1] ? ` (${XV[xk][1]})` : ""), yt = YV[yk][0] + (YV[yk][1] ? ` (${YV[yk][1]})` : "");
+    plot("chScatter", tr, base({
+      xaxis: ax({ type: $("logX").checked ? "log" : "linear", title: { text: xt, font: { color: css("--text-2"), size: 12 } }, rangemode: "tozero" }),
+      yaxis: ax({ title: { text: yt, font: { color: css("--text-2"), size: 12 } } }), shapes, hovermode: "closest",
+    }));
+  }
+
+  function chSeason() {
+    const order = ["Feb–Apr", "Mag–Ago", "Set–Nov", "Dic"], S = J.stats;
+    const P = order.map((k) => (S.NV.seasons[k] ? S.NV.seasons[k].P : null));
+    const tr = [{ type: "bar", x: order, y: P, name: "Pioggia negli eventi (mm)", marker: { color: css("--s1") }, hovertemplate: "%{y:.0f} mm<extra>P</extra>" }];
+    ["NV", "V"].forEach((s) => tr.push({
+      type: "bar", x: order, y: order.map((k) => (S[s].seasons[k] ? S[s].seasons[k].dS : null)), name: "ΔS " + SITE[s].name,
+      marker: { color: css(SITE[s].c) }, text: order.map((k) => (S[s].seasons[k] ? fmt(S[s].seasons[k].eff * 100, 0) + "%" : "")),
+      textposition: "outside", textfont: { color: css("--text-2"), size: 11 }, hovertemplate: "%{y:.0f} mm<extra>" + s + "</extra>",
+    }));
+    plot("chSeason", tr, base({ barmode: "group", yaxis: ax({ title: { text: "mm", font: { color: css("--text-2"), size: 12 } } }), xaxis: ax({ type: "category" }) }));
+  }
+
+  function chMonthly() {
+    const s = $("mSite").value, m = J.monthly[s].filter((r) => r.month >= 2 && r.dS != null && !Number.isNaN(r.dS));
+    const x = m.map((r) => MONTHS[r.month - 1]);
+    const tr = [
+      { type: "bar", x, y: m.map((r) => r.P), name: "Pioggia P", marker: { color: css("--s1") } },
+      { type: "bar", x, y: m.map((r) => r.dS), name: "Variazione di stoccaggio", marker: { color: css(SITE[s].c) } },
+      { type: "bar", x, y: m.map((r) => r.loss), name: "Perdite (P − ΔS)", marker: { color: css("--s13") } },
+    ];
+    plot("chMonthly", tr, base({ barmode: "group", xaxis: ax({ type: "category" }), yaxis: ax({ title: { text: "mm", font: { color: css("--text-2"), size: 12 } } }) }));
+  }
+
+  function chDry() {
+    const tr = [];
+    ["NV", "V"].forEach((s) => {
+      const p = J.dry_pts[s];
+      tr.push({ type: "scatter", mode: "markers", x: p.map((r) => r[1]), y: p.map((r) => r[2]), name: SITE[s].name + " · giorni", text: p.map((r) => r[0]),
+        marker: { color: css(SITE[s].c), size: 6, opacity: 0.4 }, hovertemplate: "%{text}<br>S %{x:.0f} mm · %{y:.2f} mm/g<extra></extra>" });
+      const St = J.stats[s], b = J.depletion[s];
+      const xs = b.map((r) => St.Smin + ((r.f_lo + r.f_hi) / 2) * (St.Smax - St.Smin));
+      tr.push({ type: "scatter", mode: "lines+markers", x: xs, y: b.map((r) => r.rate), name: SITE[s].name + " · mediana",
+        marker: { color: css(SITE[s].c), size: 12, symbol: "diamond", line: { color: css("--surface"), width: 1.5 } }, line: { color: css(SITE[s].c), width: 2 },
+        error_y: { type: "data", symmetric: false, array: b.map((r) => r.p75 - r.rate), arrayminus: b.map((r) => r.rate - r.p25), color: css(SITE[s].c), thickness: 1.2, width: 3 },
+        hovertemplate: "mediana %{y:.2f} mm/g<extra>" + s + "</extra>" });
+    });
+    plot("chDry", tr, base({ xaxis: ax({ title: { text: "Stoccaggio 0–75 cm (mm)", font: { color: css("--text-2"), size: 12 } } }), yaxis: ax({ title: { text: "Variazione giornaliera (mm/g)", font: { color: css("--text-2"), size: 12 } } }), hovermode: "closest" }));
+  }
+
+  function renderStats() {
+    const S = J.stats;
+    const vars = [["P", "P"], ["P_near", "P pluv. vicino"], ["I10", "I10"], ["I30", "I30"], ["I60", "I60"], ["dur_h", "Durata"], ["Imean", "I media"], ["API7", "API7"], ["S0", "S0"], ["D0", "Deficit D0"]];
+    const cell = (v) => (v == null ? "–" : `<span class="${v > 0.4 ? "pos" : v < -0.4 ? "neg" : ""}">${v.toFixed(2)}</span>`);
+    let h = `<table class="stat"><thead><tr><th>ρ di Spearman</th><th>ΔS · NV</th><th>ΔS · V</th><th>ΔS/P · NV</th><th>ΔS/P · V</th></tr></thead><tbody>`;
+    vars.forEach(([k, l]) => (h += `<tr><td>${l}</td><td>${cell(S.NV.spearman_dS[k])}</td><td>${cell(S.V.spearman_dS[k])}</td><td>${cell(S.NV.spearman_eff[k])}</td><td>${cell(S.V.spearman_eff[k])}</td></tr>`));
+    h += `</tbody></table><table class="stat" style="margin-top:10px"><thead><tr><th>Modelli</th><th>NV</th><th>V</th></tr></thead><tbody>`;
+    const r = (l, a, b) => (h += `<tr><td>${l}</td><td>${a}</td><td>${b}</td></tr>`);
+    r("ΔS = k·P: k / R²", `${fmt(S.NV.model_lin.k, 2)} / ${fmt(S.NV.model_lin.r2, 2)}`, `${fmt(S.V.model_lin.k, 2)} / ${fmt(S.V.model_lin.r2, 2)}`);
+    r("ΔS = min(k·P, D0): k / R²", `${fmt(S.NV.model_bucket.k, 2)} / ${fmt(S.NV.model_bucket.r2, 2)}`, `${fmt(S.V.model_bucket.k, 2)} / ${fmt(S.V.model_bucket.r2, 2)}`);
+    r("Reg. multipla (coeff. standard.) P · I60 · D0", `${fmt(S.NV.beta_std.P, 2)} · ${fmt(S.NV.beta_std.I60, 2)} · ${fmt(S.NV.beta_std.D0, 2)}`, `${fmt(S.V.beta_std.P, 2)} · ${fmt(S.V.beta_std.I60, 2)} · ${fmt(S.V.beta_std.D0, 2)}`);
+    r("R² regressione multipla", fmt(S.NV.r2_multi, 2), fmt(S.V.r2_multi, 2));
+    const ls = (x) => Object.values(x.layer_share || {}).map((v) => fmt(v * 100, 0)).join(" / ") + " %";
+    r("Quota di ΔS per strato sup. / medio / 60 cm (eventi ΔS ≥ 10 mm)", ls(S.NV), ls(S.V));
+    r("Eventi con P ≥ 20 mm: ΔS mediano / max (mm)", `${fmt(S.NV.P_ge20.dS_med, 0)} / ${fmt(S.NV.P_ge20.dS_max, 0)}`, `${fmt(S.V.P_ge20.dS_med, 0)} / ${fmt(S.V.P_ge20.dS_max, 0)}`);
+    r("Tempo mediano al picco (h dall'inizio)", fmt(S.NV.tpeak_med_h, 0), fmt(S.V.tpeak_med_h, 0));
+    r("ΔS(fine)/ΔS(picco) mediano, dopo 24–48 h", fmt(S.NV.retained.frac_kept_med, 2), fmt(S.V.retained.frac_kept_med, 2));
+    h += `</tbody></table>`;
+    $("statsBox").innerHTML = h;
+  }
+
+  // -------------------------------------------------------------- esploratore evento
+  function fillEvSel() {
+    const keys = Object.keys(J.hourly).sort();
+    $("evSel").innerHTML = keys.map((k) => {
+      const e = EV.find((x) => x.ev === k && x.site === "NV") || EV.find((x) => x.ev === k);
+      return `<option value="${k}">${k} · P ${e ? fmt(e.P, 0) : "?"} mm</option>`;
+    }).join("");
+    const big = keys.map((k) => EV.find((x) => x.ev === k && x.site === "NV")).filter(Boolean).sort((a, b) => b.dS - a.dS)[0];
+    currentEv = big ? big.ev : keys[0];
+    $("evSel").value = currentEv;
+  }
+  function chEvent() {
+    const k = $("evSel").value; currentEv = k;
+    const h = J.hourly[k]; if (!h) return;
+    const m = {};
+    ["NV", "V"].forEach((s) => (m[s] = EV.find((x) => x.ev === k && x.site === s)));
+    const any = m.NV || m.V;
+    $("evMeta").innerHTML = any
+      ? `<span><b>P</b> ${fmt(any.P)} mm (min–max pluv. ${fmt(any.P_min)}–${fmt(any.P_max)}; vicino ${fmt(any.P_near)})</span><span><b>Durata</b> ${fmt(any.dur_h)} h</span><span><b>I10</b> ${fmt(any.I10)} · <b>I60</b> ${fmt(any.I60)} mm/h</span><span><b>API7</b> ${fmt(any.API7, 0)} mm</span>` +
+        ["NV", "V"].map((s) => (m[s] ? `<span><span class="sw2" style="background:${css(SITE[s].c)}"></span><b>${s}</b> S0 ${fmt(m[s].S0, 0)} mm → ΔS <b>${fmt(m[s].dS)}</b> mm (${fmt(m[s].eff * 100, 0)} % di P, picco dopo ${fmt(m[s].t_peak_h, 0)} h)</span>` : "")).join("")
+      : "";
+    const tr = [{ type: "bar", x: h.t, y: h.rain, name: "Pioggia (mm/h)", marker: { color: css("--s1") }, xaxis: "x", yaxis: "y", hovertemplate: "%{y:.1f} mm/h<extra>Pioggia</extra>" }];
+    const dash = ["solid", "dash", "dot"], dep = J.params.depths;
+    ["NV", "V"].forEach((s) => dep[s].forEach((d, i) => tr.push({
+      type: "scatter", mode: "lines", x: h.t, y: h[`${s}_${d}`], name: `${s} ${+d} cm`, xaxis: "x", yaxis: "y2",
+      line: { color: css(SITE[s].c), width: 1.8, dash: dash[i] }, connectgaps: false, hovertemplate: "%{y:.3f}<extra>" + s + " " + +d + " cm</extra>",
+    })));
+    ["NV", "V"].forEach((s) => tr.push({
+      type: "scatter", mode: "lines", x: h.t, y: h["S_" + s], name: "Stoccaggio " + s, xaxis: "x", yaxis: "y3",
+      line: { color: css(SITE[s].c), width: 2.4 }, connectgaps: false, hovertemplate: "%{y:.1f} mm<extra>S " + s + "</extra>",
+    }));
+    const t = (s) => ({ text: s, font: { color: css("--text-2"), size: 12 } });
+    plot("chEvent", tr, base({
+      xaxis: ax({ type: "date", anchor: "y3" }),
+      yaxis: ax({ domain: [0.84, 1], autorange: "reversed", title: t("Pioggia (mm/h)") }),
+      yaxis2: ax({ domain: [0.36, 0.78], title: t("VWC (m³/m³)"), rangemode: "tozero" }),
+      yaxis3: ax({ domain: [0, 0.3], title: t("Stoccaggio (mm)") }),
+      hovermode: "x unified", margin: { l: 62, r: 18, t: 28, b: 40 },
+    }));
+  }
+
+  // -------------------------------------------------------------- tabella
+  const COLS = [
+    ["ev", "Inizio", (r) => r.ev, false], ["P", "P", (r) => fmt(r.P), true], ["P_near", "P vic.", (r) => fmt(r.P_near), true],
+    ["dur_h", "Durata h", (r) => fmt(r.dur_h), true], ["I10", "I10", (r) => fmt(r.I10), true], ["I60", "I60", (r) => fmt(r.I60), true],
+    ["API7", "API7", (r) => fmt(r.API7, 0), true],
+    ["NV_S0", "S0 NV", (r) => fmt(r.NV_S0, 0), true], ["NV_dS", "ΔS NV", (r) => fmt(r.NV_dS), true], ["NV_eff", "ΔS/P NV", (r) => fmt(r.NV_eff, 2), true],
+    ["V_S0", "S0 V", (r) => fmt(r.V_S0, 0), true], ["V_dS", "ΔS V", (r) => fmt(r.V_dS), true], ["V_eff", "ΔS/P V", (r) => fmt(r.V_eff, 2), true],
+  ];
+  function buildRows() {
+    const by = {};
+    EV.forEach((e) => {
+      const r = (by[e.ev] = by[e.ev] || { ev: e.ev, P: e.P, P_near: e.P_near, dur_h: e.dur_h, I10: e.I10, I60: e.I60, API7: e.API7 });
+      r[e.site + "_S0"] = e.S0; r[e.site + "_dS"] = e.dS; r[e.site + "_eff"] = e.eff;
+    });
+    rows = Object.values(by);
+  }
+  function renderTable() {
+    rows.sort((a, b) => {
+      const x = a[sortKey], y = b[sortKey];
+      if (x == null) return 1; if (y == null) return -1;
+      return (x < y ? -1 : x > y ? 1 : 0) * sortDir;
+    });
+    let h = "<thead><tr>" + COLS.map(([k, l]) => `<th class="sortable" data-k="${k}">${l}${sortKey === k ? (sortDir > 0 ? " ▲" : " ▼") : ""}</th>`).join("") + "</tr></thead><tbody>";
+    rows.forEach((r) => (h += `<tr class="${J.hourly[r.ev] ? "clk" : ""}" data-ev="${r.ev}">` + COLS.map(([k, , f]) => `<td>${f(r)}</td>`).join("") + "</tr>"));
+    $("evTable").innerHTML = h + "</tbody>";
+    $("evTable").querySelectorAll("th.sortable").forEach((th) => (th.onclick = () => {
+      const k = th.dataset.k; if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = k === "ev" ? 1 : -1; } renderTable();
+    }));
+    $("evTable").querySelectorAll("tr.clk").forEach((tr) => (tr.onclick = () => {
+      $("evSel").value = tr.dataset.ev; chEvent(); $("chEvent").scrollIntoView({ behavior: "smooth", block: "center" });
+    }));
+  }
+  function exportCsv() {
+    const keys = ["ev", "site", "P", "P_near", "P_min", "P_max", "dur_h", "I10", "I30", "I60", "Imean", "API3", "API7", "S0", "D0", "f0", "dS", "dS_end", "t_peak_h", "post_h", "eff", "loss"];
+    const lines = [keys.join(",")].concat(EV.map((e) => keys.map((k) => (e[k] == null ? "" : e[k])).join(",")));
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([lines.join("\n")], { type: "text/csv" }));
+    a.download = "analisi_eventi.csv"; a.click(); URL.revokeObjectURL(a.href);
+  }
+
+  // -------------------------------------------------------------- avvio
+  function renderAll() {
+    chStorage(); scatter(); chSeason(); chMonthly(); chDry(); chEvent();
+  }
+  async function init() {
+    if (window.Plotly) {
+      Plotly.register({ moduleType: "locale", name: "it", dictionary: {}, format: {
+        days: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"], shortDays: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+        months: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+        shortMonths: MONTHS, date: "%d/%m/%Y", decimal: ".", thousands: " " } });
+    }
+    try {
+      J = await fetch("data/analisi_eventi.json").then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+    } catch (e) {
+      $("lead").innerHTML = `Impossibile leggere <code>data/analisi_eventi.json</code> (${e.message}). La pagina va aperta da un server web (es. GitHub Pages o <code>python -m http.server</code>), non come file locale.`;
+      return;
+    }
+    EV = J.events;
+    $("xSel").innerHTML = Object.entries(XV).map(([k, v]) => `<option value="${k}">${v[0]}</option>`).join("");
+    $("xSel").value = "P";
+    renderKpis(); renderText(); renderStats(); buildRows(); renderTable(); fillEvSel(); renderAll();
+    $("xSel").onchange = $("ySel").onchange = $("logX").onchange = scatter;
+    $("mSite").onchange = chMonthly; $("evSel").onchange = chEvent; $("csvBtn").onclick = exportCsv;
+    $("themeBtn").onclick = () => {
+      const dark = getComputedStyle(document.documentElement).colorScheme === "dark";
+      document.documentElement.dataset.theme = dark ? "light" : "dark";
+      renderKpis(); renderAll();
+    };
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { renderKpis(); renderAll(); });
+  }
+  init();
+})();
+</script>
+</body>
+</html>
