@@ -104,3 +104,9 @@ a partire dai dati grezzi 2025 dei sensori Meter NV/V e dei tre pluviometri CF.
 - Stoccaggio 0–75 cm = Σ VWC × spessore di strato (NV: 0–22,5 / 22,5–45 / 45–75 cm; V: 0–25 / 25–47,5 / 47,5–75 cm).
 - Per ogni evento: P, durata, intensità massima (10 min, 30 min, 1 h), pioggia antecedente (3 e 7 giorni), stoccaggio iniziale, ΔS al picco e a fine finestra (48 h dopo la pioggia o inizio evento successivo).
 - Rieseguire lo script dopo ogni aggiornamento dei dati in `data/raw`.
+
+### Stabilità del pendio indefinito (analisi.html)
+`pipeline/analisi_eventi.py` esporta anche il potenziale matriciale orario a 60 cm (`slope.<sito>.psi`) e i parametri di van Genuchten
+adattati alle coppie θ–ψ dello stesso sensore. La pagina calcola nel browser FS(t) = [c′ + (γ z cos²β + σₛ − u) tanφ′] / (γ z sinβ cosβ),
+con σₛ = Se·s (tetto prudenziale modificabile), β = 30°, z = 0,75 m verticale, c′ = 1 kPa, φ′ = 35°, γ = 17 kN/m³ (tutti modificabili),
+e la curva FS in funzione dell'altezza di falda sospesa. Il TEROS 21 non misura pressioni positive: FS da sola suzione è un limite superiore.

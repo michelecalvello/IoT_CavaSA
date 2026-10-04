@@ -225,12 +225,33 @@ for site in SITES:
     st["seasons"] = ss
     stats[site] = st
 
+# ---------------- potenziale matriciale a 60 cm e curva di ritenzione (per il fattore di sicurezza) ----------------
+from scipy.optimize import least_squares
+def vg_theta(s, tr, ts, a, n):                  # theta(s), s = suzione > 0 [kPa]
+    return tr + (ts - tr) * (1 + (a * s) ** n) ** (-(1 - 1 / n))
+slope = {}
+for site, cfgs in SITES.items():
+    st_ = cfgs["station"]
+    th = rawv(f"{st_}_VWC_060").loc[YEAR].resample("1h").mean()
+    ps = rawv(f"{st_}_PSI_060").loc[YEAR].resample("1h").median()
+    df = pd.concat([th, ps], axis=1, keys=["th", "psi"]).dropna()
+    df = df[df.psi < -0.05]; df["s"] = -df.psi
+    w = 1 / df.groupby(pd.cut(np.log10(df.s), np.linspace(-1.3, 3.5, 25)), observed=True).th.transform("size")
+    thmax = float(df.th.max())
+    f = lambda q: (vg_theta(df.s.values, q[0], q[1], 10 ** q[2], q[3]) - df.th.values) * np.sqrt(w.values)
+    r = least_squares(f, [0.03, thmax + 0.02, -1, 1.6], bounds=([0, thmax, -4, 1.05], [0.2, 0.6, 1.5, 6]))
+    tr, ts, la, n = [float(x) for x in r.x]
+    rmse = float(np.sqrt(np.mean((vg_theta(df.s.values, tr, ts, 10 ** la, n) - df.th.values) ** 2)))
+    pser = ps.loc["2025-02-01":].dropna()
+    slope[site] = {"vg": {"tr": round(tr, 4), "ts": round(ts, 4), "alpha": round(10 ** la, 4), "n": round(n, 3), "rmse": round(rmse, 4)},
+                   "t": [x.strftime("%Y-%m-%dT%H:%M") for x in pser.index], "psi": [round(float(x), 1) for x in pser.values]}
+
 out = {"generated": pd.Timestamp.now(tz="Etc/GMT-1").strftime("%Y-%m-%dT%H:%M:%S+01:00"),
        "params": {"gap_h": GAP_H, "min_P": MIN_P, "post_h": POST_H, "year": int(YEAR),
                   "bounds": {k: v["bounds"] for k, v in SITES.items()},
                   "depths": {k: v["depths"] for k, v in SITES.items()}},
        "events": EV.to_dict(orient="records"), "monthly": monthly, "depletion": depl, "dry_pts": dry_pts,
-       "daily": daily, "hourly": hourly, "stats": stats}
+       "daily": daily, "hourly": hourly, "stats": stats, "slope": slope}
 def clean(o):                                   # NaN non e' JSON valido -> null
     if isinstance(o, dict): return {k: clean(v) for k, v in o.items()}
     if isinstance(o, list): return [clean(v) for v in o]

@@ -127,6 +127,24 @@
   </section>
 
   <section class="panel">
+    <div class="panel-head"><h2>Stabilità del pendio indefinito (superficie di scorrimento a 75 cm)</h2></div>
+    <div class="ctrl" id="fsCtrl" style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin-bottom:10px">
+      <label>β (°)<br><input id="fsB" type="number" value="30" step="1" min="1" max="60" style="width:70px"></label>
+      <label>z verticale (m)<br><input id="fsZ" type="number" value="0.75" step="0.05" min="0.1" max="2" style="width:70px"></label>
+      <label>c′ (kPa)<br><input id="fsC" type="number" value="1" step="0.5" min="0" style="width:70px"></label>
+      <label>φ′ (°)<br><input id="fsF" type="number" value="35" step="1" min="10" max="50" style="width:70px"></label>
+      <label>γ (kN/m³)<br><input id="fsG" type="number" value="17" step="0.5" min="10" max="25" style="width:70px"></label>
+      <label>Tetto suction stress (kPa)<br><input id="fsCap" type="number" value="20" step="5" min="0" style="width:80px"></label>
+    </div>
+    <div id="fsKpis" class="kpis"></div>
+    <div id="chFS" class="plot"></div>
+    <p class="note">FS = [c′ + (γ z cos²β + σₛ − u) tanφ′] / (γ z sinβ cosβ), con σₛ = Se·s (suction stress; s = −ψ misurato a 60 cm, Se dalla curva di van Genuchten adattata alle coppie θ–ψ dello stesso sensore) e u = 0 finché non c'è falda. Profondità e spessore sono verticali (nessuna correzione cosβ sui sensori). Il tetto su σₛ è prudenziale: la curva adattata a NV (n≈1,13) fa crescere σₛ in modo irrealistico nei mesi secchi e il TEROS 21 è fuori specifica oltre −100 kPa. Sono utili i minimi nei periodi umidi, non i valori estivi.</p>
+    <div class="panel-head" style="margin-top:14px"><h3 style="margin:0;font-size:1rem">Cosa serve per arrivare a FS = 1: altezza di falda sulla superficie di scorrimento</h3></div>
+    <div id="chHw" class="plot"></div>
+    <p class="note">Con falda sospesa di altezza verticale h<sub>w</sub> sopra la superficie: u = γw·h<sub>w</sub>·cos²β, σₛ = 0. Il TEROS 21 non misura pressioni positive: dove la falda si forma, l'FS ricavato dalla sola suzione è un limite superiore (non conservativo).</p>
+  </section>
+
+  <section class="panel">
     <div class="panel-head"><h2>Letture principali</h2></div>
     <ul class="find" id="findings"></ul>
   </section>
@@ -224,7 +242,9 @@
     $("findings").innerHTML = f.map((x) => `<li>${x}</li>`).join("");
     const L = [
       "<b>Stoccaggio.</b> Calcolato dai VWC puntuali di tre sensori per sito, estesi agli strati interi: è una stima, non una misura. I 75 cm sono il limite inferiore dell'ultimo strato.",
-      "<b>Efficienza ΔS/P &gt; 1.</b> In diversi eventi grandi in NV l'incremento supera la pioggia misurata (fino a ~1,5). Cause possibili, non separabili con questi dati: sottostima dei pluviometri (vento, ~1,7–4 km di distanza dal sito), afflussi laterali o ruscellamento verso il sito, flusso preferenziale che bagna il sensore più del resto dello strato. Va letta come efficienza apparente.",
+      "<b>Efficienza ΔS/P &gt; 1.</b> In alcuni eventi grandi in NV l'incremento supera la pioggia misurata (fino a ~1,5). Con pendio indefinito e siti indipendenti (~15 m, sezioni parallele) non si può invocare un afflusso laterale. Restano: sottostima dei pluviometri (vento, 1,7–4 km di distanza), flusso preferenziale che bagna il sensore più del resto dello strato, e il fatto che lo stoccaggio è ricostruito da tre sensori puntuali. Va letta come efficienza apparente.",
+      "<b>Perdite P − ΔS.</b> Sono evapotraspirazione, ruscellamento superficiale (con 30° non trascurabile nei rovesci intensi) e acqua che dopo l'evento si ridistribuisce nello strato 75–100 cm non monitorato, fino al substrato impermeabile. Con θ(75–100) = θ60 lo stoccaggio nominale 0–100 cm in NV diventa 79–249 mm; l'efficienza di picco sale da 0,75 a 0,86 e la quota trattenuta da 0,39 a 0,53 (V resta 0,27). Il drenaggio verticale profondo è fermato dalla roccia: la perdita “in profondità” è quindi solo temporanea e può alimentare una falda sospesa.",
+      "<b>Geometria.</b> Sensori e spessore del suolo sono verticali, quindi gli spessori degli strati e il calcolo di S(t) non richiedono correzione per la pendenza; la profondità normale al pendio sarebbe z·cosβ.",
       "<b>Differenze NV/V.</b> Il confronto V/NV mescola effetto della vegetazione (intercettazione, assorbimento radicale) e differenze del terreno e dell'installazione dei sensori (V ha VWC massimi molto inferiori): non si possono attribuire solo alla vegetazione.",
       "<b>Pioggia di riferimento.</b> Media di 3 pluviometri a 1,7–4,1 km; nei temporali convettivi lo scarto fra pluviometri è grande (colonne “P min/max” nel CSV). Le intensità sono quelle della media e quindi attenuate.",
       "<b>Picco e acqua in transito.</b> Lo stoccaggio di picco può superare il riferimento “serbatoio pieno” (es. 23/12 in NV: ~212 mm contro 175): include acqua in transito che drena in poche ore. “Quanto resta” va letto su ΔS a fine finestra, non sul picco.",
@@ -419,9 +439,51 @@
     a.download = "analisi_eventi.csv"; a.click(); URL.revokeObjectURL(a.href);
   }
 
+  // -------------------------------------------------------------- stabilità
+  const rad = (d) => (d * Math.PI) / 180;
+  function fsParams() {
+    const v = (id) => parseFloat($(id).value);
+    return { b: rad(v("fsB")), z: v("fsZ"), c: v("fsC"), f: rad(v("fsF")), g: v("fsG"), cap: v("fsCap"), gw: 9.81 };
+  }
+  function fsSeries(site, P) {
+    const S = J.slope[site], q = S.vg;
+    const sg = P.g * P.z * Math.cos(P.b) ** 2, ta = P.g * P.z * Math.sin(P.b) * Math.cos(P.b);
+    const fs = S.psi.map((p) => {
+      const s = Math.max(-p, 0.01);
+      const Se = (q.tr + (q.ts - q.tr) * Math.pow(1 + Math.pow(q.alpha * s, q.n), -(1 - 1 / q.n)) - q.tr) / (q.ts - q.tr);
+      const ss = Math.min(Se * s, P.cap);
+      return (P.c + (sg + ss) * Math.tan(P.f)) / ta;
+    });
+    return { t: S.t, fs, sg, ta };
+  }
+  function chFS() {
+    const P = fsParams(), tr = [], kp = [];
+    ["NV", "V"].forEach((s) => {
+      const r = fsSeries(s, P);
+      let imin = 0; r.fs.forEach((x, i) => { if (x < r.fs[imin]) imin = i; });
+      tr.push({ type: "scattergl", mode: "lines", x: r.t, y: r.fs, name: SITE[s].name, line: { color: css(SITE[s].c), width: 1.4 },
+        hovertemplate: "%{x}<br>FS %{y:.2f}<extra>" + s + "</extra>" });
+      kp.push(`<div class="kpi"><div class="v"><span class="sw" style="background:${css(SITE[s].c)}"></span>${fmt(r.fs[imin], 2)}<small> FS minimo</small></div><div class="l">${SITE[s].name}: ${r.t[imin].replace("T", " ")} (UTC+1)</div></div>`);
+      if (s === "NV") { const c0 = (P.c + r.sg * Math.tan(P.f)) / r.ta, w = (r.sg - (r.ta - P.c) / Math.tan(P.f)) / (P.gw * Math.cos(P.b) ** 2);
+        kp.push(`<div class="kpi"><div class="v">${fmt(c0, 2)}<small> FS con ψ = 0, u = 0</small></div><div class="l">Terreno saturo senza pressione positiva</div></div>`);
+        kp.push(`<div class="kpi"><div class="v">${fmt(w * 100, 0)}<small> cm</small></div><div class="l">Altezza di falda sulla superficie che porta FS a 1</div></div>`); }
+    });
+    $("fsKpis").innerHTML = kp.join("");
+    tr.push({ type: "scatter", mode: "lines", x: [J.slope.NV.t[0], J.slope.NV.t.slice(-1)[0]], y: [1, 1], name: "FS = 1", line: { color: css("--muted"), dash: "dash", width: 1 }, hoverinfo: "skip" });
+    plot("chFS", tr, base({ yaxis: ax({ title: { text: "Fattore di sicurezza FS", font: { color: css("--text-2"), size: 12 } }, rangemode: "tozero" }), xaxis: ax({ type: "date" }), hovermode: "x unified" }));
+    // FS in funzione di hw
+    const hw = [], fh = [];
+    for (let h = 0; h <= 0.9; h += 0.01) { hw.push(h * 100);
+      const u = P.gw * h * Math.cos(P.b) ** 2; const sg = P.g * P.z * Math.cos(P.b) ** 2, ta = P.g * P.z * Math.sin(P.b) * Math.cos(P.b);
+      fh.push((P.c + Math.max(sg - u, 0) * Math.tan(P.f)) / ta); }
+    plot("chHw", [{ type: "scatter", mode: "lines", x: hw, y: fh, name: "FS", line: { color: css("--accent"), width: 2 } },
+      { type: "scatter", mode: "lines", x: [0, 90], y: [1, 1], name: "FS = 1", line: { color: css("--muted"), dash: "dash", width: 1 }, hoverinfo: "skip" }],
+      base({ xaxis: ax({ title: { text: "Altezza di falda hw sopra la superficie di scorrimento (cm, verticale)", font: { color: css("--text-2"), size: 12 } } }), yaxis: ax({ title: { text: "FS", font: { color: css("--text-2"), size: 12 } }, rangemode: "tozero" }) }));
+  }
+
   // -------------------------------------------------------------- avvio
   function renderAll() {
-    chStorage(); scatter(); chSeason(); chMonthly(); chDry(); chEvent();
+    chStorage(); scatter(); chSeason(); chMonthly(); chDry(); chEvent(); chFS();
   }
   async function init() {
     if (window.Plotly) {
@@ -442,6 +504,7 @@
     renderKpis(); renderText(); renderStats(); buildRows(); renderTable(); fillEvSel(); renderAll();
     $("xSel").onchange = $("ySel").onchange = $("logX").onchange = scatter;
     $("mSite").onchange = chMonthly; $("evSel").onchange = chEvent; $("csvBtn").onclick = exportCsv;
+    ["fsB", "fsZ", "fsC", "fsF", "fsG", "fsCap"].forEach((i) => { $(i).oninput = chFS; });
     $("themeBtn").onclick = () => {
       const dark = getComputedStyle(document.documentElement).colorScheme === "dark";
       document.documentElement.dataset.theme = dark ? "light" : "dark";
