@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Verticali · Monitoraggio CavaSA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<style>
+/* Layout: filtri in alto (verticale, grandezza, periodo); profilo verticale accanto alla lettura numerica; sotto, le serie nel tempo con pioggia e cursore. */
+:root{
+  --bg:#f3f6f7; --surface:#ffffff; --ink:#14232d; --ink2:#44586a; --muted:#6f8190;
+  --grid:#dfe7ec; --rule:#bccad3; --accent:#d2542a; --rain:#9db4c4; --glob:#8a4fb8;
+  --d0:#7cc0ee; --d1:#3f93cc; --d2:#1f65a3; --d3:#0b3b5e;
+  --font-display:"Newsreader",Georgia,"Times New Roman",serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-data:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1a21; --surface:#14232c; --ink:#e7eff4; --ink2:#a8bac6; --muted:#8195a2;
+  --grid:#22363f; --rule:#35505e; --accent:#ff8a5c; --rain:#4f6c7d; --glob:#c9a0ee;
+  --d0:#b4dcf4; --d1:#7fbbe6; --d2:#4f93cf; --d3:#3a78b5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1a21; --surface:#14232c; --ink:#e7eff4; --ink2:#a8bac6; --muted:#8195a2;
+  --grid:#22363f; --rule:#35505e; --accent:#ff8a5c; --rain:#4f6c7d; --glob:#c9a0ee;
+  --d0:#b4dcf4; --d1:#7fbbe6; --d2:#4f93cf; --d3:#3a78b5; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.crumb{margin:0 0 10px;font-size:13px}
+.crumb a,footer a{color:var(--ink2)}
+h1{font-family:var(--font-display);font-weight:600;font-size:clamp(26px,4.2vw,38px);line-height:1.1;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.panel{background:var(--surface);border:1px solid var(--grid);border-radius:6px;padding:16px}
+.filters{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+select,input[type=date]{font:inherit;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:6px 8px;max-width:100%;min-height:34px}
+select:hover,input[type=date]:hover{border-color:var(--ink2)}
+#sel-station{min-width:200px}#sel-var{min-width:250px}#sel-rain{min-width:250px}
+.filters .note{flex-basis:100%;margin:0}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:20px;align-items:start}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 6px;color:var(--ink2);font-size:12.5px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend svg{width:26px;height:10px;flex:none}
+#main svg,#strip svg{display:block;max-width:100%}
+#strip svg{touch-action:pan-y;cursor:ew-resize}
+svg text{font-family:var(--font-body);fill:var(--ink2);font-size:11.5px}
+svg .num{font-family:var(--font-data);fill:var(--ink);font-size:12px}
+svg .lab{paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+svg .ttl{fill:var(--muted);font-size:11.5px}
+svg .msg{font-size:13px;fill:var(--ink2)}
+.state{padding:40px 8px;text-align:center;color:var(--ink2)}
+.read{display:flex;flex-direction:column;gap:14px}
+.clock{font-family:var(--font-data);font-variant-numeric:tabular-nums}
+.clock .day{font-size:13px;color:var(--ink2);display:block}
+.clock .hm{font-size:38px;font-weight:500;line-height:1.1;letter-spacing:-.02em}
+.clock .tz{font-size:12px;color:var(--muted);margin-left:6px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th{font-weight:500;font-size:11.5px;text-align:right;color:var(--muted);padding:0 0 6px;letter-spacing:.03em;text-transform:uppercase}
+th:first-child,td:first-child{text-align:left}
+td{padding:7px 0;border-top:1px solid var(--grid);text-align:right;font-family:var(--font-data);font-size:13px}
+td:first-child{font-family:var(--font-body);color:var(--ink2)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:-1px}
+.note{color:var(--muted);font-size:12px;margin:0}
+.rainbox{border-top:1px solid var(--grid);padding-top:12px}
+.rainbox h2{margin:0 0 6px;font-family:var(--font-body);font-weight:500;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.rainbox td:first-child{font-size:13px}
+.sw.bar{border-radius:1px;width:10px;height:10px}
+.ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
+button{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--ink2)}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+#play{min-width:96px;font-weight:500}
+.seg{display:inline-flex;flex-wrap:wrap}
+.seg button{border-radius:0;margin-left:-1px}
+.seg button:first-child{border-radius:4px 0 0 4px;margin-left:0}
+.seg button:last-child{border-radius:0 4px 4px 0}
+.seg-l{font-size:12px;color:var(--muted)}
+#scrub{width:100%;accent-color:var(--accent);margin:6px 0 0}
+footer{color:var(--muted);font-size:12px;max-width:84ch}
+@media (max-width:780px){.stage{grid-template-columns:minmax(0,1fr)}.panel{padding:12px}#sel-station,#sel-var,#sel-rain{min-width:0;width:100%}.field:nth-child(-n+3){flex-basis:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="crumb"><a href="./">← Portale dei dati di monitoraggio</a></p>
+    <h1>Animazioni per verticale, con pioggia oraria</h1>
+  </header>
+
+  <section class="panel filters" aria-label="Scelta dei dati">
+    <div class="field"><label for="sel-station">Verticale</label><select id="sel-station" disabled></select></div>
+    <div class="field"><label for="sel-var">Grandezza</label><select id="sel-var" disabled></select></div>
+    <div class="field"><label for="sel-rain">Pluviometro</label><select id="sel-rain" disabled></select></div>
+    <div class="field"><label for="d-from">Dal</label><input type="date" id="d-from" disabled></div>
+    <div class="field"><label for="d-to">Al</label><input type="date" id="d-to" disabled></div>
+    <p class="note" id="avail"></p>
+  </section>
+
+  <section class="panel">
+    <div class="ctrl">
+      <button id="play" type="button" disabled>Pausa</button>
+      <span class="seg-l">Velocità</span>
+      <span class="seg" id="speeds" role="group" aria-label="Velocità"></span>
+    </div>
+    <div id="strip"></div>
+    <input id="scrub" type="range" min="0" max="1" step="1" value="0" aria-label="Istante nel periodo scelto" disabled>
+  </section>
+
+  <section class="stage">
+    <div class="panel">
+      <div class="legend" aria-hidden="true">
+        <span><svg viewBox="0 0 26 10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--ink)" stroke-width="2.5"/></svg>Profilo attuale</span>
+        <span><svg viewBox="0 0 26 10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--ink)" stroke-width="1.8" stroke-dasharray="7 3" opacity=".6"/></svg>Minimo del periodo</span>
+        <span><svg viewBox="0 0 26 10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--ink)" stroke-width="1.8" stroke-dasharray="2 3" opacity=".6"/></svg>Massimo del periodo</span>
+        <span><svg viewBox="0 0 26 10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--glob)" stroke-width="1.8" stroke-dasharray="7 3" opacity=".85"/></svg>Minimo della serie di dati</span>
+        <span><svg viewBox="0 0 26 10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--glob)" stroke-width="1.8" stroke-dasharray="2 3" opacity=".85"/></svg>Massimo della serie di dati</span>
+        <span><svg viewBox="0 0 26 10"><line x1="0" y1="5" x2="26" y2="5" stroke="var(--ink)" stroke-width="1.6" opacity=".22"/></svg>Istanti appena trascorsi</span>
+        <span><svg viewBox="0 0 26 10"><rect x="3" y="0" width="8" height="10" fill="var(--rain)"/><rect x="14" y="0" width="8" height="6" fill="var(--rain)"/></svg>Pioggia oraria in superficie</span>
+        <span><svg viewBox="0 0 26 10"><rect x="9" y="0" width="8" height="10" fill="var(--accent)"/></svg>Ora in corso</span>
+      </div>
+      <div id="main"><div class="state">Carico i dati…</div></div>
+    </div>
+
+    <aside class="panel read">
+      <div class="clock" aria-live="off"><span class="day" id="clk-day">—</span><span class="hm" id="clk-hm">--:--</span><span class="tz">UTC+1</span></div>
+      <table>
+        <thead><tr><th>Profondità</th><th id="th-unit">valore</th><th>Δ dall'inizio</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="rainbox">
+        <h2>Pioggia in superficie</h2>
+        <table>
+          <thead><tr><th>Intervallo</th><th>mm</th></tr></thead>
+          <tbody id="rrows"></tbody>
+        </table>
+      </div>
+      <p class="note" id="rnote"></p>
+    </aside>
+  </section>
+
+  <footer id="foot">
+    Dati letti direttamente dal repository <a href="https://github.com/michelecalvello/IoT_CavaSA">IoT_CavaSA</a>: <code>catalog.json</code> e le serie orarie in <code>data/agg/</code> (medie orarie del dato originale; le ore con meno della metà dei dati e i valori scartati dal controllo di qualità non sono inclusi). Sensori: Università di Salerno (stazioni Salerno Meter NV e V, METER TEROS 10 e TEROS 21). Pioggia: pluviometri 21521 Cologna, 18925 Pellezzano e 18957 Salerno Genio Civile, Centro Funzionale Multirischi della Protezione Civile, Regione Campania; somme giornaliere nella serie nel tempo, somme orarie (<code>data/agg/CF_&lt;codice&gt;_RAIN_1h.csv</code>, ore con almeno metà dei minuti disponibili) in superficie nel profilo animato; di default la media dei tre pluviometri. Orari in UTC+1.
+  </footer>
+</div>
+
+<script>
+(function(){
+var NS="http://www.w3.org/2000/svg";
+var MESI=["gen","feb","mar","apr","mag","giu","lug","ago","set","ott","nov","dic"];
+var HOUR=3600000,DAY=86400000;
+var SPEEDS=[{h:2,l:"2 h/s"},{h:6,l:"6 h/s"},{h:24,l:"1 g/s"},{h:168,l:"7 g/s"},{h:720,l:"30 g/s"}];
+var SHADE={1:[2],2:[0,3],3:[0,1,3],4:[0,1,2,3]};
+var VARDEC={vwc:3,psi:1,t_soil:1};   /* grandezze mostrate e decimali */
+var GAUGES=["CF_21521","CF_18925","CF_18957"];   /* pluviometri: data/agg/<id>_RAIN_1h.csv (condizione al contorno in superficie) e _1d.csv */
+var RAIN_SRC="mean";                             /* "mean" = media dei pluviometri, oppure l'id di un pluviometro */
+var RWIN=[24,48,96,168,336,720];                 /* finestre (ore) della fascia di pioggia */
+var RBLK=[1,2,3,4,6,8,12,24];                    /* ore raggruppate per barra, quando la finestra è lunga */
+var RSCALE=[1,2,5,10,20,50,100];                 /* fondo scala della fascia (mm/h) */
+var RBAND=40;                                    /* altezza della fascia (px) */
+
+var CAT=null,RAIN=null,RH=null,RG={},DOCS={};
+var st={key:"SAL_NV",vk:"vwc",vars:{},stName:"",doc:null,V:null,A:[],depths:[],fv:0,lv:0,s0:0,s1:0,L:0,
+        lo:0,hi:1,log:false,ticks:[],tdec:0,base:[],empty:true};
+var pos=0,playing=false,speed=6,raf=0,lastT=0;
+var M={},S={};
+var def={from:"2025-10-15",to:"2025-12-01"};
+
+function $(id){return document.getElementById(id);}
+function el(p,tag,a,txt){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;if(p)p.appendChild(e);return e;}
+function h(tag,props,txt){var e=document.createElement(tag);for(var k in props)e.setAttribute(k,props[k]);if(txt!=null)e.textContent=txt;return e;}
+function fmt(v,d){return v.toFixed(d).replace(".",",");}
+function fmtD(v,d){return (v>=0?"+":"−")+Math.abs(v).toFixed(d).replace(".",",");}
+function z2(n){return ("0"+n).slice(-2);}
+function dstr(ms){var d=new Date(ms);return d.getUTCFullYear()+"-"+z2(d.getUTCMonth()+1)+"-"+z2(d.getUTCDate());}
+function dlong(ms){var d=new Date(ms);return d.getUTCDate()+" "+MESI[d.getUTCMonth()]+" "+d.getUTCFullYear();}
+function pathOf(pts){return pts.length?"M"+pts.map(function(q){return q[0].toFixed(1)+" "+q[1].toFixed(1);}).join("L"):"";}
+function colorOf(j,n){return "var(--d"+SHADE[Math.min(4,n)][j]+")";}
+function getText(u){return fetch(u).then(function(r){if(!r.ok)throw new Error(u+" "+r.status);return r.text();});}
+function fixUnit(u){return String(u).replace("m3/m3","m³/m³");}
+
+/* ---------- lettura diretta dei file del repository ---------- */
+function parseCSV(txt,minCov){
+  var lines=txt.split("\n"),hd=lines[0].trim().split(","),iv=hd.indexOf("value"),ic=hd.indexOf("coverage"),out=[];
+  for(var i=1;i<lines.length;i++){var l=lines[i];if(!l)continue;var c=l.split(",");
+    if(c[iv]===""||c[iv]===undefined)continue;
+    if(ic>=0&&parseFloat(c[ic])<minCov)continue;
+    var s=c[0];
+    out.push([Date.UTC(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10),+s.slice(11,13)||0,+s.slice(14,16)||0),parseFloat(c[iv])]);}
+  return out;
+}
+function varsOf(key){
+  var out={};
+  Object.keys(VARDEC).forEach(function(vk){
+    var ser=CAT.series.filter(function(s){return s.station_id===key&&s.variable===vk&&s.data&&s.data.agg_1h;});
+    if(!ser.length)return;
+    var meta=CAT.variables[vk]||{};
+    out[vk]={label:meta.label_it||vk,unit:fixUnit(meta.unit||""),dec:VARDEC[vk],sensor:ser[0].sensor_model,
+      series:ser.map(function(s){return {depth:Math.round(s.depth_m*100),file:s.data.agg_1h,id:s.series_id};})
+                .sort(function(a,b){return a.depth-b.depth;})};
+  });
+  return out;
+}
+function stationList(){
+  var out=[];
+  CAT.stations.forEach(function(s){
+    if(s.kind==="grid")return;
+    if(Object.keys(varsOf(s.station_id)).length)out.push({key:s.station_id,name:s.name});});
+  return out;
+}
+function loadVar(key,vk){
+  var id=key+"|"+vk;if(DOCS[id])return Promise.resolve(DOCS[id]);
+  var V=st.vars[vk];
+  return Promise.all(V.series.map(function(s){return getText(s.file).then(function(t){return parseCSV(t,0.5);});})).then(function(all){
+    var tmin=1e18,tmax=-1e18,i;
+    all.forEach(function(rows){for(i=0;i<rows.length;i++){if(rows[i][0]<tmin)tmin=rows[i][0];if(rows[i][0]>tmax)tmax=rows[i][0];}});
+    if(tmax<tmin)throw new Error("nessun dato");
+    var n=Math.round((tmax-tmin)/HOUR)+1;
+    var A=all.map(function(rows){var a=new Array(n),k;for(k=0;k<n;k++)a[k]=NaN;
+      rows.forEach(function(r){a[Math.round((r[0]-tmin)/HOUR)]=(vk==="psi")?Math.max(Math.abs(r[1]),0.01):r[1];});return a;});
+    var doc={t0:tmin,n:n,A:A,depths:V.series.map(function(s){return s.depth;})};
+    DOCS[id]=doc;return doc;});
+}
+/* Serie regolare su una griglia di passo `step` (ora o giorno): Float64Array con NaN dove manca il dato. */
+function gridOf(rows,step){
+  if(!rows.length)return null;
+  var t0=rows[0][0],n=Math.round((rows[rows.length-1][0]-t0)/step)+1,v=new Float64Array(n),i;
+  for(i=0;i<n;i++)v[i]=NaN;
+  rows.forEach(function(r){v[Math.round((r[0]-t0)/step)]=r[1];});
+  return {t0:t0,n:n,v:v};
+}
+/* Unisce i pluviometri scelti: media dei valori disponibili in ogni ora (o giorno), NaN se nessuno ha il dato. */
+function combine(ids,k,step){
+  var gs=ids.map(function(id){return RG[id]&&RG[id][k];}).filter(Boolean);
+  if(!gs.length)return null;
+  var t0=1e18,t1=-1e18,i,n,sum,cnt,v;
+  gs.forEach(function(g){if(g.t0<t0)t0=g.t0;var e=g.t0+(g.n-1)*step;if(e>t1)t1=e;});
+  n=Math.round((t1-t0)/step)+1;sum=new Float64Array(n);cnt=new Int32Array(n);v=new Float64Array(n);
+  gs.forEach(function(g){var off=Math.round((g.t0-t0)/step);
+    for(i=0;i<g.n;i++){var x=g.v[i];if(!isNaN(x)){sum[off+i]+=x;cnt[off+i]++;}}});
+  for(i=0;i<n;i++)v[i]=cnt[i]?sum[i]/cnt[i]:NaN;
+  return {t0:t0,n:n,v:v};
+}
+/* RH: pioggia oraria (mm/h) per le animazioni; RAIN: pioggia giornaliera (mm) per la serie nel tempo. */
+function setRain(){
+  var ids=RAIN_SRC==="mean"?GAUGES:[RAIN_SRC],D=combine(ids,"d",DAY),H=combine(ids,"h",HOUR),i;
+  if(!D)throw new Error("nessun dato di pioggia");
+  var v=new Array(D.n);for(i=0;i<D.n;i++)v[i]=isNaN(D.v[i])?null:D.v[i];
+  RAIN={t0:D.t0,scale:1,v:v};
+  RH=H;
+}
+function loadRain(){
+  return Promise.all(GAUGES.map(function(id){
+    return Promise.all([getText("data/agg/"+id+"_RAIN_1h.csv"),getText("data/agg/"+id+"_RAIN_1d.csv")]).then(function(tt){
+      RG[id]={h:gridOf(parseCSV(tt[0],0.5),HOUR),d:gridOf(parseCSV(tt[1],0.5),DAY)};});
+  })).then(setRain);
+}
+function gaugeName(id){
+  var o=CAT.stations.filter(function(s){return s.station_id===id;})[0];return o?o.name:id;
+}
+function rainLabel(){
+  return RAIN_SRC==="mean"?"media dei tre pluviometri del Centro Funzionale":"pluviometro "+gaugeName(RAIN_SRC);
+}
+function fillRain(){
+  var s=$("sel-rain");s.textContent="";
+  s.appendChild(h("option",{value:"mean"},"Media dei 3 pluviometri CF"));
+  GAUGES.forEach(function(id){s.appendChild(h("option",{value:id},gaugeName(id)));});
+  s.value=RAIN_SRC;s.disabled=false;
+}
+/* Indice orario i relativo a doc.t0 → pioggia (mm in quell'ora), NaN se manca */
+function rainH(i){
+  if(!RH)return NaN;
+  var k=st.roff+i;return (k>=0&&k<RH.n)?RH.v[k]:NaN;
+}
+/* Somme cumulate (e conteggio ore mancanti) sull'intera linea del tempo del documento, per totali istantanei */
+function prepRain(doc){
+  if(doc.RP||!RH)return;
+  var n=doc.n,P=new Float64Array(n+1),Mi=new Int32Array(n+1),i,r,off=Math.round((doc.t0-RH.t0)/HOUR);
+  for(i=0;i<n;i++){var k=off+i;r=(k>=0&&k<RH.n)?RH.v[k]:NaN;
+    P[i+1]=P[i]+(isNaN(r)?0:r);Mi[i+1]=Mi[i]+(isNaN(r)?1:0);}
+  doc.RP=P;doc.RM=Mi;
+}
+/* Totale sulle ore [a,b] incluse: {s,miss,n} */
+function rsum(a,b){
+  var d=st.doc;if(!d.RP)return null;
+  a=Math.max(0,a);b=Math.min(d.n-1,b);if(b<a)return null;
+  return {s:d.RP[b+1]-d.RP[a],miss:d.RM[b+1]-d.RM[a],n:b-a+1};
+}
+function fmtR(o,dec){
+  if(!o||o.miss>=o.n)return "n.d.";
+  return (o.miss?"≥ ":"")+fmt(o.s,dec);
+}
+function rainWin(){var want=speed*3,i;for(i=0;i<RWIN.length;i++)if(RWIN[i]>=want)return RWIN[i];return RWIN[RWIN.length-1];}
+function fmtSpan(hrs){if(hrs<48)return hrs+" h";var d=hrs/24;return fmt(d,d%1?1:0)+" g";}
+function lastSpan(hrs){return (hrs<48?"ultime ":"ultimi ")+fmtSpan(hrs);}
+function rrect(x,y,w,hh){return "M"+x.toFixed(1)+" "+y.toFixed(1)+"h"+w.toFixed(1)+"v"+hh.toFixed(1)+"h-"+w.toFixed(1)+"Z";}
+
+/* ---------- valori ---------- */
+function val(j,p){
+  var g=st.s0+p,i=Math.floor(g),f=g-i,A=st.A[j];
+  var a=A[i];if(f<1e-9||i>=st.s1)return a;
+  var b=A[i+1];return (isNaN(a)||isNaN(b))?NaN:a*(1-f)+b*f;
+}
+function fx(v,d){
+  if(d.log){var lo=Math.log(d.lo),hi=Math.log(d.hi);return (Math.log(Math.max(v,d.lo*0.5))-lo)/(hi-lo);}
+  return (v-d.lo)/(d.hi-d.lo);
+}
+function niceStep(raw){var e=Math.pow(10,Math.floor(Math.log10(raw))),f=raw/e;return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*e;}
+function decOf(step){var d=0;while(Math.abs(step*Math.pow(10,d)-Math.round(step*Math.pow(10,d)))>1e-9&&d<6)d++;return d;}
+/* Dominio di un asse: {log, lo, hi, ticks, tdec}. Si usano due domini: uno sul periodo
+   scelto (andamento nel tempo) e uno più ampio che include minimo e massimo della serie (profilo). */
+function makeDomain(vmin,vmax){
+  var key=st.vk,d={log:(key==="psi"),ticks:[],tdec:0};
+  if(d.log){
+    var lo=Math.pow(10,Math.floor(Math.log10(vmin))),hi=Math.pow(10,Math.ceil(Math.log10(vmax)));
+    if(hi<=lo)hi=lo*10;d.lo=lo;d.hi=hi;
+    var dec=Math.round(Math.log10(hi/lo)),mult=dec<=2?[1,2,5]:[1];
+    for(var k=Math.round(Math.log10(lo));k<=Math.round(Math.log10(hi));k++)
+      mult.forEach(function(m){var v=m*Math.pow(10,k);if(v>=lo*0.999&&v<=hi*1.001)d.ticks.push(v);});
+    return d;
+  }
+  if(vmax-vmin<1e-9){var pd=Math.abs(vmin)*0.02||0.5;vmin-=pd;vmax+=pd;}
+  var pad=(vmax-vmin)*0.08,a=vmin-pad,b=vmax+pad;
+  var step=niceStep((b-a)/4);
+  var lo2=Math.floor(a/step+1e-9)*step,hi2=Math.ceil(b/step-1e-9)*step;
+  if(key==="vwc")lo2=Math.max(lo2,0);
+  d.lo=lo2;d.hi=hi2;d.tdec=decOf(step);
+  for(var v=lo2;v<=hi2+step*1e-6;v+=step)d.ticks.push(Math.round(v*1e8)/1e8);
+  return d;
+}
+function tickLabel(v,d){return d.log?String(v).replace(".",","):fmt(v,d.tdec);}
+
+/* ---------- selezione ---------- */
+function showState(msg){
+  $("main").textContent="";$("main").appendChild(h("div",{"class":"state"},msg));
+  $("strip").textContent="";
+}
+function fillStations(){
+  var s=$("sel-station");s.textContent="";
+  stationList().forEach(function(o){s.appendChild(h("option",{value:o.key},o.name));});
+  s.value=st.key;s.disabled=false;
+}
+function fillVars(){
+  var s=$("sel-var");s.textContent="";var keys=Object.keys(st.vars);
+  keys.forEach(function(k){var v=st.vars[k];
+    s.appendChild(h("option",{value:k},v.label+" ("+v.unit+(v.sensor?" · "+v.sensor:"")+")"));});
+  if(!st.vars[st.vk])st.vk=keys[0];
+  s.value=st.vk;s.disabled=keys.length<2;
+}
+function chooseStation(key){
+  st.key=key;st.vars=varsOf(key);
+  var o=stationList().filter(function(s){return s.key===key;})[0];st.stName=o?o.name:key;
+  fillVars();return applyVar();
+}
+function applyVar(){
+  var key=st.key,vk=st.vk;
+  setPlaying(false);showState("Carico i dati di "+st.stName+"…");
+  return loadVar(key,vk).then(function(doc){
+    if(key!==st.key||vk!==st.vk)return;
+    st.doc=doc;st.V=st.vars[vk];st.depths=doc.depths;st.A=doc.A;
+    st.roff=RH?Math.round((doc.t0-RH.t0)/HOUR):0;prepRain(doc);
+    var fv=1e9,lv=-1;
+    st.A.forEach(function(a){var i,k;
+      for(i=0;i<a.length;i++)if(!isNaN(a[i])){if(i<fv)fv=i;break;}
+      for(k=a.length-1;k>=0;k--)if(!isNaN(a[k])){if(k>lv)lv=k;break;}});
+    st.fv=fv;st.lv=lv;
+    /* minimo e massimo dell'intera serie di dati (medie orarie), per ogni profondità */
+    st.gmin=[];st.gmax=[];st.gall=[1e18,-1e18];
+    st.A.forEach(function(a){var lo=NaN,hi=NaN;
+      for(var i=0;i<a.length;i++){var v=a[i];if(!isNaN(v)){if(isNaN(lo)||v<lo)lo=v;if(isNaN(hi)||v>hi)hi=v;}}
+      st.gmin.push(lo);st.gmax.push(hi);
+      if(lo<st.gall[0])st.gall[0]=lo;if(hi>st.gall[1])st.gall[1]=hi;});
+    var dmin=dstr(doc.t0+fv*HOUR),dmax=dstr(doc.t0+lv*HOUR);
+    var f=$("d-from"),t=$("d-to");
+    f.min=t.min=dmin;f.max=t.max=dmax;f.disabled=t.disabled=false;
+    if(!f.value)f.value=def.from;if(!t.value)t.value=def.to;
+    /* riporta le date dentro il periodo disponibile, mantenendo la durata */
+    var a=f.value,b=t.value;
+    if(a>b){var x=a;a=b;b=x;}
+    var span=Math.round((Date.parse(b)-Date.parse(a))/DAY);
+    if(a<dmin){a=dmin;b=dstr(Date.parse(a)+span*DAY);}
+    if(b>dmax){b=dmax;a=dstr(Math.max(Date.parse(dmin),Date.parse(b)-span*DAY));}
+    if(a<dmin)a=dmin;if(b<a)b=a;
+    f.value=a;t.value=b;
+    st.avail="Dati disponibili per questa grandezza: dal "+dlong(Date.parse(dmin))+" al "+dlong(Date.parse(dmax))+
+      " · profondità "+st.depths.join(", ")+" cm"+(st.V.sensor?" · sensori "+st.V.sensor:"")+".";
+    applyRange();
+  }).catch(function(e){
+    if(window.console)console.error(e);
+    if(key===st.key&&vk===st.vk)showState("Non riesco a leggere questi dati dal repository. Riprova tra poco.");
+  });
+}
+function applyRange(){
+  setPlaying(false);
+  var doc=st.doc,f=$("d-from").value,t=$("d-to").value;
+  if(!f||!t)return;
+  if(f>t){var x=f;f=t;t=x;$("d-from").value=f;$("d-to").value=t;}
+  var s0=Math.round((Date.parse(f)-doc.t0)/HOUR),s1=Math.round((Date.parse(t)+23*HOUR-doc.t0)/HOUR);
+  s0=Math.max(s0,st.fv);s1=Math.min(s1,st.lv);
+  st.s0=s0;st.s1=s1;st.L=s1-s0;
+  var vmin=1e18,vmax=-1e18,cov=[],base=[],jmin=[],jmax=[];
+  st.A.forEach(function(a,j){var c=0,b=NaN,lo=NaN,hi=NaN;
+    for(var i=s0;i<=s1;i++){var v=a[i];if(!isNaN(v)){c++;if(isNaN(b))b=v;if(v<vmin)vmin=v;if(v>vmax)vmax=v;
+      if(isNaN(lo)||v<lo)lo=v;if(isNaN(hi)||v>hi)hi=v;}}
+    cov.push(c/Math.max(1,s1-s0+1));base.push(b);jmin.push(lo);jmax.push(hi);});
+  st.base=base;st.jmin=jmin;st.jmax=jmax;st.empty=(st.L<1||vmax<vmin);
+  /* fondo scala della fascia di pioggia: fisso sul periodo scelto, così le intensità restano confrontabili */
+  var rmx=0,rn_=0,ri_;
+  for(ri_=s0;ri_<=s1;ri_++){var rr=rainH(ri_);if(!isNaN(rr)){rn_++;if(rr>rmx)rmx=rr;}}
+  st.rainAny=rn_>0;st.rmax=rmx;st.rscale=RSCALE[RSCALE.length-1];
+  for(ri_=0;ri_<RSCALE.length;ri_++)if(RSCALE[ri_]>=rmx){st.rscale=RSCALE[ri_];break;}
+  $("th-unit").textContent=(st.vk==="psi"?"|ψ| kPa":st.V.unit);
+  var rn="Il profilo unisce con segmenti rettilinei i sensori che hanno un dato in quell'istante. Sopra e sotto i sensori non ci sono misure. Minimo e massimo del periodo sono calcolati per ogni profondità sul periodo scelto; minimo e massimo della serie di dati su tutti i dati disponibili per quella profondità (medie orarie). L'asse del profilo è esteso per mostrarli.";
+  if(st.vk==="psi")rn+=" Il grafico mostra la suzione |ψ|, cioè il valore assoluto del potenziale matriciale, in scala logaritmica.";
+  rn+=" In alto, sopra la superficie, le barre capovolte sono la pioggia oraria ("+rainLabel()+", condizione al contorno): scorrono con l'animazione, l'ora in corso è a destra (in colore). La finestra si allunga con la velocità; quando le ore sono più delle barre disponibili, ogni barra mostra il massimo orario del blocco. L'altezza delle barre è in scala a radice quadrata (per vedere anche le piogge deboli) con fondo scala fisso sul periodo scelto. Un tratto sottile in alto segna le ore senza dato; i totali a destra con «≥» sono parziali per ore mancanti.";
+  $("rnote").textContent=rn;
+  $("avail").textContent=st.avail+" Copertura dei dati nel periodo scelto: "+
+    st.depths.map(function(d,j){return d+" cm "+Math.round(cov[j]*100)+" %";}).join(" · ")+".";
+  buildRows();
+  if(st.empty){
+    showState("Nessun dato valido nel periodo scelto. Scegli date comprese tra "+dlong(doc.t0+st.fv*HOUR)+" e "+dlong(doc.t0+st.lv*HOUR)+".");
+    ["play","scrub"].forEach(function(i){$(i).disabled=true;});
+    $("clk-day").textContent="—";$("clk-hm").textContent="--:--";return;
+  }
+  st.dP=makeDomain(vmin,vmax);
+  st.dG=makeDomain(Math.min(vmin,st.gall[0]),Math.max(vmax,st.gall[1]));
+  pos=0;
+  var best=2,bd=1e18;SPEEDS.forEach(function(sp){var d=Math.abs(Math.log((st.L/sp.h)/15));if(d<bd){bd=d;best=sp.h;}});
+  speed=best;buildSpeeds();
+  $("scrub").max=st.L;$("scrub").disabled=false;$("play").disabled=false;
+  build();
+  setPlaying(false);   /* l'animazione parte solo con "Riproduci" */
+}
+
+/* ---------- grafico del profilo ---------- */
+function buildMain(){
+  var host=$("main");host.textContent="";
+  var W=Math.max(260,host.clientWidth||520);
+  var m={l:52,r:20,t:34+RBAND+18,b:50};          /* in alto: titolo, fascia di pioggia, righe delle etichette */
+  var H=Math.round(Math.min(340,Math.max(290,W*0.5)))+(m.t-34);
+  var bt=24,bb=bt+RBAND;
+  var svg=el(host,"svg",{width:W,height:H,viewBox:"0 0 "+W+" "+H,role:"img","aria-label":"Profilo del valore misurato in funzione della profondità, animato nel tempo"});
+  var maxD=Math.max.apply(null,st.depths),y1=Math.ceil((maxD+5)/10)*10;
+  var D=st.dG;   /* asse ampio: comprende anche minimo e massimo della serie di dati */
+  var X=function(v){return m.l+fx(v,D)*(W-m.l-m.r);};
+  var Y=function(d){return m.t+d/y1*(H-m.t-m.b);};
+  D.ticks.forEach(function(v){var x=X(v);
+    el(svg,"line",{x1:x,x2:x,y1:Y(0),y2:Y(y1),stroke:"var(--grid)","stroke-width":1});
+    el(svg,"text",{x:x,y:Y(y1)+16,"text-anchor":"middle","class":"num"},tickLabel(v,D));});
+  [0].concat(st.depths).forEach(function(d){
+    el(svg,"line",{x1:m.l,x2:W-m.r,y1:Y(d),y2:Y(d),stroke:d===0?"var(--ink2)":"var(--rule)","stroke-width":d===0?2:1,"stroke-dasharray":d===0?"":"2 4"});
+    el(svg,"text",{x:m.l-8,y:Y(d)+4,"text-anchor":"end","class":"num"},String(d));});
+  if(W>=520)el(svg,"text",{x:W-m.r,y:Y(0)+16,"text-anchor":"end","class":"ttl"},"superficie");
+  var tyc=(Y(0)+Y(y1))/2;
+  el(svg,"text",{x:13,y:tyc,"text-anchor":"middle","class":"ttl",transform:"rotate(-90 13 "+tyc+")"},"Profondità (cm)");
+  /* fascia della pioggia oraria: idrogramma capovolto, le barre «cadono» verso la superficie del terreno */
+  var rsc=st.rscale,bw=W-m.l-m.r;
+  el(svg,"line",{x1:m.l,x2:W-m.r,y1:bb,y2:bb,stroke:"var(--grid)","stroke-width":1});
+  el(svg,"line",{x1:(m.l+W-m.r)/2,x2:(m.l+W-m.r)/2,y1:bt,y2:bb,stroke:"var(--grid)","stroke-width":1,"stroke-dasharray":"2 3"});
+  var rmiss=el(svg,"path",{fill:"var(--rule)",opacity:.9});
+  var rpast=el(svg,"path",{fill:"var(--rain)"});
+  var rcur=el(svg,"path",{fill:"var(--accent)"});
+  el(svg,"line",{x1:m.l,x2:W-m.r,y1:bt,y2:bt,stroke:"var(--ink2)","stroke-width":1.5});
+  el(svg,"line",{x1:W-m.r,x2:W-m.r,y1:bt-2,y2:bb,stroke:"var(--accent)","stroke-width":1.5});
+  el(svg,"text",{x:m.l-8,y:bt+4,"text-anchor":"end","class":"num"},"0");
+  el(svg,"text",{x:m.l-8,y:bb+4,"text-anchor":"end","class":"num"},String(rsc));
+  /* tacche intermedie (scala a radice quadrata), solo se restano ben separate */
+  var lastPx=0;
+  [1,2,5,10,20,50].forEach(function(tv){
+    if(tv>=rsc)return;
+    var px=Math.sqrt(tv/rsc)*RBAND;
+    if(px-lastPx<12||RBAND-px<12)return;
+    lastPx=px;
+    el(svg,"line",{x1:m.l,x2:W-m.r,y1:bt+px,y2:bt+px,stroke:"var(--grid)","stroke-width":1,"stroke-dasharray":"1 3"});
+    el(svg,"text",{x:m.l-8,y:bt+px+4,"text-anchor":"end","class":"num"},String(tv));});
+  var rtitle=el(svg,"text",{x:m.l,y:13,"class":"ttl"},"");
+  var rnow=el(svg,"text",{x:W-m.r,y:13,"text-anchor":"end","class":"num"},"");
+  var tl0=el(svg,"text",{x:m.l,y:bb+14,"text-anchor":"start","class":"ttl"},"");
+  var tl1=el(svg,"text",{x:(m.l+W-m.r)/2,y:bb+14,"text-anchor":"middle","class":"ttl"},"");
+  el(svg,"text",{x:W-m.r,y:bb+14,"text-anchor":"end","class":"ttl"},"ora");
+  var rmsg=el(svg,"text",{x:(m.l+W-m.r)/2,y:bt+RBAND/2+4,"text-anchor":"middle","class":"msg"},st.rainAny?"":"Pioggia oraria non disponibile nel periodo scelto");
+  var xt=st.vk==="psi"?"Suzione |ψ| (kPa, scala logaritmica)":st.V.label+" ("+st.V.unit+")";
+  el(svg,"text",{x:(m.l+W-m.r)/2,y:H-8,"text-anchor":"middle","class":"ttl"},xt);
+  var n=st.depths.length;
+  /* minimo/massimo della serie di dati (colore --glob) e del periodo (inchiostro): stessi tratteggi */
+  [[st.gmin,"7 3","var(--glob)",.85],[st.gmax,"2 3","var(--glob)",.85],
+   [st.jmin,"7 3","var(--ink)",.6],[st.jmax,"2 3","var(--ink)",.6]].forEach(function(e){
+    var ep=[];st.depths.forEach(function(d,j){if(!isNaN(e[0][j]))ep.push([X(e[0][j]),Y(d)]);});
+    el(svg,"path",{d:ep.length>1?pathOf(ep):"",fill:"none",stroke:e[2],"stroke-width":1.8,"stroke-dasharray":e[1],opacity:e[3],"stroke-linejoin":"round"});});
+  M={svg:svg,X:X,Y:Y,W:W,H:H,m:m,trail:[],cur:null,dots:[],labs:[],msg:null,
+     band:{top:bt,bot:bb,h:RBAND},rmiss:rmiss,rpast:rpast,rcur:rcur,rtitle:rtitle,rnow:rnow,tl0:tl0,tl1:tl1,lastWin:0,lastK:0};
+  for(var k=0;k<6;k++)M.trail.push(el(svg,"path",{fill:"none",stroke:"var(--ink)","stroke-width":1.6,"stroke-linejoin":"round",opacity:0}));
+  M.cur=el(svg,"path",{fill:"none",stroke:"var(--ink)","stroke-width":2.5,"stroke-linejoin":"round"});
+  st.depths.forEach(function(d,j){
+    M.dots.push(el(svg,"circle",{r:6.5,fill:colorOf(j,n),stroke:"var(--surface)","stroke-width":2}));
+    M.labs.push(el(svg,"text",{"class":"num lab","font-weight":"500"}));});
+  M.msg=el(svg,"text",{x:(m.l+W-m.r)/2,y:H/2,"text-anchor":"middle","class":"msg"},"");
+}
+function profile(p){
+  var pts=[];
+  st.depths.forEach(function(d,j){var v=val(j,p);if(!isNaN(v))pts.push([M.X(v),M.Y(d)]);});
+  return pts;
+}
+function updMain(){
+  if(!M.svg)return;
+  var k,sp=Math.max(0.4,speed*0.1);
+  for(k=1;k<=6;k++){var q=pos-k*sp;
+    if(q<0){M.trail[k-1].setAttribute("opacity",0);continue;}
+    var tp=profile(q);
+    M.trail[k-1].setAttribute("d",tp.length>1?pathOf(tp):"");
+    M.trail[k-1].setAttribute("opacity",tp.length>1?(0.34*(1-(k-1)/6)).toFixed(3):0);}
+  var c=profile(pos);
+  M.cur.setAttribute("d",c.length>1?pathOf(c):"");
+  var any=0;
+  st.depths.forEach(function(d,j){
+    var v=val(j,pos);
+    if(isNaN(v)){M.dots[j].setAttribute("visibility","hidden");M.labs[j].setAttribute("visibility","hidden");return;}
+    any++;
+    var x=M.X(v),y=M.Y(d),right=x<M.W-M.m.r-56;
+    M.dots[j].setAttribute("visibility","visible");M.dots[j].setAttribute("cx",x);M.dots[j].setAttribute("cy",y);
+    M.labs[j].setAttribute("visibility","visible");
+    M.labs[j].setAttribute("x",x+(right?11:-11));M.labs[j].setAttribute("y",y-9);
+    M.labs[j].setAttribute("text-anchor",right?"start":"end");
+    M.labs[j].textContent=fmt(v,st.V.dec);});
+  M.msg.textContent=any?"":"Nessun dato valido in questo istante";
+}
+
+/* Fascia di pioggia: finestra che termina all'ora in corso (a destra), scorre in continuo con l'animazione.
+   Ogni ora è un campione centrato sulla sua etichetta, come i valori dei sensori; l'ora in corso è quella
+   mostrata dall'orologio. Nessuna barra oltre l'ora in corso: il futuro non si vede. */
+function updRain(){
+  if(!M.svg||!M.band)return;
+  var win=rainWin(),pw=M.W-M.m.l-M.m.r,k=1,q;
+  for(q=0;q<RBLK.length;q++){k=RBLK[q];if(win/k<=pw/2)break;}
+  if(M.lastWin!==win||M.lastK!==k){
+    M.lastWin=win;M.lastK=k;
+    M.rtitle.textContent=M.W>=760
+      ?"Pioggia oraria in superficie (mm/h, scala √) · "+lastSpan(win)+(k>1?" · massimo orario ogni "+k+" h":"")
+      :"Pioggia oraria (mm/h) · "+lastSpan(win)+(k>1?" · max/"+k+" h":"");
+    M.tl0.textContent="−"+fmtSpan(win);M.tl1.textContent="−"+fmtSpan(win/2);}
+  var g=st.s0+pos,cur=st.s0+Math.round(pos),curB=Math.floor(cur/k);
+  var xR=M.W-M.m.r,xL=M.m.l,pxH=pw/win,bt=M.band.top,bh=M.band.h,rs=st.rscale;
+  var pPast="",pCur="",pMiss="";
+  var b0=Math.floor((g+0.5-win+0.5)/k),b1=curB,b,i,v,r,x1,x2,w,hh,gp;
+  for(b=b0;b<=b1;b++){
+    x1=xR-(g+0.5-(b*k-0.5))*pxH;x2=xR-(g+0.5-(b*k+k-0.5))*pxH;
+    if(x1<xL)x1=xL;if(x2>xR)x2=xR;if(x2<=x1)continue;
+    v=NaN;
+    for(i=b*k;i<b*k+k&&i<=cur;i++){r=rainH(i);if(!isNaN(r))v=isNaN(v)?r:Math.max(v,r);}
+    w=x2-x1;gp=w>3?0.6:0;
+    if(isNaN(v)){pMiss+=rrect(x1+gp,bt,w-2*gp,3);continue;}
+    if(v<=0)continue;
+    hh=Math.max(1.2,Math.min(bh,Math.sqrt(v/rs)*bh));   /* scala a radice quadrata: rende visibili anche le piogge deboli */
+    if(b===curB)pCur+=rrect(x1+gp,bt,w-2*gp,hh);else pPast+=rrect(x1+gp,bt,w-2*gp,hh);
+  }
+  M.rpast.setAttribute("d",pPast);M.rcur.setAttribute("d",pCur);M.rmiss.setAttribute("d",pMiss);
+  if(M.W>=760){var vn=rainH(cur);M.rnow.textContent="ora in corso: "+(isNaN(vn)?"n.d.":fmt(vn,1)+" mm/h");}
+}
+
+/* ---------- serie nel tempo, con pioggia ---------- */
+function timeTicks(t0,L,maxT){
+  var days=L/24,out=[],t1=t0+L*HOUR,d,t;
+  if(days<=4){
+    for(t=Math.ceil(t0/(12*HOUR))*12*HOUR;t<=t1;t+=12*HOUR)out.push({ms:t,l:z2(new Date(t).getUTCHours())});
+  }else if(days<=90){
+    var step=[1,2,3,7,14,30].filter(function(s){return days/s<=maxT;})[0]||30;
+    for(t=Math.ceil(t0/DAY)*DAY;t<=t1;t+=step*DAY){d=new Date(t);out.push({ms:t,l:d.getUTCDate()+" "+MESI[d.getUTCMonth()]});}
+  }else{
+    var ms=[1,2,3,6,12].filter(function(s){return days/30/s<=maxT;})[0]||12;
+    d=new Date(t0);var y=d.getUTCFullYear(),mo=d.getUTCMonth();
+    if(Date.UTC(y,mo,1)<t0)mo++;
+    for(;;mo+=ms){t=Date.UTC(y,mo,1);if(t>t1)break;var dd=new Date(t);out.push({ms:t,l:MESI[dd.getUTCMonth()]+" "+String(dd.getUTCFullYear()).slice(2)});}
+  }
+  return out;
+}
+function buildStrip(){
+  var host=$("strip");host.textContent="";
+  var W=Math.max(260,host.clientWidth||900),H=214;
+  var m={l:44,r:48,t:64,b:26},pw=W-m.l-m.r,L=st.L,t0=st.doc.t0+st.s0*HOUR,n=st.depths.length;
+  var svg=el(host,"svg",{width:W,height:H,viewBox:"0 0 "+W+" "+H,role:"img","aria-label":"Andamento nel tempo dei valori dei sensori e pioggia giornaliera"});
+  var X=function(hh){return m.l+hh/L*pw;};
+  var D=st.dP;   /* asse sul periodo scelto */
+  var Y=function(v){return H-m.b-fx(v,D)*(H-m.t-m.b);};
+  D.ticks.forEach(function(v){
+    el(svg,"line",{x1:m.l,x2:W-m.r,y1:Y(v),y2:Y(v),stroke:"var(--grid)","stroke-width":1});
+    el(svg,"text",{x:m.l-8,y:Y(v)+4,"text-anchor":"end","class":"num"},tickLabel(v,D));});
+  var tk=timeTicks(t0,L,Math.max(2,Math.floor(pw/80)));
+  tk.forEach(function(q){var x=X((q.ms-t0)/HOUR);
+    el(svg,"line",{x1:x,x2:x,y1:m.t,y2:H-m.b,stroke:"var(--grid)","stroke-width":1});
+    var an=x<m.l+14?"start":(x>W-m.r-14?"end":"middle");
+    el(svg,"text",{x:x,y:H-8,"text-anchor":an,"class":"num"},q.l);});
+  /* pioggia giornaliera */
+  var d0=Math.floor(t0/DAY)*DAY,rmax=1,short=L/24<=4,ds;
+  for(ds=d0;ds<=t0+L*HOUR;ds+=DAY){var ri=Math.round((ds-RAIN.t0)/DAY),rv=RAIN.v[ri];if(rv!=null&&rv/RAIN.scale>rmax)rmax=rv/RAIN.scale;}
+  var narrow=short&&(pw/(L/24))<170;   /* colonne dei giorni strette: etichetta su due righe */
+  var base=46,bh=narrow?20:26;
+  if(!short)el(svg,"text",{x:m.l,y:12,"class":"ttl"},"Pioggia giornaliera (mm) · massimo "+fmt(rmax,1)+" mm");
+  for(ds=d0;ds<=t0+L*HOUR;ds+=DAY){
+    var i2=Math.round((ds-RAIN.t0)/DAY),v2=(i2>=0&&i2<RAIN.v.length)?RAIN.v[i2]:null;
+    var xa=Math.max(0,(ds-t0)/HOUR),xb=Math.min(L,(ds+DAY-t0)/HOUR);
+    if(xb<=xa)continue;
+    if(v2!=null){var hh=Math.max(v2>0?1:0,v2/RAIN.scale/rmax*bh);
+      el(svg,"rect",{x:X(xa)+(short?1:0),y:base-hh,width:Math.max(1,X(xb)-X(xa)-(short?2:(X(xb)-X(xa)>3?1:0))),height:hh,fill:"var(--rain)"});}
+    if(short){
+      var cx=(X(xa)+X(xb))/2,dt=new Date(ds).getUTCDate()+" "+MESI[new Date(ds).getUTCMonth()],rtxt=(v2==null?"n.d.":fmt(v2/RAIN.scale,1)+" mm");
+      if(narrow){el(svg,"text",{x:cx,y:11,"text-anchor":"middle","class":"ttl"},dt);
+        el(svg,"text",{x:cx,y:23,"text-anchor":"middle","class":"ttl"},rtxt);}
+      else el(svg,"text",{x:cx,y:12,"text-anchor":"middle","class":"ttl"},dt+" · pioggia "+rtxt);}
+  }
+  el(svg,"line",{x1:m.l,x2:W-m.r,y1:base,y2:base,stroke:"var(--rule)","stroke-width":1});
+  /* serie */
+  var stride=Math.max(1,Math.ceil((L+1)/(pw*1.5))),ends=[];
+  st.depths.forEach(function(d,j){
+    var segs=[],cur=[],i,k;
+    for(i=0;i<=L;i+=stride){var sum=0,c=0;
+      for(k=i;k<Math.min(L+1,i+stride);k++){var v=st.A[j][st.s0+k];if(!isNaN(v)){sum+=v;c++;}}
+      if(c){cur.push([X(i+(Math.min(L+1,i+stride)-i-1)/2),Y(sum/c)]);}
+      else if(cur.length){segs.push(cur);cur=[];}}
+    if(cur.length)segs.push(cur);
+    el(svg,"path",{d:segs.map(pathOf).join(""),fill:"none",stroke:colorOf(j,n),"stroke-width":2,"stroke-linejoin":"round"});
+    var lastV=NaN;for(i=st.s1;i>=st.s0;i--){if(!isNaN(st.A[j][i])){lastV=st.A[j][i];break;}}
+    if(!isNaN(lastV))ends.push({j:j,y:Y(lastV)});});
+  ends.sort(function(a,b){return a.y-b.y;});
+  for(var q=1;q<ends.length;q++)if(ends[q].y-ends[q-1].y<13)ends[q].y=ends[q-1].y+13;
+  if(ends.length&&ends[ends.length-1].y>H-m.b){ends[ends.length-1].y=H-m.b;
+    for(q=ends.length-2;q>=0;q--)if(ends[q+1].y-ends[q].y<13)ends[q].y=ends[q+1].y-13;}
+  ends.forEach(function(e){el(svg,"text",{x:W-m.r+7,y:e.y+4,"class":"num"},st.depths[e.j]+" cm");});
+  S={svg:svg,X:X,Y:Y,W:W,H:H,m:m,cur:null,dots:[]};
+  S.cur=el(svg,"line",{y1:m.t-4,y2:H-m.b,stroke:"var(--accent)","stroke-width":2});
+  st.depths.forEach(function(d,j){S.dots.push(el(svg,"circle",{r:4.5,fill:colorOf(j,n),stroke:"var(--surface)","stroke-width":2}));});
+  var drag=false;
+  function setFrom(ev){var r=svg.getBoundingClientRect();var px=(ev.clientX-r.left)*(W/r.width);
+    pos=Math.max(0,Math.min(L,(px-m.l)/pw*L));setPlaying(false);render();}
+  svg.addEventListener("pointerdown",function(ev){drag=true;try{svg.setPointerCapture(ev.pointerId);}catch(e){}setFrom(ev);});
+  svg.addEventListener("pointermove",function(ev){if(drag)setFrom(ev);});
+  svg.addEventListener("pointerup",function(){drag=false;});
+  svg.addEventListener("pointercancel",function(){drag=false;});
+}
+function updStrip(){
+  if(!S.svg)return;
+  var x=S.X(pos);S.cur.setAttribute("x1",x);S.cur.setAttribute("x2",x);
+  st.depths.forEach(function(d,j){var v=val(j,pos);
+    if(isNaN(v)){S.dots[j].setAttribute("visibility","hidden");return;}
+    S.dots[j].setAttribute("visibility","visible");S.dots[j].setAttribute("cx",x);S.dots[j].setAttribute("cy",S.Y(v));});
+}
+
+/* ---------- lettura numerica ---------- */
+function buildRows(){
+  var rb=$("rrows");rb.textContent="";
+  [["rn","Ora in corso"],["r6","Ultime 6 h"],["r24","Ultime 24 h"],["rc","Dall'inizio del periodo"]].forEach(function(p){
+    var tr=h("tr",{}),a=h("td",{}),b=h("td",{id:p[0]});
+    if(p[0]==="rn"){var sw=h("span",{"class":"sw bar"});sw.style.background="var(--accent)";a.appendChild(sw);}
+    a.appendChild(document.createTextNode(p[1]));tr.appendChild(a);tr.appendChild(b);rb.appendChild(tr);});
+  var tb=$("rows");tb.textContent="";var n=st.depths.length;
+  st.depths.forEach(function(d,j){
+    var tr=h("tr",{}),a=h("td",{}),b=h("td",{id:"v"+j}),c=h("td",{id:"c"+j});
+    var sw=h("span",{"class":"sw"});sw.style.background=colorOf(j,n);
+    a.appendChild(sw);a.appendChild(document.createTextNode(d+" cm"));
+    tr.appendChild(a);tr.appendChild(b);tr.appendChild(c);tb.appendChild(tr);});
+}
+function updRead(){
+  var ms=st.doc.t0+(st.s0+Math.round(pos))*HOUR,d=new Date(ms);
+  $("clk-day").textContent=dlong(ms);$("clk-hm").textContent=z2(d.getUTCHours())+":"+z2(d.getUTCMinutes());
+  st.depths.forEach(function(dep,j){var v=val(j,pos);
+    $("v"+j).textContent=isNaN(v)?"n.d.":fmt(v,st.V.dec);
+    $("c"+j).textContent=(isNaN(v)||isNaN(st.base[j]))?"n.d.":fmtD(v-st.base[j],st.V.dec);});
+  var cur=st.s0+Math.round(pos),rv=rainH(cur);
+  $("rn").textContent=isNaN(rv)?"n.d.":fmt(rv,1);
+  $("r6").textContent=fmtR(rsum(cur-5,cur),1);
+  $("r24").textContent=fmtR(rsum(cur-23,cur),1);
+  $("rc").textContent=fmtR(rsum(st.s0,cur),1);
+  $("scrub").value=Math.round(pos);
+}
+function render(){if(st.empty)return;updMain();updRain();updStrip();updRead();}
+function build(){if(st.empty)return;buildMain();buildStrip();render();}
+
+/* ---------- animazione ---------- */
+function buildSpeeds(){
+  var box=$("speeds");box.textContent="";
+  SPEEDS.forEach(function(sp){var b=h("button",{type:"button"},sp.l);if(sp.h===speed)b.className="on";
+    b.addEventListener("click",function(){speed=sp.h;buildSpeeds();render();});box.appendChild(b);});
+}
+function setPlaying(on){
+  playing=on&&!st.empty;
+  $("play").textContent=playing?"Pausa":(pos>=st.L-1e-9&&st.L>0?"Riavvia":"Riproduci");
+  cancelAnimationFrame(raf);
+  if(playing){lastT=0;raf=requestAnimationFrame(tick);}
+}
+function tick(t){
+  if(!playing)return;
+  if(lastT){pos+=Math.min(0.1,(t-lastT)/1000)*speed;if(pos>=st.L)pos=0;}
+  lastT=t;render();raf=requestAnimationFrame(tick);
+}
+
+/* ---------- eventi ---------- */
+$("play").addEventListener("click",function(){if(!playing&&pos>=st.L)pos=0;setPlaying(!playing);});
+$("scrub").addEventListener("input",function(ev){pos=+ev.target.value;setPlaying(false);render();});
+$("sel-station").addEventListener("change",function(ev){chooseStation(ev.target.value);});
+$("sel-var").addEventListener("change",function(ev){st.vk=ev.target.value;applyVar();});
+$("sel-rain").addEventListener("change",function(ev){
+  RAIN_SRC=ev.target.value;setRain();
+  Object.keys(DOCS).forEach(function(k){delete DOCS[k].RP;delete DOCS[k].RM;});   /* totali di pioggia da ricalcolare */
+  if(!st.doc)return;
+  st.roff=RH?Math.round((st.doc.t0-RH.t0)/HOUR):0;prepRain(st.doc);applyRange();
+});
+$("d-from").addEventListener("change",applyRange);
+$("d-to").addEventListener("change",applyRange);
+document.addEventListener("keydown",function(ev){
+  if(ev.code==="Space"&&!/^(BUTTON|INPUT|SELECT)$/.test((document.activeElement||{}).tagName||"")){ev.preventDefault();if(!$("play").disabled)$("play").click();}});
+var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){build();},120);});
+
+fetch("catalog.json").then(function(r){if(!r.ok)throw new Error("catalog "+r.status);return r.json();}).then(function(c){
+  CAT=c;
+  var g=String(c.generated||"").slice(0,10).split("-").reverse().join("/");
+  if(g)$("foot").appendChild(document.createTextNode(" Catalogo aggiornato il "+g+"."));
+  return loadRain();
+}).then(function(){
+  fillStations();fillRain();return chooseStation(st.key);
+}).catch(function(e){
+  if(window.console)console.error(e);
+  showState("Non riesco a leggere i dati dal repository. Se apri il file dal disco, avvia un server nella cartella del repository (python -m http.server) e riprova.");
+});
+})();
+</script>
+</body>
+</html>

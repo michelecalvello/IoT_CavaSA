@@ -37,7 +37,9 @@
   "cumulative": {
     "_doc": "Pioggia cumulata dal 1 gennaio (derive_cumulative.py): i buchi tra registrazioni consecutive piu' lunghi di gap_min_minutes (e quelli dall'inizio dell'anno al primo dato) contano come tempo mancante; quando il tempo mancante cumulato nell'anno supera missing_hours_threshold la cumulata e' sottostimata -> flag 1 (tratteggio nel portale).",
     "gap_min_minutes": 60,
-    "missing_hours_threshold": 24
+    "missing_hours_threshold": 24,
+    "window24_missing_hours_threshold": 2,
+    "_doc_window24": "Pioggia cumulata 24 h (finestra mobile): se nelle 24 h che terminano al timestamp mancano piu' di window24_missing_hours_threshold ore di dati (anche per le prime 24 h della serie) la cumulata e' sottostimata -> flag 1."
   },
   "windows": []
 }

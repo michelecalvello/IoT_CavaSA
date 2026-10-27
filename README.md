@@ -13,7 +13,7 @@ export INPUT_DIR=<cartella con i file Excel>   OUT_DIR=.
 python pipeline/build_catalog.py    # catalog.json + series.csv
 python pipeline/standardize.py      # data/ + arricchisce catalog.json
 python pipeline/ingest_gee.py       # prodotti a griglia da Google Earth Engine (ERA5-Land, SMAP L4)
-python pipeline/derive_cumulative.py  # serie derivate: pioggia cumulata dal 1 gennaio
+python pipeline/derive_cumulative.py  # serie derivate: pioggia cumulata dal 1 gennaio e su 24 h
 python pipeline/analisi_eventi.py   # analisi eventi/stoccaggio 0–75 cm -> data/analisi_eventi.json (per analisi.html)
 ```
 
@@ -51,6 +51,17 @@ con la pioggia cumulata dal 1 gennaio ore 00:00, azzerata a ogni anno. Calcolo s
 - `flag` 1 = cumulata sottostimata per dati mancanti (tempo mancante nell'anno > `missing_hours_threshold`, soglie in `qc_rules.json` → `cumulative`); nel portale è tratteggiata.
 - Le serie derivate hanno `derived_from` e `cumulative_years` (totali annui e ore mancanti) nel catalogo.
 - Va rieseguito dopo ogni modifica ai dati di pioggia o alle regole QC (`build_catalog.py` rigenera il catalogo senza le derivate).
+
+### Pioggia cumulata 24 h
+
+Sempre in `derive_cumulative.py`: per ogni serie di pioggia (3 pluviometri CF e i pixel ERA5-Land) crea `<STAZIONE>_RAINCUM24`
+(variabile `rain_cum24`, «Pioggia cumulata 24 h», mm) = pioggia caduta nelle 24 h che terminano al timestamp, cioè nella finestra mobile (t − 24 h, t].
+Non si azzera mai e scorre anche a cavallo di fine anno. Calcolo sui soli dati con flag < 2.
+- Dato originale: una riga per ogni dato di pioggia valido (`data/raw/<STAZIONE>_RAINCUM24/<anno>.csv`, colonne `time,value,flag`).
+- Aggregati orario e giornaliero: `value` = **massimo** della cumulata 24 h nell'intervallo (etichetta = inizio intervallo); colonne `time,value,n,coverage,flag`.
+  Il totale giornaliero resta in `<STAZIONE>_RAIN_1d`.
+- `flag` 1 = cumulata sottostimata: nella finestra mancano più di `window24_missing_hours_threshold` ore di dati (2 h, in `qc_rules.json` → `cumulative`),
+  anche nelle prime 24 h della serie; nel portale è tratteggiata. Il massimo annuo e la sua data sono nelle note di qualità (ⓘ) e in `max_24h_by_year` nel catalogo.
 
 ## Struttura
 
@@ -95,6 +106,17 @@ data/qc_log.csv         elenco dei valori segnalati e regola applicata
 - Statistiche e esportazione CSV dell'intervallo visibile; lo stato della vista è nell'URL (condivisibile).
 
 Per provarlo in locale: `python -m http.server` nella radice del repo e aprire http://localhost:8000.
+
+### Animazioni per verticale (`verticali.html`)
+
+Pagina statica collegata al portale (stessa impostazione di `verticali.html` di [IoT_Vaglio](https://github.com/michelecalvello/IoT_Vaglio)), senza dipendenze esterne oltre ai font.
+Legge direttamente `catalog.json` e gli aggregati orari in `data/agg/` (ore con copertura < 50 % escluse).
+- Verticale (Meter NV o V), grandezza (contenuto d'acqua, potenziale matriciale come suzione |ψ| in scala log, temperatura del terreno) e periodo a scelta.
+- Profilo con la profondità sull'asse verticale, animato nel tempo: profilo attuale, minimo e massimo del periodo e dell'intera serie, scia degli istanti appena trascorsi.
+- Serie nel tempo con la pioggia giornaliera e cursore trascinabile; lettura numerica (valore e Δ dall'inizio del periodo per profondità).
+- In superficie, la pioggia oraria come ietogramma capovolto (condizione al contorno), con totali dell'ora, delle ultime 6 e 24 h e dall'inizio del periodo.
+  Pluviometro selezionabile: di default la media dei tre pluviometri CF (21521, 18925, 18957), come in `analisi.html`; in alternativa uno dei tre.
+- Si aggiorna da sola con i dati del repository: non richiede script.
 
 ### Analisi eventi e immagazzinamento (`analisi.html`)
 

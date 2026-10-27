@@ -8,12 +8,13 @@
   // ---------------------------------------------------------------- costanti
   const MAX_SERIES = 20;
   const DAY = 86400000;
-  const VAR_ORDER = ["rain", "rain_cum", "stage", "vwc", "sm", "psi", "t_soil", "t_air"];
+  const VAR_ORDER = ["rain", "rain_cum", "rain_cum24", "stage", "vwc", "sm", "psi", "t_soil", "t_air"];
+  const isCum = (v) => v === "rain_cum" || v === "rain_cum24";   // pioggia cumulata (dal 1 gennaio / su 24 h)
   const PANEL_WEIGHT = { rain: 0.6 };
   const AUTO_RES = (spanDays) => (spanDays > 90 ? "1d" : spanDays > 4 ? "1h" : "raw");
   const RAW_MAX_DAYS = 62;
   const RES_LABEL = { raw: "dato originale", "1h": "oraria", "1d": "giornaliera" };
-  const SHORT = { rain: "Pioggia", rain_cum: "Pioggia cumulata", stage: "Livello idrometrico", vwc: "Contenuto d'acqua", sm: "Umidità terreno (Aranet)",
+  const SHORT = { rain: "Pioggia", rain_cum: "Pioggia cumulata", rain_cum24: "Pioggia cumulata 24 h", stage: "Livello idrometrico", vwc: "Contenuto d'acqua", sm: "Umidità terreno (Aranet)",
                   psi: "Potenziale matriciale", t_soil: "Temperatura terreno", t_air: "Temperatura aria (2 m)" };
   const UNIT = (u) => u.replace("m3/m3", "m³/m³");
   const DEFAULT = {
@@ -176,7 +177,8 @@
           d.f[i] === 1 ? " · cumulata incompleta (dati mancanti)" : ""]);
         const aggInfo = d.res === "raw" ? "" :
           variable === "rain" ? " · max %{customdata[1]} · copertura %{customdata[2]}"
-            : variable === "rain_cum" ? " · copertura %{customdata[2]}"
+            : variable === "rain_cum24" ? " · max 24 h nell'intervallo · copertura %{customdata[2]}"
+              : variable === "rain_cum" ? " · copertura %{customdata[2]}"
               : " · min %{customdata[0]} max %{customdata[1]} · copertura %{customdata[2]}";
         const name = shortLabel(s);
 
@@ -199,11 +201,11 @@
             type: x.length > 4000 ? "scattergl" : "scatter", mode: "lines", name, x, y, customdata: cd,
             xaxis: "x", yaxis: ax, connectgaps: false,
             line: { color, width: 2 },
-            hovertemplate: variable === "rain_cum"
+            hovertemplate: isCum(variable)
               ? `%{y:.1f} ${unit}${aggInfo}%{customdata[3]}<extra>${name}</extra>`
               : `%{y:.3~f} ${unit}${aggInfo}<extra>${name}</extra>`,
           });
-          if (variable === "rain_cum") {
+          if (isCum(variable)) {
             // tratti con cumulata incompleta (flag 1): tratteggio, ottenuto sovrapponendo
             // alla linea piena una linea tratteggiata del colore dello sfondo
             const ox = [], oy = [];
@@ -219,7 +221,7 @@
               line: { color: css("--surface"), width: 3, dash: "6px,6px" },
             });
           }
-          if (d.res === "raw" && variable !== "rain_cum") {
+          if (d.res === "raw" && !isCum(variable)) {
             const sx = [], sy = [];
             d.f.forEach((f, i) => { if (f === 1) { sx.push(d.ts[i]); sy.push(transform(d.v[i])); } });
             if (sx.length) traces.push({
@@ -284,7 +286,7 @@
           title: { ...baseAxis().title, text: axisTitle(g, true) },
           type: g === "psi" && state.logSuction ? "log" : "linear",
           ...(g === "psi" && state.logSuction ? { dtick: 1 } : {}),
-          rangemode: g === "rain" || g === "rain_cum" ? "tozero" : "normal",
+          rangemode: g === "rain" || isCum(g) ? "tozero" : "normal",
         };
         // pannelli di pioggia separati: stessa scala, per un confronto corretto
         if (g === "rain") { if (firstRain) layout[key].matches = firstRain; else firstRain = id; }
@@ -439,12 +441,12 @@
       return `<tr><td><span class="swatch" style="background:${colorOf(sid)}"></span>${shortLabel(s)}</td>
         <td>${s.unit.replace("m3/m3", "m³/m³")}</td><td>${RES_LABEL[st.res]}</td>
         <td>${st.n.toLocaleString("it-IT")}</td>
-        <td>${fmtNum(st.min, v)}</td><td>${v === "rain" || v === "rain_cum" ? "–" : fmtNum(st.mean, v)}</td><td>${fmtNum(st.max, v)}</td>
+        <td>${fmtNum(st.min, v)}</td><td>${v === "rain" || isCum(v) ? "–" : fmtNum(st.mean, v)}</td><td>${fmtNum(st.max, v)}</td>
         <td>${v === "rain" ? st.sum.toFixed(1) : "–"}</td>
         <td>${Math.round(st.cov * 100)}%</td></tr>`;
     }).join("");
     tbl.innerHTML = `<thead><tr><th>Serie</th><th>Unità</th><th>Risoluzione</th><th>N</th>
-      <th>Min</th><th>Media</th><th title="Per la pioggia: massimo cumulato alla risoluzione visualizzata (orario, giornaliero o per singola registrazione). Per la pioggia cumulata dal 1 gennaio: massimo raggiunto nell'intervallo">Max</th><th>Totale</th><th>Copertura</th></tr></thead><tbody>${rows}</tbody>`;
+      <th>Min</th><th>Media</th><th title="Per la pioggia: massimo cumulato alla risoluzione visualizzata (orario, giornaliero o per singola registrazione). Per la pioggia cumulata (dal 1 gennaio o su 24 h): massimo raggiunto nell'intervallo">Max</th><th>Totale</th><th>Copertura</th></tr></thead><tbody>${rows}</tbody>`;
   }
 
   function exportCSV() {

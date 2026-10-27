@@ -1,6 +1,6 @@
 {
-  "catalog_version": "0.4",
-  "generated": "2026-10-03T11:06:33+01:00",
+  "catalog_version": "0.5",
+  "generated": "2026-10-27T15:45:44+01:00",
   "conventions": {
     "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con ora legale) non è usata.",
     "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
@@ -8,7 +8,7 @@
     "coordinates": "WGS84 (EPSG:4326), gradi decimali.",
     "data_format": "File CSV con intestazione. Dati originali: time,value,flag (un file per serie e per anno). Aggregati: time,value,[min],max,n,coverage. time = 'YYYY-MM-DD HH:MM' in UTC+1. flag: 0 valido, 1 sospetto, 2 errato. Aggregati calcolati sui soli flag < 2.",
     "aggregation_labels": "Grandezze istantanee: etichetta = inizio intervallo. Pioggia: ogni dato è riferito all'intervallo che termina al timestamp; l'etichetta oraria/giornaliera indica l'inizio del periodo di cumulo (es. giorno '2024-10-01' = pioggia da 2024-10-01 00:00 esclusa a 2024-10-02 00:00 inclusa).",
-    "derived_series": "Serie con 'derived_from' sono calcolate da altre serie (pipeline/derive_cumulative.py). Pioggia cumulata (variabile rain_cum): cumulo dal 1 gennaio ore 00:00; il dato di pioggia delle 00:00 del 1 gennaio chiude l'anno precedente. Aggregati (data/agg): value = cumulata a fine intervallo, etichetta = inizio intervallo; colonne time,value,n,coverage,flag. flag 1 = cumulata sottostimata per dati mancanti (soglia in qc_rules.json -> cumulative).",
+    "derived_series": "Serie con 'derived_from' sono calcolate da altre serie (pipeline/derive_cumulative.py). Pioggia cumulata (variabile rain_cum): cumulo dal 1 gennaio ore 00:00; il dato di pioggia delle 00:00 del 1 gennaio chiude l'anno precedente. Aggregati (data/agg): value = cumulata a fine intervallo, etichetta = inizio intervallo; colonne time,value,n,coverage,flag. flag 1 = cumulata sottostimata per dati mancanti (soglia in qc_rules.json -> cumulative). Pioggia cumulata 24 h (variabile rain_cum24): pioggia nelle 24 h che terminano al timestamp (finestra mobile (t-24 h, t], non si azzera); aggregati orario e giornaliero = massimo della cumulata 24 h nell'intervallo, etichetta = inizio intervallo; flag 1 = finestra con più di window24_missing_hours_threshold ore di dati mancanti (anche nelle prime 24 h della serie).",
     "gridded_products": "Stazioni con kind = 'grid' sono pixel di prodotti a griglia scaricati da Google Earth Engine (pipeline/ingest_gee.py): ERA5-Land (0,1°, orario) e SMAP L4 (~9 km, medie su 3 h). I valori sono medie di pixel, non misure puntuali. I timestamp GEE (UTC) sono convertiti in UTC+1 (+1 h). Per i prodotti a strati il codice a 3 cifre della serie è la profondità inferiore dello strato in cm (PRF = intero profilo); vedi layer_label e depth_range_m."
   },
   "variables": {
@@ -56,6 +56,14 @@
       "unit": "°C",
       "aggregation": "mean",
       "plot": "line"
+    },
+    "rain_cum24": {
+      "label_it": "Pioggia cumulata 24 h",
+      "label_en": "24-hour rainfall",
+      "unit": "mm",
+      "aggregation": "max",
+      "plot": "line",
+      "notes": "Pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile). Tratteggiata dove i dati mancanti nella finestra la rendono sottostimata (anche nelle prime 24 h della serie). Negli aggregati orario e giornaliero è il massimo della cumulata 24 h nell'intervallo."
     }
   },
   "stations": [
@@ -407,6 +415,60 @@
       }
     },
     {
+      "series_id": "CF_18925_RAINCUM24",
+      "instrument_id": "CF_18925_RAIN",
+      "station_id": "CF_18925",
+      "variable": "rain_cum24",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata 24 h – Pellezzano (CF 18925)",
+      "unit": "mm",
+      "aggregation": "max",
+      "step_min": 10.0,
+      "window_hours": 24,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "min": 0.0,
+      "max": 180.2,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da CF_18925_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
+        "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
+        "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
+        "Massimo 24 h: 2025: 180.2 mm (2025-02-26 23:00)."
+      ],
+      "sources": [],
+      "derived_from": "CF_18925_RAIN",
+      "max_24h_by_year": [
+        {
+          "year": 2025,
+          "max_mm": 180.2,
+          "time": "2025-02-26 23:00",
+          "n": 52559,
+          "n_underestimated": 131
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_18925_RAINCUM24/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_18925_RAINCUM24_1h.csv",
+        "agg_1d": "data/agg/CF_18925_RAINCUM24_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52559,
+        "n_valid": 52428,
+        "n_suspect": 131,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
       "series_id": "CF_18957_RAIN",
       "instrument_id": "CF_18957_RAIN",
       "station_id": "CF_18957",
@@ -503,6 +565,60 @@
         "n_total": 52559,
         "n_valid": 52559,
         "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "CF_18957_RAINCUM24",
+      "instrument_id": "CF_18957_RAIN",
+      "station_id": "CF_18957",
+      "variable": "rain_cum24",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata 24 h – Salerno Genio Civile (CF 18957)",
+      "unit": "mm",
+      "aggregation": "max",
+      "step_min": 10.0,
+      "window_hours": 24,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52559,
+      "min": 0.0,
+      "max": 78.6,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da CF_18957_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
+        "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
+        "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
+        "Massimo 24 h: 2025: 78.6 mm (2025-10-26 06:40)."
+      ],
+      "sources": [],
+      "derived_from": "CF_18957_RAIN",
+      "max_24h_by_year": [
+        {
+          "year": 2025,
+          "max_mm": 78.6,
+          "time": "2025-10-26 06:40",
+          "n": 52559,
+          "n_underestimated": 131
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_18957_RAINCUM24/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_18957_RAINCUM24_1h.csv",
+        "agg_1d": "data/agg/CF_18957_RAINCUM24_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52559,
+        "n_valid": 52428,
+        "n_suspect": 131,
         "n_bad": 0,
         "duplicates_removed": 0
       }
@@ -605,6 +721,60 @@
         "n_total": 52475,
         "n_valid": 52475,
         "n_suspect": 0,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "CF_21521_RAINCUM24",
+      "instrument_id": "CF_21521_RAIN",
+      "station_id": "CF_21521",
+      "variable": "rain_cum24",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata 24 h – Cologna (CF 21521)",
+      "unit": "mm",
+      "aggregation": "max",
+      "step_min": 10.0,
+      "window_hours": 24,
+      "start": "2025-01-01T00:10+01:00",
+      "end": "2025-12-31T23:50+01:00",
+      "n_values": 52475,
+      "min": 0.0,
+      "max": 132.4,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da CF_21521_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
+        "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
+        "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
+        "Massimo 24 h: 2025: 132.4 mm (2025-02-26 23:10)."
+      ],
+      "sources": [],
+      "derived_from": "CF_21521_RAIN",
+      "max_24h_by_year": [
+        {
+          "year": 2025,
+          "max_mm": 132.4,
+          "time": "2025-02-26 23:10",
+          "n": 52475,
+          "n_underestimated": 262
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/CF_21521_RAINCUM24/{year}.csv",
+        "years": [
+          2025
+        ],
+        "agg_1h": "data/agg/CF_21521_RAINCUM24_1h.csv",
+        "agg_1d": "data/agg/CF_21521_RAINCUM24_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 52475,
+        "n_valid": 52213,
+        "n_suspect": 262,
         "n_bad": 0,
         "duplicates_removed": 0
       }
@@ -750,6 +920,76 @@
         "n_total": 23994,
         "n_valid": 23992,
         "n_suspect": 2,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "ERA5_E147_N407_RAINCUM24",
+      "instrument_id": "ERA5_E147_N407_MODEL",
+      "station_id": "ERA5_E147_N407",
+      "variable": "rain_cum24",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata 24 h – ERA5-Land · 14.7°E 40.7°N",
+      "unit": "mm",
+      "aggregation": "max",
+      "step_min": 60.0,
+      "window_hours": 24,
+      "start": "2024-01-01T01:00+01:00",
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23994,
+      "min": 0.0,
+      "max": 75.18,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da ERA5_E147_N407_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
+        "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
+        "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
+        "Massimo 24 h: 2024: 70.2 mm (2024-02-11 12:00); 2025: 75.2 mm (2025-11-25 22:00); 2026: 40.2 mm (2026-02-05 09:00)."
+      ],
+      "sources": [],
+      "derived_from": "ERA5_E147_N407_RAIN",
+      "max_24h_by_year": [
+        {
+          "year": 2024,
+          "max_mm": 70.16,
+          "time": "2024-02-11 12:00",
+          "n": 8783,
+          "n_underestimated": 21
+        },
+        {
+          "year": 2025,
+          "max_mm": 75.18,
+          "time": "2025-11-25 22:00",
+          "n": 8760,
+          "n_underestimated": 0
+        },
+        {
+          "year": 2026,
+          "max_mm": 40.18,
+          "time": "2026-02-05 09:00",
+          "n": 6451,
+          "n_underestimated": 19
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/ERA5_E147_N407_RAINCUM24/{year}.csv",
+        "years": [
+          2024,
+          2025,
+          2026
+        ],
+        "agg_1h": "data/agg/ERA5_E147_N407_RAINCUM24_1h.csv",
+        "agg_1d": "data/agg/ERA5_E147_N407_RAINCUM24_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 23994,
+        "n_valid": 23954,
+        "n_suspect": 40,
         "n_bad": 0,
         "duplicates_removed": 0
       }
@@ -1104,6 +1344,76 @@
         "n_total": 23994,
         "n_valid": 23992,
         "n_suspect": 2,
+        "n_bad": 0,
+        "duplicates_removed": 0
+      }
+    },
+    {
+      "series_id": "ERA5_E148_N407_RAINCUM24",
+      "instrument_id": "ERA5_E148_N407_MODEL",
+      "station_id": "ERA5_E148_N407",
+      "variable": "rain_cum24",
+      "depth_m": null,
+      "sensor_model": null,
+      "logger_port": null,
+      "label": "Pioggia cumulata 24 h – ERA5-Land · 14.8°E 40.7°N",
+      "unit": "mm",
+      "aggregation": "max",
+      "step_min": 60.0,
+      "window_hours": 24,
+      "start": "2024-01-01T01:00+01:00",
+      "end": "2026-09-28T00:00+01:00",
+      "n_values": 23994,
+      "min": 0.0,
+      "max": 78.86,
+      "status": "active",
+      "gaps_over_24h": [],
+      "qc_notes": [
+        "Serie derivata da ERA5_E148_N407_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
+        "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
+        "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
+        "Massimo 24 h: 2024: 71.5 mm (2024-02-11 19:00); 2025: 78.9 mm (2025-11-25 22:00); 2026: 39.6 mm (2026-02-06 22:00)."
+      ],
+      "sources": [],
+      "derived_from": "ERA5_E148_N407_RAIN",
+      "max_24h_by_year": [
+        {
+          "year": 2024,
+          "max_mm": 71.52,
+          "time": "2024-02-11 19:00",
+          "n": 8783,
+          "n_underestimated": 21
+        },
+        {
+          "year": 2025,
+          "max_mm": 78.86,
+          "time": "2025-11-25 22:00",
+          "n": 8760,
+          "n_underestimated": 0
+        },
+        {
+          "year": 2026,
+          "max_mm": 39.65,
+          "time": "2026-02-06 22:00",
+          "n": 6451,
+          "n_underestimated": 19
+        }
+      ],
+      "data": {
+        "format": "csv: time,value,flag",
+        "raw": "data/raw/ERA5_E148_N407_RAINCUM24/{year}.csv",
+        "years": [
+          2024,
+          2025,
+          2026
+        ],
+        "agg_1h": "data/agg/ERA5_E148_N407_RAINCUM24_1h.csv",
+        "agg_1d": "data/agg/ERA5_E148_N407_RAINCUM24_1d.csv"
+      },
+      "qc_summary": {
+        "n_total": 23994,
+        "n_valid": 23954,
+        "n_suspect": 40,
         "n_bad": 0,
         "duplicates_removed": 0
       }
