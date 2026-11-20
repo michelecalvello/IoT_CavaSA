@@ -1,8 +1,8 @@
 {
   "catalog_version": "0.5",
-  "generated": "2026-10-27T15:45:44+01:00",
+  "generated": "2026-11-20T16:46:22+01:00",
   "conventions": {
-    "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con ora legale) non è usata.",
+    "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto (la colonna 'Time' ora locale con ora legale, presente nei file storici, non è usata). Nei file Meter 2025-2026 (formato compatto) l'unica colonna 'Time' è già in UTC+1 (verificato sulla sovrapposizione col 2025).",
     "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
     "depth_m": "Profondità sotto il piano campagna, positiva verso il basso, in metri.",
     "coordinates": "WGS84 (EPSG:4326), gradi decimali.",
@@ -1625,37 +1625,40 @@
       "unit": "kPa",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": -3291.5,
       "max": -0.1,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
-        "Gap 2025-12-18 ~02:40 (10,7 h) condiviso da tutte le serie della stazione."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Dati 2025-2026 dai file 'Salerno_METER_NV_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_NV_2025.xlsx",
+          "file": "Salerno_METER_NV_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port5-15cm-T21",
-          "column": "Port5-T21-15cm (kPa)"
+          "sheet": "No vegetation",
+          "column": "s 15",
+          "time_column": "Time (UTC+1)",
+          "scale": -1
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_NV_PSI_015/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_NV_PSI_015_1h.csv",
         "agg_1d": "data/agg/SAL_NV_PSI_015_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96198,
-        "n_valid": 96198,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -1673,36 +1676,40 @@
       "unit": "kPa",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": -1718.3,
       "max": -0.1,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Dati 2025-2026 dai file 'Salerno_METER_NV_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_NV_2025.xlsx",
+          "file": "Salerno_METER_NV_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port6-30cm-T21",
-          "column": "Port6-T21-30cm (kPa)"
+          "sheet": "No vegetation",
+          "column": "s 30",
+          "time_column": "Time (UTC+1)",
+          "scale": -1
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_NV_PSI_030/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_NV_PSI_030_1h.csv",
         "agg_1d": "data/agg/SAL_NV_PSI_030_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96198,
-        "n_valid": 96198,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -1720,36 +1727,40 @@
       "unit": "kPa",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": -1372.4,
-      "max": -0.4,
+      "max": -0.2,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Dati 2025-2026 dai file 'Salerno_METER_NV_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_NV_2025.xlsx",
+          "file": "Salerno_METER_NV_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port4-60cm-T10",
-          "column": "Port4-T21-60cm (kPa)"
+          "sheet": "No vegetation",
+          "column": "s 60",
+          "time_column": "Time (UTC+1)",
+          "scale": -1
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_NV_PSI_060/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_NV_PSI_060_1h.csv",
         "agg_1d": "data/agg/SAL_NV_PSI_060_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96198,
-        "n_valid": 96198,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -1908,36 +1919,40 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": 0.02,
       "max": 0.259,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione)."
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "Dati 2025-2026 dai file 'Salerno_METER_NV_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V.",
+        "Lacuna di 65 min il 2026-03-29 (05:20 -> 06:25), comune a tutte le serie della stazione."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_NV_2025.xlsx",
+          "file": "Salerno_METER_NV_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port1-15cm-T10",
-          "column": "Port1-T10-15cm"
+          "sheet": "No vegetation",
+          "column": "VWC 15",
+          "time_column": "Time (UTC+1)"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_NV_VWC_015/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_NV_VWC_015_1h.csv",
         "agg_1d": "data/agg/SAL_NV_VWC_015_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96198,
-        "n_valid": 96198,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -1955,36 +1970,39 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "min": 0.051,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "min": 0.046,
       "max": 0.383,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione)."
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "Dati 2025-2026 dai file 'Salerno_METER_NV_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_NV_2025.xlsx",
+          "file": "Salerno_METER_NV_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port3-30cm-T10",
-          "column": "Port3-T10-30cm"
+          "sheet": "No vegetation",
+          "column": "VWC 30",
+          "time_column": "Time (UTC+1)"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_NV_VWC_030/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_NV_VWC_030_1h.csv",
         "agg_1d": "data/agg/SAL_NV_VWC_030_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96198,
-        "n_valid": 96198,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2002,36 +2020,39 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "min": 0.108,
-      "max": 0.315,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "min": 0.091,
+      "max": 0.347,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione)."
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "Dati 2025-2026 dai file 'Salerno_METER_NV_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_NV_2025.xlsx",
+          "file": "Salerno_METER_NV_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port2-60cm-T10",
-          "column": "Port2-T10-60cm"
+          "sheet": "No vegetation",
+          "column": "VWC 60",
+          "time_column": "Time (UTC+1)"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_NV_VWC_060/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_NV_VWC_060_1h.csv",
         "agg_1d": "data/agg/SAL_NV_VWC_060_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96198,
-        "n_valid": 96198,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2049,43 +2070,40 @@
       "unit": "kPa",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": -2306.7,
       "max": -0.1,
       "status": "active",
-      "gaps_over_24h": [
-        {
-          "from": "2025-12-17T16:20+01:00",
-          "to": "2025-12-18T17:25+01:00",
-          "hours": 25.1
-        }
-      ],
+      "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
-        "Gap 2025-12-17 16:20 – 2025-12-18 17:25 (25 h) condiviso da tutte le serie della stazione."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Dati 2025-2026 dai file 'Salerno_METER_V_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_V_2025.xlsx",
+          "file": "Salerno_METER_V_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port6-15cm-T21",
-          "column": "Port6-T21-15cm (kPa)"
+          "sheet": "Vegetation",
+          "column": "s 15",
+          "time_column": "Time (UTC+1)",
+          "scale": -1
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_V_PSI_015/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_V_PSI_015_1h.csv",
         "agg_1d": "data/agg/SAL_V_PSI_015_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96004,
-        "n_valid": 96004,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2103,42 +2121,40 @@
       "unit": "kPa",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": -2131.5,
-      "max": -1.6,
+      "max": -0.2,
       "status": "active",
-      "gaps_over_24h": [
-        {
-          "from": "2025-12-17T16:20+01:00",
-          "to": "2025-12-18T17:25+01:00",
-          "hours": 25.1
-        }
-      ],
+      "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Dati 2025-2026 dai file 'Salerno_METER_V_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_V_2025.xlsx",
+          "file": "Salerno_METER_V_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port3-35cm-T21",
-          "column": "Port3-T21-35cm (kPa)"
+          "sheet": "Vegetation",
+          "column": "s 35",
+          "time_column": "Time (UTC+1)",
+          "scale": -1
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_V_PSI_035/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_V_PSI_035_1h.csv",
         "agg_1d": "data/agg/SAL_V_PSI_035_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96004,
-        "n_valid": 96004,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2156,42 +2172,40 @@
       "unit": "kPa",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": -1952.1,
-      "max": -5.4,
+      "max": -1.7,
       "status": "active",
-      "gaps_over_24h": [
-        {
-          "from": "2025-12-17T16:20+01:00",
-          "to": "2025-12-18T17:25+01:00",
-          "hours": 25.1
-        }
-      ],
+      "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike."
+        "Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, 2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.",
+        "Dati 2025-2026 dai file 'Salerno_METER_V_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_V_2025.xlsx",
+          "file": "Salerno_METER_V_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port5-60cm-T10",
-          "column": "Port5-T21-60cm (kPa)"
+          "sheet": "Vegetation",
+          "column": "s 60",
+          "time_column": "Time (UTC+1)",
+          "scale": -1
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_V_PSI_060/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_V_PSI_060_1h.csv",
         "agg_1d": "data/agg/SAL_V_PSI_060_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96004,
-        "n_valid": 96004,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2368,42 +2382,47 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 165752,
       "min": 0.016,
-      "max": 0.162,
+      "max": 0.21,
       "status": "active",
       "gaps_over_24h": [
         {
-          "from": "2025-12-17T16:20+01:00",
-          "to": "2025-12-18T17:25+01:00",
-          "hours": 25.1
+          "from": "2026-01-31T13:25+01:00",
+          "to": "2026-03-04T10:00+01:00",
+          "hours": 764.6
         }
       ],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione)."
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "Dati 2025-2026 dai file 'Salerno_METER_V_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V.",
+        "Dati mancanti dal 2026-01-31 13:30 al 2026-03-04 09:55 (31,8 giorni): il sensore TEROS 10 a 15 cm del sito V non ha registrato; gli altri sensori della stazione sono completi.",
+        "Lacuna di 65 min il 2026-03-29 (05:05 -> 06:10), comune a tutte le serie della stazione."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_V_2025.xlsx",
+          "file": "Salerno_METER_V_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port4-15cm-T10",
-          "column": "Port4-T10-15cm"
+          "sheet": "Vegetation",
+          "column": "VWC 15",
+          "time_column": "Time (UTC+1)"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_V_VWC_015/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_V_VWC_015_1h.csv",
         "agg_1d": "data/agg/SAL_V_VWC_015_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96004,
-        "n_valid": 96004,
+        "n_total": 165752,
+        "n_valid": 165752,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2421,42 +2440,39 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": 0.052,
-      "max": 0.21,
+      "max": 0.218,
       "status": "active",
-      "gaps_over_24h": [
-        {
-          "from": "2025-12-17T16:20+01:00",
-          "to": "2025-12-18T17:25+01:00",
-          "hours": 25.1
-        }
-      ],
+      "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione)."
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "Dati 2025-2026 dai file 'Salerno_METER_V_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_V_2025.xlsx",
+          "file": "Salerno_METER_V_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port2-35cm-T10",
-          "column": "Port2-T10-35cm"
+          "sheet": "Vegetation",
+          "column": "VWC 35",
+          "time_column": "Time (UTC+1)"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_V_VWC_035/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_V_VWC_035_1h.csv",
         "agg_1d": "data/agg/SAL_V_VWC_035_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96004,
-        "n_valid": 96004,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2474,42 +2490,39 @@
       "unit": "m3/m3",
       "aggregation": "mean",
       "step_min": 5.0,
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
       "min": 0.025,
-      "max": 0.179,
+      "max": 0.188,
       "status": "active",
-      "gaps_over_24h": [
-        {
-          "from": "2025-12-17T16:20+01:00",
-          "to": "2025-12-18T17:25+01:00",
-          "hours": 25.1
-        }
-      ],
+      "gaps_over_24h": [],
       "qc_notes": [
-        "Registrazioni dal 2025-01-31 (installazione)."
+        "Registrazioni dal 2025-01-31 (installazione).",
+        "Dati 2025-2026 dai file 'Salerno_METER_V_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa (potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V."
       ],
       "sources": [
         {
-          "file": "Salerno_Meter_V_2025.xlsx",
+          "file": "Salerno_METER_V_2025-2026.xlsx",
           "year": 2025,
-          "sheet": "Port1-60cm-T10",
-          "column": "Port1-T10-60cm"
+          "sheet": "Vegetation",
+          "column": "VWC 60",
+          "time_column": "Time (UTC+1)"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/SAL_V_VWC_060/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/SAL_V_VWC_060_1h.csv",
         "agg_1d": "data/agg/SAL_V_VWC_060_1d.csv"
       },
       "qc_summary": {
-        "n_total": 96004,
-        "n_valid": 96004,
+        "n_total": 174926,
+        "n_valid": 174926,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2908,6 +2921,240 @@
   ],
   "source_files": [
     {
+      "series_id": "SAL_NV_VWC_015",
+      "file": "Salerno_METER_NV_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "No vegetation",
+      "column": "VWC 15",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": 0.02,
+      "max": 0.259,
+      "mean": 0.0639
+    },
+    {
+      "series_id": "SAL_NV_VWC_030",
+      "file": "Salerno_METER_NV_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "No vegetation",
+      "column": "VWC 30",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": 0.046,
+      "max": 0.383,
+      "mean": 0.1302
+    },
+    {
+      "series_id": "SAL_NV_VWC_060",
+      "file": "Salerno_METER_NV_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "No vegetation",
+      "column": "VWC 60",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": 0.091,
+      "max": 0.347,
+      "mean": 0.1961
+    },
+    {
+      "series_id": "SAL_NV_PSI_015",
+      "file": "Salerno_METER_NV_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "No vegetation",
+      "column": "s 15",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "scale": -1,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": -3291.5,
+      "max": -0.1,
+      "mean": -647.4338
+    },
+    {
+      "series_id": "SAL_NV_PSI_030",
+      "file": "Salerno_METER_NV_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "No vegetation",
+      "column": "s 30",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "scale": -1,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": -1718.3,
+      "max": -0.1,
+      "mean": -440.7469
+    },
+    {
+      "series_id": "SAL_NV_PSI_060",
+      "file": "Salerno_METER_NV_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "No vegetation",
+      "column": "s 60",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "scale": -1,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": -1372.4,
+      "max": -0.2,
+      "mean": -366.1695
+    },
+    {
+      "series_id": "SAL_V_VWC_015",
+      "file": "Salerno_METER_V_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "Vegetation",
+      "column": "VWC 15",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 165752,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 2,
+      "max_gap_h": 764.6,
+      "min": 0.016,
+      "max": 0.21,
+      "mean": 0.0473
+    },
+    {
+      "series_id": "SAL_V_VWC_035",
+      "file": "Salerno_METER_V_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "Vegetation",
+      "column": "VWC 35",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": 0.052,
+      "max": 0.218,
+      "mean": 0.1173
+    },
+    {
+      "series_id": "SAL_V_VWC_060",
+      "file": "Salerno_METER_V_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "Vegetation",
+      "column": "VWC 60",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": 0.025,
+      "max": 0.188,
+      "mean": 0.0885
+    },
+    {
+      "series_id": "SAL_V_PSI_015",
+      "file": "Salerno_METER_V_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "Vegetation",
+      "column": "s 15",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "scale": -1,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": -2306.7,
+      "max": -0.1,
+      "mean": -525.7812
+    },
+    {
+      "series_id": "SAL_V_PSI_035",
+      "file": "Salerno_METER_V_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "Vegetation",
+      "column": "s 35",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "scale": -1,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": -2131.5,
+      "max": -0.2,
+      "mean": -646.2304
+    },
+    {
+      "series_id": "SAL_V_PSI_060",
+      "file": "Salerno_METER_V_2025-2026.xlsx",
+      "year": 2025,
+      "sheet": "Vegetation",
+      "column": "s 60",
+      "time_column": "Time (UTC+1)",
+      "local_time_column": null,
+      "scale": -1,
+      "start": "2025-01-31T13:40+01:00",
+      "end": "2026-09-30T23:55+01:00",
+      "n_values": 174926,
+      "n_rows": 174926,
+      "step_min": 5.0,
+      "gaps_over_1h": 1,
+      "max_gap_h": 1.1,
+      "min": -1952.1,
+      "max": -1.7,
+      "mean": -592.4342
+    },
+    {
       "series_id": "CF_18925_RAIN",
       "file": "PELLEZZANO_PLUVIOMETRO_CF_2025.xlsx",
       "year": 2025,
@@ -2925,82 +3172,6 @@
       "min": 0.0,
       "max": 9.4,
       "mean": 0.0234
-    },
-    {
-      "series_id": "SAL_V_VWC_015",
-      "file": "Salerno_Meter_V_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port4-15cm-T10",
-      "column": "Port4-T10-15cm",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
-      "n_rows": 96004,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 25.1,
-      "min": 0.016,
-      "max": 0.162,
-      "mean": 0.0488
-    },
-    {
-      "series_id": "SAL_V_VWC_035",
-      "file": "Salerno_Meter_V_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port2-35cm-T10",
-      "column": "Port2-T10-35cm",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
-      "n_rows": 96004,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 25.1,
-      "min": 0.052,
-      "max": 0.21,
-      "mean": 0.1267
-    },
-    {
-      "series_id": "SAL_V_VWC_060",
-      "file": "Salerno_Meter_V_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port1-60cm-T10",
-      "column": "Port1-T10-60cm",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
-      "n_rows": 96004,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 25.1,
-      "min": 0.025,
-      "max": 0.179,
-      "mean": 0.0897
-    },
-    {
-      "series_id": "SAL_V_PSI_015",
-      "file": "Salerno_Meter_V_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port6-15cm-T21",
-      "column": "Port6-T21-15cm (kPa)",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
-      "n_rows": 96004,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 25.1,
-      "min": -2306.7,
-      "max": -0.1,
-      "mean": -556.3677
     },
     {
       "series_id": "SAL_V_TSOIL_015",
@@ -3022,25 +3193,6 @@
       "mean": 16.6305
     },
     {
-      "series_id": "SAL_V_PSI_035",
-      "file": "Salerno_Meter_V_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port3-35cm-T21",
-      "column": "Port3-T21-35cm (kPa)",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
-      "n_rows": 96004,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 25.1,
-      "min": -2131.5,
-      "max": -1.6,
-      "mean": -644.2926
-    },
-    {
       "series_id": "SAL_V_TSOIL_035",
       "file": "Salerno_Meter_V_2025.xlsx",
       "year": 2025,
@@ -3058,25 +3210,6 @@
       "min": 12.0,
       "max": 22.8,
       "mean": 17.1926
-    },
-    {
-      "series_id": "SAL_V_PSI_060",
-      "file": "Salerno_Meter_V_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port5-60cm-T10",
-      "column": "Port5-T21-60cm (kPa)",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T14:30+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96004,
-      "n_rows": 96004,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 25.1,
-      "min": -1952.1,
-      "max": -5.4,
-      "mean": -685.5247
     },
     {
       "series_id": "SAL_V_TSOIL_060",
@@ -3117,82 +3250,6 @@
       "mean": 0.0222
     },
     {
-      "series_id": "SAL_NV_VWC_015",
-      "file": "Salerno_Meter_NV_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port1-15cm-T10",
-      "column": "Port1-T10-15cm",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "n_rows": 96198,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 10.7,
-      "min": 0.02,
-      "max": 0.259,
-      "mean": 0.064
-    },
-    {
-      "series_id": "SAL_NV_VWC_030",
-      "file": "Salerno_Meter_NV_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port3-30cm-T10",
-      "column": "Port3-T10-30cm",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "n_rows": 96198,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 10.7,
-      "min": 0.051,
-      "max": 0.383,
-      "mean": 0.1363
-    },
-    {
-      "series_id": "SAL_NV_VWC_060",
-      "file": "Salerno_Meter_NV_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port2-60cm-T10",
-      "column": "Port2-T10-60cm",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "n_rows": 96198,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 10.7,
-      "min": 0.108,
-      "max": 0.315,
-      "mean": 0.2041
-    },
-    {
-      "series_id": "SAL_NV_PSI_015",
-      "file": "Salerno_Meter_NV_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port5-15cm-T21",
-      "column": "Port5-T21-15cm (kPa)",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "n_rows": 96198,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 10.7,
-      "min": -3291.5,
-      "max": -0.1,
-      "mean": -639.0479
-    },
-    {
       "series_id": "SAL_NV_TSOIL_015",
       "file": "Salerno_Meter_NV_2025.xlsx",
       "year": 2025,
@@ -3212,25 +3269,6 @@
       "mean": 21.5549
     },
     {
-      "series_id": "SAL_NV_PSI_030",
-      "file": "Salerno_Meter_NV_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port6-30cm-T21",
-      "column": "Port6-T21-30cm (kPa)",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "n_rows": 96198,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 10.7,
-      "min": -1718.3,
-      "max": -0.1,
-      "mean": -377.019
-    },
-    {
       "series_id": "SAL_NV_TSOIL_030",
       "file": "Salerno_Meter_NV_2025.xlsx",
       "year": 2025,
@@ -3248,25 +3286,6 @@
       "min": 11.0,
       "max": 30.5,
       "mean": 20.6673
-    },
-    {
-      "series_id": "SAL_NV_PSI_060",
-      "file": "Salerno_Meter_NV_2025.xlsx",
-      "year": 2025,
-      "sheet": "Port4-60cm-T10",
-      "column": "Port4-T21-60cm (kPa)",
-      "time_column": "Time UTC+1",
-      "local_time_column": "Time",
-      "start": "2025-01-31T12:40+01:00",
-      "end": "2025-12-31T23:55+01:00",
-      "n_values": 96198,
-      "n_rows": 96198,
-      "step_min": 5.0,
-      "gaps_over_1h": 1,
-      "max_gap_h": 10.7,
-      "min": -1372.4,
-      "max": -0.4,
-      "mean": -331.8906
     },
     {
       "series_id": "SAL_NV_TSOIL_060",
@@ -3345,7 +3364,9 @@
     "cumulative": {
       "_doc": "Pioggia cumulata dal 1 gennaio (derive_cumulative.py): i buchi tra registrazioni consecutive piu' lunghi di gap_min_minutes (e quelli dall'inizio dell'anno al primo dato) contano come tempo mancante; quando il tempo mancante cumulato nell'anno supera missing_hours_threshold la cumulata e' sottostimata -> flag 1 (tratteggio nel portale).",
       "gap_min_minutes": 60,
-      "missing_hours_threshold": 24
+      "missing_hours_threshold": 24,
+      "window24_missing_hours_threshold": 2,
+      "_doc_window24": "Pioggia cumulata 24 h (finestra mobile): se nelle 24 h che terminano al timestamp mancano piu' di window24_missing_hours_threshold ore di dati (anche per le prime 24 h della serie) la cumulata e' sottostimata -> flag 1."
     },
     "windows": []
   }

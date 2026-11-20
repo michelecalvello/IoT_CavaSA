@@ -76,7 +76,7 @@ for _k, (_n, _id, *_r) in METER_STATIONS.items():
     INSTRUMENTS[f"SAL_{_k}_METER"] = {
         "station_id": f"SAL_{_k}", "manufacturer": "METER Group",
         "type": "Datalogger con sensori TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale, temperatura)",
-        "file_pattern": rf"^Salerno_Meter_{_k}_\d{{4}}\.xlsx$"}
+        "file_pattern": rf"^Salerno_Meter_{_k}_\d{{4}}(?:-\d{{4}})?\.xlsx$"}
 for _code, (_n, _m, _utm, _el, _pat) in CF_STATIONS.items():
     INSTRUMENTS[f"CF_{_code}_RAIN"] = {"station_id": f"CF_{_code}", "manufacturer": "Centro Funzionale Regione Campania",
                                       "type": "Pluviometro", "file_pattern": _pat}
@@ -121,6 +121,17 @@ def classify(instrument_id, col):
     station = INSTRUMENTS[instrument_id]["station_id"]
     none = {"depth_m": None, "sensor_model": None, "logger_port": None}
     if instrument_id.endswith("_METER"):
+        # Formato compatto (file "Salerno_METER_<sito>_2025-2026.xlsx"): colonna 'Time' (UTC+1),
+        # 'VWC <cm>' = contenuto d'acqua (TEROS 10), 's <cm>' = suzione in kPa positiva (TEROS 21) -> psi = -s.
+        # Nessuna temperatura del terreno in questi file.
+        m = re.match(r"^(VWC|s)\s+(\d+)$", col)
+        if m:
+            depth = int(m[2])
+            if m[1] == "VWC":
+                return f"{station}_VWC_{depth:03d}", {"variable": "vwc", "depth_m": depth / 100,
+                                                      "sensor_model": "TEROS 10", "logger_port": None}
+            return f"{station}_PSI_{depth:03d}", {"variable": "psi", "depth_m": depth / 100,
+                                                  "sensor_model": "TEROS 21", "logger_port": None, "scale": -1}
         m = re.match(r"Port(\d)-(T10|T21)-(\d+)cm(?:\s*\((kPa|°C)\))?", col)
         if not m:
             return None
@@ -148,17 +159,24 @@ for _code in CF_STATIONS:
         + {"21521": "1167 mm (125 m)", "18925": "1227 mm (356 m)", "18957": "987 mm (28 m)"}[_code]
         + "; correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.")
 _METER_NOTE_PSI = ("Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori "
-                   "molto negativi (fino a circa -3000 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo "
+                   "molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo "
                    "di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, "
                    "2025-10-23) sono fronti di bagnamento reali dopo la pioggia, non spike.")
+_METER_NOTE_SRC = ("Dati 2025-2026 dai file 'Salerno_METER_{k}_2025-2026.xlsx' (colonna 'Time' già in UTC+1; suzione 's' in kPa "
+                   "positiva, convertita in potenziale con segno negativo). Il file sostituisce quello del solo 2025 per VWC e "
+                   "potenziale: differenze rispetto alla vecchia elaborazione trascurabili (VWC) o dell'ordine di qualche kPa "
+                   "(potenziale, V in estate); il file 2025-2026 colma inoltre la lacuna del 17-18/12/2025 del sito V.")
 for _k in METER_STATIONS:
     _d = {"NV": ("015", "030", "060"), "V": ("015", "035", "060")}[_k]
     for _x in _d:
-        QC_NOTES[f"SAL_{_k}_PSI_{_x}"] = [_METER_NOTE_PSI]
-        QC_NOTES[f"SAL_{_k}_VWC_{_x}"] = ["Registrazioni dal 2025-01-31 (installazione)."]
-        QC_NOTES[f"SAL_{_k}_TSOIL_{_x}"] = ["Registrazioni dal 2025-01-31 (installazione)."]
-QC_NOTES["SAL_NV_PSI_015"].append("Gap 2025-12-18 ~02:40 (10,7 h) condiviso da tutte le serie della stazione.")
-QC_NOTES["SAL_V_PSI_015"].append("Gap 2025-12-17 16:20 – 2025-12-18 17:25 (25 h) condiviso da tutte le serie della stazione.")
+        QC_NOTES[f"SAL_{_k}_PSI_{_x}"] = [_METER_NOTE_PSI, _METER_NOTE_SRC.format(k=_k)]
+        QC_NOTES[f"SAL_{_k}_VWC_{_x}"] = ["Registrazioni dal 2025-01-31 (installazione).", _METER_NOTE_SRC.format(k=_k)]
+        QC_NOTES[f"SAL_{_k}_TSOIL_{_x}"] = ["Registrazioni dal 2025-01-31 (installazione). Temperatura non presente nei file 2025-2026: "
+                                            "serie ferma al 31/12/2025."]
+QC_NOTES["SAL_V_VWC_015"].append("Dati mancanti dal 2026-01-31 13:30 al 2026-03-04 09:55 (31,8 giorni): il sensore TEROS 10 a 15 cm "
+                                 "del sito V non ha registrato; gli altri sensori della stazione sono completi.")
+QC_NOTES["SAL_NV_VWC_015"].append("Lacuna di 65 min il 2026-03-29 (05:20 -> 06:25), comune a tutte le serie della stazione.")
+QC_NOTES["SAL_V_VWC_015"].append("Lacuna di 65 min il 2026-03-29 (05:05 -> 06:10), comune a tutte le serie della stazione.")
 
 
 # ----------------------------------------------------------------------------
@@ -177,19 +195,22 @@ for path in sorted(glob.glob(os.path.join(INPUT_DIR, "*.xlsx"))):
     iid = match_instrument(clean)
     if iid is None:
         print("!! file non riconosciuto:", fname); continue
-    year = int(re.search(r"(\d{4})\.xlsx$", clean)[1])
+    year = int(re.search(r"(\d{4})(?:-\d{4})?\.xlsx$", clean)[1])
     for sheet, df in pd.read_excel(path, sheet_name=None, engine="openpyxl").items():
-        # Colonna B = 'Time UTC+1' -> riferimento temporale unico (arrotondato al minuto)
-        t = pd.to_datetime(df.iloc[:, 1], errors="coerce").dt.round("min")
-        has_local = bool(df.iloc[:, 0].notna().any())
-        for col in df.columns[2:]:
+        # Formato storico: colonna B = 'Time UTC+1' (la A è l'ora locale). Formato compatto: unica colonna 'Time' = UTC+1.
+        compact = iid.endswith("_METER") and str(df.columns[0]).strip() == "Time" and not any("UTC" in str(c) for c in df.columns[:2])
+        tcol = 0 if compact else 1
+        t = pd.to_datetime(df.iloc[:, tcol], errors="coerce").dt.round("min")
+        has_local = (not compact) and bool(df.iloc[:, 0].notna().any())
+        for col in df.columns[tcol + 1:]:
             if not isinstance(col, str) or col.startswith("Unnamed"):
                 continue                                  # colonne di servizio (calcolo offset)
             cl = classify(iid, col)
             if cl is None:
                 continue
             sid, attrs = cl
-            v = pd.to_numeric(df[col], errors="coerce")
+            scale = attrs.pop("scale", 1)
+            v = pd.to_numeric(df[col], errors="coerce") * scale
             ok = v.notna() & t.notna()
             tt, vv = t[ok].reset_index(drop=True), v[ok]
             step = tt.diff().dt.total_seconds().div(60)
@@ -197,8 +218,9 @@ for path in sorted(glob.glob(os.path.join(INPUT_DIR, "*.xlsx"))):
                 gaps.setdefault(sid, []).append({"from": iso(tt[i - 1]), "to": iso(tt[i]),
                                                  "hours": round(step[i] / 60, 1)})
             files.append({"series_id": sid, "file": clean, "year": year, "sheet": sheet,
-                          "column": col, "time_column": "Time UTC+1",
+                          "column": col, "time_column": "Time (UTC+1)" if compact else "Time UTC+1",
                           "local_time_column": "Time" if has_local else None,
+                          **({"scale": scale} if scale != 1 else {}),
                           "start": iso(tt.min()), "end": iso(tt.max()),
                           "n_values": int(ok.sum()), "n_rows": int(len(df)),
                           "step_min": float(step.median()),
@@ -217,7 +239,12 @@ _prev_path = os.path.join(OUT_DIR, "catalog.json")
 if os.path.exists(_prev_path) and os.environ.get("REBUILD") != "1":
     prev = json.load(open(_prev_path, encoding="utf-8"))
 _scanned = {(f["file"], f["sheet"], f["column"]) for f in files}
-files += [f for f in prev.get("source_files", []) if (f["file"], f["sheet"], f["column"]) not in _scanned]
+def _superseded(pf):
+    # file precedente della stessa serie che si sovrappone a un file appena scansionato e finisce prima (o insieme) ad esso:
+    # il nuovo file, che deve contenere tutto il periodo, lo sostituisce
+    return any(f["series_id"] == pf["series_id"] and f["start"] <= pf["end"] and f["end"] >= pf["end"] for f in files)
+files += [f for f in prev.get("source_files", [])
+          if (f["file"], f["sheet"], f["column"]) not in _scanned and not _superseded(f)]
 
 # ----------------------------------------------------------------------------
 # 6. ASSEMBLAGGIO
@@ -227,8 +254,11 @@ def label(s):
     d = f" {int(s['depth_m']*100)} cm" if s.get("depth_m") is not None else ""
     return f"{v['label_it']}{d} – {STATIONS[s['station_id']]['name']}"
 
+_prev_by_id = {x["series_id"]: x for x in prev.get("series", [])}
 out_series = []
 for sid, s in sorted(series.items()):
+    if s.get("logger_port") is None and _prev_by_id.get(sid, {}).get("logger_port") is not None:
+        s["logger_port"] = _prev_by_id[sid]["logger_port"]       # il formato compatto non riporta la porta
     fs = sorted((f for f in files if f["series_id"] == sid), key=lambda f: f["start"])
     v = VARIABLES[s["variable"]]
     out_series.append({
@@ -245,7 +275,7 @@ for sid, s in sorted(series.items()):
         "status": "active",
         "gaps_over_24h": gaps.get(sid, []),
         "qc_notes": QC_NOTES.get(sid, []),
-        "sources": [{k: f[k] for k in ("file", "year", "sheet", "column")} for f in fs],
+        "sources": [{k: f[k] for k in ("file", "year", "sheet", "column", "time_column", "scale") if k in f} for f in fs],
     })
 
 _new_ids = {s["series_id"] for s in out_series}
@@ -271,8 +301,9 @@ catalog = {
     "conventions": {**prev.get("conventions", {}),
         "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. "
                           "Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' "
-                          "dei file Excel, arrotondata al minuto. La colonna 'Time' (ora locale con "
-                          "ora legale) non è usata.",
+                          "dei file Excel, arrotondata al minuto (la colonna 'Time' ora locale con "
+                          "ora legale, presente nei file storici, non è usata). Nei file Meter 2025-2026 "
+                          "(formato compatto) l'unica colonna 'Time' è già in UTC+1 (verificato sulla sovrapposizione col 2025).",
         "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
         "depth_m": "Profondità sotto il piano campagna, positiva verso il basso, in metri.",
         "coordinates": "WGS84 (EPSG:4326), gradi decimali.",

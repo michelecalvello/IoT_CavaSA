@@ -18,8 +18,8 @@
                   psi: "Potenziale matriciale", t_soil: "Temperatura terreno", t_air: "Temperatura aria (2 m)" };
   const UNIT = (u) => u.replace("m3/m3", "m³/m³");
   const DEFAULT = {
-    selected: ["CF_18925_RAIN", "SAL_NV_VWC_015", "SAL_NV_VWC_060", "SAL_NV_PSI_030"],
-    from: "2025-10-15 00:00", to: "2025-12-01 00:00",
+    selected: ["ERA5_E147_N407_RAIN", "SAL_NV_VWC_015", "SAL_NV_VWC_060", "SAL_NV_PSI_030"],
+    from: "2026-01-01 00:00", to: "2026-03-01 00:00",
   };
 
   // ---------------------------------------------------------------- stato

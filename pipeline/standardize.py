@@ -48,9 +48,11 @@ def load_series(s):
     parts = []
     for src in s["sources"]:
         df = read_sheet(src["file"], src["sheet"])
+        # formato storico: colonna B = 'Time UTC+1'; formato compatto (2025-2026): colonna A = 'Time' già in UTC+1
+        tcol = 0 if src.get("time_column") == "Time (UTC+1)" else 1
         part = pd.DataFrame({
-            "time": pd.to_datetime(df.iloc[:, 1], errors="coerce").dt.round("min"),   # colonna B = 'Time UTC+1' (o 'Time (UTC+1)')
-            "value": pd.to_numeric(df[src["column"]], errors="coerce")})
+            "time": pd.to_datetime(df.iloc[:, tcol], errors="coerce").dt.round("min"),
+            "value": pd.to_numeric(df[src["column"]], errors="coerce") * src.get("scale", 1)})   # scale -1: suzione -> potenziale
         parts.append(part.dropna())
     d = pd.concat(parts).sort_values("time")
     n_dup = int(d["time"].duplicated().sum())

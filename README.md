@@ -19,7 +19,8 @@ python pipeline/analisi_eventi.py   # analisi eventi/stoccaggio 0–75 cm -> dat
 
 Modalità incrementale: `build_catalog.py` e `standardize.py` aggiornano solo i file Excel presenti in `INPUT_DIR`
 (il resto del catalogo e dei dati resta com'è; `REBUILD=1` per ripartire da zero con tutti i file).
-Per aggiungere un anno a una serie esistente servono tutti i suoi file Excel.
+Per aggiungere un anno a una serie esistente servono tutti i suoi file Excel. Un file che si sovrappone a quelli già elaborati
+della stessa serie e li contiene fino alla fine li **sostituisce** (es. `Salerno_METER_<NV|V>_2025-2026.xlsx` al posto del solo 2025).
 
 Per aggiungere uno strumento: stazione in `STATIONS`, strumento in `INSTRUMENTS`
 (con `file_pattern`), regola in `classify()` dentro `pipeline/build_catalog.py`; eventuali
@@ -86,9 +87,16 @@ data/qc_log.csv         elenco dei valori segnalati e regola applicata
 
 - Stazioni Salerno Meter NV (ID logger Z6-28531, 247 m s.l.m.) e V (Z6-28525, 255 m s.l.m.): sensori METER
   TEROS 10 (contenuto d'acqua) e TEROS 21 (potenziale matriciale, temperatura) a 3 profondità
-  (NV: 15/30/60 cm; V: 15/35/60 cm). Università di Salerno. Dati dal 2025-01-31.
+  (NV: 15/30/60 cm; V: 15/35/60 cm). Università di Salerno. Dati dal 2025-01-31 al **2026-09-30** (passo 5 min).
+  - NV = *No vegetation*, V = *Vegetation*.
+  - Contenuto d'acqua e potenziale: file `Salerno_METER_<NV|V>_2025-2026.xlsx` (formato compatto: colonna `Time` già in UTC+1, `VWC <cm>`,
+    `s <cm>` = suzione in kPa positiva → potenziale = −s). Questi file sostituiscono quelli del solo 2025: sul 2025 le differenze sono trascurabili
+    (VWC) o di pochi kPa (potenziale V in estate) e colmano la lacuna del 17–18/12/2025 del sito V.
+  - Temperatura del terreno: non presente nei file 2025-2026, le serie `*_TSOIL_*` si fermano al 31/12/2025.
+  - Sito V, VWC 15 cm: dati mancanti dal 31/1 al 4/3/2026 (31,8 giorni); lacuna comune di 65 min il 29/3/2026.
 - Pluviometri 21521 (Cologna, 125 m), 18925 (Pellezzano, 356 m) e 18957 (Salerno Genio Civile, 28 m):
-  Centro Funzionale Multirischi della Protezione Civile – Regione Campania. Anno 2025, passo 10 min.
+  Centro Funzionale Multirischi della Protezione Civile – Regione Campania. Solo anno 2025, passo 10 min (il 2026 non è ancora disponibile:
+  per i sensori nel 2026 la pioggia di riferimento è ERA5-Land, fino al 27/9/2026).
   Coordinate originali UTM 33N (EPSG:32633), convertite in WGS84.
 
 - Pixel ERA5-Land (ECMWF/Copernicus C3S) e SMAP L4 (NASA GMAO) scaricati da Google Earth Engine, 1.1.2024 – fine set. 2026 (2 pixel ERA5-Land, 2 pixel SMAP L4 vicini alla zona di studio).
@@ -110,7 +118,8 @@ Per provarlo in locale: `python -m http.server` nella radice del repo e aprire h
 ### Animazioni per verticale (`verticali.html`)
 
 Pagina statica collegata al portale (stessa impostazione di `verticali.html` di [IoT_Vaglio](https://github.com/michelecalvello/IoT_Vaglio)), senza dipendenze esterne oltre ai font.
-Legge direttamente `catalog.json` e gli aggregati orari in `data/agg/` (ore con copertura < 50 % escluse).
+Legge direttamente `catalog.json` e gli aggregati orari in `data/agg/` (ore con copertura < 50 % escluse). Periodo di default 01/02/2025 – 30/09/2026;
+nel 2026 la fascia di pioggia è vuota (pluviometri CF fermi al 2025).
 - Verticale (Meter NV o V), grandezza (contenuto d'acqua, potenziale matriciale come suzione |ψ| in scala log, temperatura del terreno) e periodo a scelta.
 - Profilo con la profondità sull'asse verticale, animato nel tempo: profilo attuale, minimo e massimo del periodo e dell'intera serie, scia degli istanti appena trascorsi.
 - Serie nel tempo con la pioggia giornaliera e cursore trascinabile; lettura numerica (valore e Δ dall'inizio del periodo per profondità).
@@ -121,7 +130,7 @@ Legge direttamente `catalog.json` e gli aggregati orari in `data/agg/` (ore con 
 ### Analisi eventi e immagazzinamento (`analisi.html`)
 
 Pagina statica collegata al portale (stessa grafica, Plotly). Legge `data/analisi_eventi.json`, prodotto da `pipeline/analisi_eventi.py`
-a partire dai dati grezzi 2025 dei sensori Meter NV/V e dei tre pluviometri CF.
+a partire dai dati grezzi 2025 dei sensori Meter NV/V (l'analisi resta sul solo 2025: mancano i pluviometri CF 2026) e dei tre pluviometri CF.
 - Eventi di pioggia: pausa asciutta ≥ 6 h, P ≥ 5 mm (media dei pluviometri 21521, 18925, 18957).
 - Stoccaggio 0–75 cm = Σ VWC × spessore di strato (NV: 0–22,5 / 22,5–45 / 45–75 cm; V: 0–25 / 25–47,5 / 47,5–75 cm).
 - Per ogni evento: P, durata, intensità massima (10 min, 30 min, 1 h), pioggia antecedente (3 e 7 giorni), stoccaggio iniziale, ΔS al picco e a fine finestra (48 h dopo la pioggia o inizio evento successivo).
