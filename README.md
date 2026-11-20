@@ -15,6 +15,7 @@ python pipeline/standardize.py      # data/ + arricchisce catalog.json
 python pipeline/ingest_gee.py       # prodotti a griglia da Google Earth Engine (ERA5-Land, SMAP L4)
 python pipeline/derive_cumulative.py  # serie derivate: pioggia cumulata dal 1 gennaio e su 24 h
 python pipeline/analisi_eventi.py   # analisi eventi/stoccaggio 0–75 cm -> data/analisi_eventi.json (per analisi.html)
+python pipeline/curve_caratteristiche.py  # curve θ–ψ in drying e wetting -> data/curve_caratteristiche.json (per curvecaratteristiche.html)
 ```
 
 Modalità incrementale: `build_catalog.py` e `standardize.py` aggiornano solo i file Excel presenti in `INPUT_DIR`
@@ -148,3 +149,19 @@ e la curva FS in funzione dell'altezza di falda sospesa. Il TEROS 21 non misura 
 - `pipeline/richards4_profile.py NV|V`: profilo di identificabilità di Ks per strato → `data/richards4_profile_<sito>.json`.
 - `pipeline/richards4_fs.py`: FS a 75 cm con la pressione dei pori simulata, per ciascuna soluzione di calibrazione.
 Ordine: `richards4_calib.py` → `richards4_profile.py` → `richards4_fs.py`.
+
+### Curve caratteristiche θ–ψ: drying e wetting (`curvecaratteristiche.html`)
+
+Pagina statica (stessa grafica e Plotly di `analisi.html`) che legge `data/curve_caratteristiche.json`, prodotto da `pipeline/curve_caratteristiche.py`
+(numpy, pandas, scipy; ~20 s). Usa i dati grezzi (`data/raw`, solo flag < 2) delle 6 coppie θ–ψ Meter (NV 15/30/60 cm, V 15/35/60 cm, 31/1/2025–30/9/2026)
+e la pioggia media dei tre pluviometri CF; `data/richards4_<sito>.json` serve solo al confronto con la calibrazione a 4 strati.
+Rieseguire lo script dopo ogni aggiornamento dei dati grezzi.
+- **Serie orarie** (mediana dei 5 min) di θ e di log₁₀ s, con s = −ψ in kPa (≥ 0,1).
+- **Fasi di drying e wetting**: filtro ZigZag su θ (soglia 0,005–0,012 m³/m³ secondo il sensore, tarata sul rumore); l'inizio del wetting è l'ultimo istante entro max(0,002; 10 % dell'ampiezza) dal minimo.
+  Controllo di coerenza θ–ψ ora per ora: punti «validi» (θ e ψ si muovono nello stesso verso atteso) o «transitori» (ψ in ritardo); solo i validi con s ≥ 3 kPa entrano nei fit.
+- **Curve**: mediane per classi di 0,1 decadi di log s e van Genuchten per il ramo di drying (anche separatamente per il ciclo 2025 e il 2026); curva di wetting derivata da quella di drying (θr e n invariati, αw = αd·10^δ con δ ≥ 0, θs,w = κ·θs,d) con bootstrap per eventi;
+  curva attesa dalla letteratura (αw = 2αd, θs,w = 0,85 θs,d; Kool e Parker 1987, Likos et al. 2014).
+- **Isteresi senza modello**: spostamento orizzontale Δlog₁₀ s tra gli stati di fine wetting (θ al picco, suzione minima dopo il picco) e la curva di drying; test di sensibilità a un ritardo costante di ψ (τ = 3–12 h).
+- **Wetting e pioggia**: per ogni fase di wetting pioggia nella finestra a monte (24/36/48 h secondo la profondità), intensità, pioggia antecedente, ritardi pioggia → θ → ψ; correlazioni di Spearman, regressione log–log, probabilità di risposta per classe di pioggia (P50 logistico).
+- Il JSON contiene, per coppia: serie orarie compatte (`th` ×1000, `ls` ×100, `ph` = fase oraria W/D/T), fasi, eventi di wetting, fit, curve, statistiche; in testa pioggia oraria e correlazioni.
+- Limite principale: nel wetting θ e ψ non sono in equilibrio (risposta lenta del TEROS 21, volumi di misura diversi), quindi la curva principale di wetting non è misurabile in continuo; la pagina riporta limiti superiori dell'isteresi e li confronta con la letteratura (riferimenti elencati nella pagina).

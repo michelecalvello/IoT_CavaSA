@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curve caratteristiche θ–ψ: drying e wetting – CavaSA</title>
+<meta name="description" content="Curve caratteristiche del terreno (contenuto d'acqua vs potenziale) misurate in situ nei siti NV e V di Salerno: fasi di drying e di wetting, isteresi, scanning curves e relazione del wetting con la pioggia.">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .page { max-width: 1480px; margin: 0 auto; padding: 16px 20px 8px; display: flex; flex-direction: column; gap: 16px; }
+  .topbar .nav { display: flex; align-items: center; gap: 10px; }
+  .topbar a.back { text-decoration: none; font-size: 13px; border: 1px solid var(--border); border-radius: 6px; padding: 5px 9px; color: var(--text); }
+  .topbar a.back:hover { border-color: var(--text-2); }
+  .lead { color: var(--text-2); margin: 0; max-width: 1020px; }
+  .toc { display: flex; flex-wrap: wrap; gap: 6px 8px; }
+  .toc a { text-decoration: none; font-size: 12.5px; border: 1px solid var(--border); border-radius: 999px; padding: 3px 10px; color: var(--text-2); background: var(--surface); }
+  .toc a:hover { border-color: var(--text-2); color: var(--text); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .kpi .v { font-size: 22px; font-weight: 650; line-height: 1.2; }
+  .kpi .v small { font-size: 13px; font-weight: 500; color: var(--muted); }
+  .kpi .l { color: var(--text-2); font-size: 12px; margin-top: 3px; }
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .plot { height: 420px; min-height: 260px; }
+  .plot.tall { height: 640px; }
+  .plot.hero { height: 560px; }
+  .plot.cell { height: 380px; }
+  .plot.short { height: 340px; }
+  .ctrl { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 8px; }
+  .ctrl label { display: flex; align-items: center; gap: 6px; color: var(--text-2); font-size: 13px; }
+  .ctrl .seg button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .panel > p.note, .panel .note { margin: 6px 0 0; color: var(--text-2); font-size: 12.5px; max-width: 1200px; }
+  .panel h3.sub3 { margin: 14px 0 6px; font-size: 1rem; }
+  .evmeta { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--text-2); margin: 0 0 8px; }
+  .evmeta b { color: var(--text); font-weight: 650; }
+  .sw2 { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
+  .lg { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--text-2); margin: 0 0 8px; }
+  .lg > span { display: inline-flex; align-items: center; gap: 6px; }
+  .lg i { display: inline-block; width: 16px; height: 0; border-top: 2.5px solid; }
+  .lg i.dash { border-top-style: dashed; } .lg i.dot { border-top-style: dotted; }
+  .lg b.pt { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+  .lg b.dm { display: inline-block; width: 9px; height: 9px; transform: rotate(45deg); border: 1.5px solid var(--surface); box-shadow: 0 0 0 1px var(--border); }
+  table.stat td, table.stat th { text-align: right; }
+  table.stat td:first-child, table.stat th:first-child { text-align: left; }
+  table.stat td.l, table.stat th.l { text-align: left; }
+  table.stat td { white-space: nowrap; }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--text); }
+  thead th { position: sticky; top: 0; background: var(--surface); z-index: 1; }
+  .tbl-scroll { max-height: 520px; overflow: auto; }
+  ul.find { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; }
+  ul.find li { max-width: 1120px; }
+  .twocol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .twocol ul { margin: 4px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .twocol h3 { margin: 0 0 4px; font-size: 14px; }
+  ol.refs { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 5px; font-size: 13px; color: var(--text-2); }
+  ol.refs a { color: var(--accent); }
+  .warn { border-left: 3px solid var(--s4); padding: 4px 10px; background: var(--bg); color: var(--text-2); font-size: 13px; max-width: 1120px; }
+  code { font-size: 12.5px; }
+  @media (max-width: 1100px) { .grid3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 1000px) { .grid2, .twocol { grid-template-columns: 1fr; } .plot.hero { height: 460px; } }
+  @media (max-width: 640px) { .grid3 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <h1>Curve caratteristiche θ–ψ: drying e wetting</h1>
+    <span class="sub">Stazioni Meter NV e V · 6 coppie contenuto d'acqua–suzione · 31/01/2025–30/09/2026 · orari in UTC+1</span>
+  </div>
+  <div class="nav">
+    <a class="back" href="analisi.html">Analisi eventi</a>
+    <a class="back" href="index.html">← Portale dati</a>
+    <button id="themeBtn" class="ghost" type="button" title="Tema chiaro/scuro">◐</button>
+  </div>
+</header>
+
+<main class="page" id="page">
+  <p class="lead" id="lead">Caricamento…</p>
+  <nav class="toc" aria-label="Sezioni">
+    <a href="#sec-sintesi">In sintesi</a><a href="#sec-lett">Letteratura</a><a href="#sec-seg">Drying e wetting</a><a href="#sec-curve">Le 6 curve</a>
+    <a href="#sec-isteresi">Isteresi</a><a href="#sec-scan">Scanning e eventi</a><a href="#sec-pioggia">Wetting e pioggia</a><a href="#sec-metodo">Metodo e limiti</a><a href="#sec-rif">Riferimenti</a>
+  </nav>
+  <div class="kpis" id="kpis"></div>
+
+  <section class="panel" id="sec-sintesi">
+    <div class="panel-head"><h2>In sintesi</h2></div>
+    <ul class="find" id="findings"></ul>
+  </section>
+
+  <section class="panel" id="sec-lett">
+    <div class="panel-head"><h2>Cosa dice la letteratura</h2></div>
+    <div class="twocol">
+      <div>
+        <h3>Curve principali, scanning e isteresi</h3>
+        <ul>
+          <li><b>Isteresi.</b> A parità di suzione il terreno contiene più acqua se ci arriva asciugandosi che se ci arriva bagnandosi. La <b>main drying curve</b> (MDC) parte dalla saturazione ed è l'inviluppo superiore del ciclo; la <b>main wetting curve</b> (MWC) parte dal contenuto residuo ed è l'inviluppo inferiore.</li>
+          <li><b>Scanning curves.</b> Ogni inversione di verso (da drying a wetting o viceversa) avvia una curva di scansione che resta dentro il ciclo e va verso l'altro inviluppo; all'inizio è quasi orizzontale (pendenza minore delle curve principali). Si ricavano dalle sole due curve principali con modelli a domini, come quello di Mualem (1974); nel confronto di Pham et al. (2005) il «modello II» di Mualem è il migliore per le scansioni.</li>
+          <li><b>Cause.</b> Geometria dei pori con colli stretti e corpi larghi, o «ink-bottle» (Haines, 1930), angolo di contatto diverso in avanzamento e in ritiro, aria intrappolata in wetting, che impedisce di tornare al contenuto saturo di partenza (θ<sub>s,w</sub> &lt; θ<sub>s,d</sub>).</li>
+          <li><b>Descrizione con van Genuchten.</b> Si usano due set di parametri con θ<sub>r</sub> e n comuni: α<sub>w</sub> (wetting) maggiore di α<sub>d</sub> (drying) e θ<sub>s,w</sub> = κ·θ<sub>s,d</sub> con κ &lt; 1 (Kool e Parker, 1987).</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Valori di riferimento e avvertenze per i dati di campo</h3>
+        <ul>
+          <li><b>Valori tipici di laboratorio</b> (molti suoli; Likos et al., 2014): α<sub>w</sub>/α<sub>d</sub> = 2,24 ± 1,25 (suoli coesivi 1,73 ± 0,94; incoerenti 3,14 ± 1,27, quindi la semplificazione α<sub>w</sub> = 2α<sub>d</sub> vale solo in media); n<sub>w</sub>/n<sub>d</sub> = 1,01 ± 0,11; θ<sub>s,w</sub>/θ<sub>s,d</sub> = 0,85 ± 0,10.</li>
+          <li><b>Dal laboratorio al campo.</b> Basile et al. (2003) concludono che le curve di laboratorio e di campo «fanno parte dello stesso ciclo di isteresi» e che le differenze dipendono dal modo in cui il terreno viene bagnato. Bordoni et al. (2017) ricavano curve di campo dal monitoraggio, separando drying e wetting con il bilancio mensile pioggia–evapotraspirazione: i dati orari danno un quadro più chiaro, le curve principali dello stesso suolo sono simili in cicli idrologici diversi e le curve di campo con isteresi riproducono meglio lo stoccaggio in HYDRUS-1D. Comegna et al. (2021) mostrano risposte diverse in wetting e drying in un deposito piroclastico della Campania con tensiometri e TDR alle stesse profondità.</li>
+          <li><b>Effetti dinamici.</b> La pressione capillare dipende dalla velocità con cui cambia la saturazione (Hassanizadeh et al., 2002): in drenaggio più rapido la suzione è maggiore di quella statica, in imbibizione più rapida è minore; l'effetto cresce con la velocità, è più marcato nei suoli grossolani e sparisce all'equilibrio.</li>
+          <li><b>Sensori.</b> Il TEROS 21 ha un'accuratezza di ±(10 % della lettura + 2 kPa) tra −100 e −5 kPa e non è ben calibrato oltre −100 kPa (scheda tecnica METER). La risposta del disco ceramico non è istantanea: in un test di campo è risalito da −300 a −10 kPa «entro 100 h» dopo l'irrigazione (Menne et al., 2022).</li>
+        </ul>
+      </div>
+    </div>
+    <p class="warn" style="margin-top:10px"><b>Cosa implica per questi dati.</b> θ risponde alla pioggia in ore, ψ con un ritardo che dipende dalla suzione di partenza, quindi i punti di wetting misurati in continuo non sono in equilibrio e non descrivono la MWC. Gli unici stati di wetting che si possono considerare equilibrati sono quelli di inversione (fine wetting: θ al massimo, suzione minima raggiunta dopo il picco), che nell'analisi sono trattati a parte.</p>
+  </section>
+
+  <section class="panel" id="sec-seg">
+    <div class="panel-head"><h2>Suddivisione delle serie in fasi di drying e di wetting</h2></div>
+    <div class="ctrl">
+      <label>Coppia <select id="sSel"></select></label>
+      <span class="seg" id="perSeg"><button type="button" data-p="all" class="on">Tutto</button><button type="button" data-p="2025">2025</button><button type="button" data-p="2026">2026</button></span>
+    </div>
+    <div class="lg" id="lgSeries"></div>
+    <div id="chSeries" class="plot tall"></div>
+    <p class="note">Dati orari (mediana dei dati a 5 minuti). Le fasi si ricavano da θ con un filtro ZigZag (una fase di wetting va da un minimo al massimo successivo, una di drying dal massimo al minimo seguente). Le bande indicano le fasi di wetting. I colori distinguono le ore in cui θ e ψ si muovono in modo coerente («valide») da quelle in cui ψ non ha ancora seguito θ («transitorie»); solo le valide entrano nelle curve. Suzione in scala logaritmica con asse invertito: wetting = salita di entrambe le linee.</p>
+    <h3 class="sub3">Statistiche della segmentazione</h3>
+    <div class="table-wrap"><table id="tSeg" class="stat"></table></div>
+    <p class="note">La soglia di inversione dello ZigZag è tarata sul rumore di θ di ciascun sensore. «Valide» = ore usate nei fit (s ≥ 3 kPa, fuori dal campo di specifica del sensore sotto questa suzione).</p>
+  </section>
+
+  <section class="panel" id="sec-curve">
+    <div class="panel-head"><h2>Le sei curve caratteristiche</h2></div>
+    <div class="ctrl">
+      <label class="check"><input type="checkbox" id="lyD" checked> punti orari di drying</label>
+      <label class="check"><input type="checkbox" id="lyT"> punti transitori</label>
+      <label class="check"><input type="checkbox" id="lyW" checked> curva di wetting derivata dal drying (fit)</label>
+      <label class="check"><input type="checkbox" id="lyE" checked> curva attesa dalla letteratura</label>
+      <label class="check"><input type="checkbox" id="lyR"> calibrazione Richards a 4 strati</label>
+    </div>
+    <div class="lg" id="lgCurves"></div>
+    <div class="grid3" id="curveGrid"></div>
+    <p class="note">θ in funzione della suzione s = −ψ (scala logaritmica). Drying: mediana e intervallo 10–90 % per classi di 0,1 decadi di log s, con il fit van Genuchten (tratteggio sottile fuori dal campo dei dati, dove la curva è solo un'estrapolazione). Wetting: ore «valide» e stati di fine wetting; la curva tratteggiata è il fit di una curva di wetting ottenuta da quella di drying (θ<sub>r</sub> e n invariati, α<sub>w</sub> ≥ α<sub>d</sub>, θ<sub>s,w</sub> = κ·θ<sub>s,d</sub>) su questi punti: dove coincide con il drying il fit non trova isteresi. La curva attesa dalla letteratura usa la curva di drying della coppia con α<sub>w</sub> = 2α<sub>d</sub>, n<sub>w</sub> = n<sub>d</sub> e θ<sub>s,w</sub> = 0,85·θ<sub>s,d</sub>. Le scale di θ sono diverse tra i pannelli.</p>
+    <h3 class="sub3">Parametri del ramo di drying (van Genuchten) e variazione tra i due cicli</h3>
+    <div class="table-wrap"><table id="tDry" class="stat"></table></div>
+    <p class="note">Fit sulle mediane per classe (m = 1 − 1/n; α in kPa⁻¹). * = parametro al limite del vincolo, quindi poco identificabile (θ<sub>s</sub> non è raggiunto perché le suzioni inferiori a 3 kPa non sono usate). Ultime tre colonne: θ a 100 kPa letto sulla curva mediana dei due cicli (drying 2025 = fino al 30/9/2025; drying 2026 = da gennaio 2026), la cui differenza dà l'ordine di grandezza della variabilità tra cicli.</p>
+  </section>
+
+  <section class="panel" id="sec-isteresi">
+    <div class="panel-head"><h2>Quanta isteresi si vede nei dati</h2></div>
+    <div class="grid2">
+      <div>
+        <h3 class="sub3" style="margin-top:0">Spostamento orizzontale dalla curva di drying</h3>
+        <div id="chShift" class="plot"></div>
+        <p class="note">Δlog₁₀ s = log₁₀ s della curva di drying al θ del punto − log₁₀ s del punto: positivo = punto a sinistra (suzione minore, lato dell'isteresi), negativo = a destra (ψ in ritardo). Rombi: stati di fine wetting con intervallo bootstrap al 95 %; cerchi: mediana per evento dei punti validi. La fascia viola è l'atteso da Likos et al. (2014): α<sub>w</sub>/α<sub>d</sub> = 2,24 ± 1,25, cioè 0–0,54 decadi, centro 0,35.</p>
+      </div>
+      <div>
+        <h3 class="sub3" style="margin-top:0">Differenza di θ a pari suzione</h3>
+        <div class="ctrl"><label>Suzione di riferimento <select id="dthSel"></select></label></div>
+        <div id="chDth" class="plot short"></div>
+        <p class="note">Barre grigie: drying 2026 − drying 2025 (variabilità tra cicli). Barre indaco: wetting osservato − drying (ore valide e stati di fine wetting). Barre viola: wetting atteso dalla letteratura − drying. Dove le barre indaco sono positive il wetting osservato sta sopra il drying (segno opposto all'atteso: ψ in ritardo rispetto a θ); mancano dove i punti di wetting non coprono la suzione scelta.</p>
+      </div>
+    </div>
+    <h3 class="sub3">Indicatori di isteresi per coppia</h3>
+    <div class="table-wrap"><table id="tHys" class="stat"></table></div>
+    <p class="note">Δlog₁₀ s: mediana con intervallo bootstrap al 95 % (ricampionamento degli eventi); α<sub>w</sub>/α<sub>d</sub> equivalente = 10<sup>Δ</sup>. Le due colonne di percentuali dicono quanti punti stanno a più di 0,1 decadi dalla curva di drying: i punti di drying servono da riferimento della dispersione normale. Curva di wetting derivata dal drying: θ<sub>r</sub> e n invariati, α<sub>w</sub> = α<sub>d</sub>·10<sup>δ</sup> con δ ∈ [0; 1,2], θ<sub>s,w</sub> = κ·θ<sub>s,d</sub> con κ ∈ [0,5; 1]; bootstrap sugli eventi (200 repliche). * = al limite del vincolo (α<sub>w</sub>/α<sub>d</sub> = 1: nessuna isteresi). Il fit usa anche le ore valide, che non sono in equilibrio: dove dà un valore &gt; 1 (NV 15 cm) è guidato dai tratti lenti a θ molto basso con ψ che scende prima di θ.</p>
+    <h3 class="sub3">Se si corregge il ritardo di ψ</h3>
+    <div class="table-wrap"><table id="tLagSens" class="stat"></table></div>
+    <p class="note">Mediana di Δlog₁₀ s dei punti di wetting validi dopo aver anticipato la serie di suzione di τ ore (correzione di un ritardo costante del sensore). Il numero di punti validi tra parentesi cambia perché il filtro di coerenza è rifatto per ogni τ. Anche con τ fino a 12 h lo spostamento resta ben sotto 0,35 decadi.</p>
+  </section>
+
+  <section class="panel" id="sec-scan">
+    <div class="panel-head"><h2>Percorsi di wetting e scanning curves</h2></div>
+    <div class="ctrl">
+      <label>Coppia <select id="scSel"></select></label>
+      <span class="lg" id="lgScan" style="margin:0"></span>
+    </div>
+    <div id="chScan" class="plot hero"></div>
+    <p class="note">Ogni linea è un evento di wetting: parte dal minimo di θ (cerchio vuoto), sale e prosegue fino alla suzione minima raggiunta dopo il picco (rombo = stato di fine wetting), poi la serie torna lungo il drying. Colore = pioggia dell'evento. Una vera scansione di wetting parte con un tratto quasi orizzontale verso sinistra (la suzione cala con θ quasi costante) e poi sale lungo la curva di wetting. Molti percorsi misurati fanno l'opposto: θ sale subito (tratto verticale, a suzione ancora alta) e solo dopo ψ scende (tratto orizzontale verso sinistra). Questo percorso a «L» è tipico di un ψ in ritardo e porta i punti a destra del drying. Eventi «principali» (da θ prossimo al minimo a θ prossimo al massimo del sensore): pochissimi, quindi la curva principale di wetting non è osservata direttamente.</p>
+
+    <h3 class="sub3">Esplora un evento</h3>
+    <div class="ctrl">
+      <label>Coppia <select id="evPair"></select></label>
+      <label>Evento <select id="evSel"></select></label>
+    </div>
+    <p class="evmeta" id="evMeta"></p>
+    <div class="grid2">
+      <div id="chEvTs" class="plot"></div>
+      <div id="chEvPath" class="plot"></div>
+    </div>
+    <p class="note">A sinistra: θ (indaco, asse sinistro), suzione (arancio, asse destro logaritmico invertito) e pioggia oraria (barre); le linee verticali tratteggiate segnano il picco di θ e la suzione minima. A destra: percorso nel piano θ–s, colore = tempo (ore dall'inizio della finestra), con la curva di drying (ambra) e quella attesa (viola).</p>
+  </section>
+
+  <section class="panel" id="sec-pioggia">
+    <div class="panel-head"><h2>Il wetting e la pioggia</h2></div>
+    <div class="ctrl">
+      <label>Asse X <select id="rx"></select></label>
+      <label>Asse Y <select id="ry"></select></label>
+    </div>
+    <div id="chRain" class="plot tall"></div>
+    <p class="note">Un punto = una fase di wetting completa (non di bordo) preceduta da almeno 1 mm di pioggia nella finestra di attribuzione (24 h per 15 cm, 36 h per 30–35 cm, 48 h per 60 cm prima dell'inizio della risalita di θ, ma non oltre il picco dell'evento precedente). Pioggia = media dei tre pluviometri CF. Le linee sono le regressioni log–log di Δθ su P.</p>
+    <div class="grid2">
+      <div>
+        <h3 class="sub3">Probabilità di risposta di θ</h3>
+        <div id="chResp" class="plot short"></div>
+        <p class="note">Quota di episodi di pioggia (separati da almeno 24 h, P ≥ 2 mm) dopo i quali θ sale di almeno la soglia di rumore del sensore entro la finestra di attribuzione; i numeri sono episodi con risposta / episodi totali.</p>
+      </div>
+      <div>
+        <h3 class="sub3">Ritardi pioggia → θ → ψ</h3>
+        <div id="chDelay" class="plot short"></div>
+        <p class="note">Boxplot per coppia (fasi di wetting complete). Pioggia → θ: ore tra la prima pioggia della finestra e l'inizio della risalita di θ (valori negativi: la risalita comincia prima della pioggia attribuita, per piccole oscillazioni di θ). θ → ψ: ore dopo le quali la suzione scende di 0,05 decadi rispetto al valore di partenza (negativo: ψ risponde prima di θ); calcolato solo per suzioni di partenza ≥ 3 kPa.</p>
+      </div>
+    </div>
+    <h3 class="sub3">Il ritardo di ψ dipende dalla velocità di bagnatura e dalla suzione di partenza</h3>
+    <div class="grid2">
+      <div><div id="chLagA" class="plot short"></div></div>
+      <div><div id="chLagB" class="plot short"></div></div>
+    </div>
+    <p class="note">A sinistra: massimo scostamento a destra della curva di drying durante l'evento (decadi di log s) in funzione della velocità massima di risalita di θ. A destra: ritardo con cui ψ comincia a rispondere in funzione della suzione prima dell'evento. Un ritardo che cresce con la suzione e con la velocità di bagnatura è tipico di un sensore a risposta lenta; l'effetto dinamico di Hassanizadeh et al. (2002) darebbe invece un segno opposto in wetting (suzione più bassa della curva statica).</p>
+    <h3 class="sub3">Sintesi statistica</h3>
+    <div class="table-wrap"><table id="tRain" class="stat"></table></div>
+    <p class="note">ρ = correlazione di Spearman con Δθ (picco − minimo della fase); * p &lt; 0,05, ** p &lt; 0,01. Gli eventi non sono del tutto indipendenti (piogge ravvicinate condividono lo stato iniziale), quindi i p sono indicativi. P<sub>50</sub> = pioggia per cui la probabilità di risposta è 50 % (regressione logistica su log P).</p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Tabella delle fasi di wetting</h2><button id="csvBtn" type="button">Esporta CSV</button></div>
+    <div class="ctrl"><label>Coppia <select id="tbPair"></select></label><label class="check"><input type="checkbox" id="tbPart"> includi fasi di bordo (incomplete)</label></div>
+    <div class="table-wrap tbl-scroll"><table id="evTable" class="stat"></table></div>
+    <p class="note">Clic sull'intestazione per ordinare. θ<sub>0</sub>, s<sub>0</sub> = minimo di θ all'inizio del wetting; θ<sub>p</sub> = massimo; s<sub>min</sub> = suzione minima dopo il picco; Δlog s = log₁₀(s<sub>0</sub>/s<sub>min</sub>); P = pioggia nella finestra di attribuzione; API7 = pioggia nei 7 giorni precedenti la finestra; I60 = massima intensità su 1 h. Tipo: «principale» se θ passa da meno del 20 % a più del 70 % dell'intervallo (1°–99° percentile) del sensore, altrimenti «scansione».</p>
+  </section>
+
+  <section class="panel" id="sec-metodo">
+    <div class="panel-head"><h2>Metodo e limiti</h2></div>
+    <ul class="find" id="limits"></ul>
+  </section>
+
+  <section class="panel" id="sec-rif">
+    <div class="panel-head"><h2>Riferimenti</h2></div>
+    <ol class="refs">
+      <li>Basile, A., Ciollaro, G., Coppola, A. (2003). Hysteresis in soil water characteristics as a key to interpreting comparisons of laboratory and field measured hydraulic properties. <i>Water Resources Research</i> 39(12), 1355. <a href="https://doi.org/10.1029/2003WR002432" target="_blank" rel="noopener">doi:10.1029/2003WR002432</a></li>
+      <li>Bordoni, M., Bittelli, M., Valentino, R., Chersich, S., Meisina, C. (2017). Improving the estimation of complete field soil water characteristic curves through field monitoring data. <i>Journal of Hydrology</i> 552, 283–305. <a href="https://doi.org/10.1016/j.jhydrol.2017.07.004" target="_blank" rel="noopener">doi:10.1016/j.jhydrol.2017.07.004</a></li>
+      <li>Comegna, L., Damiano, E., Greco, R., Olivares, L., Picarelli, L. (2021). The hysteretic response of a shallow pyroclastic deposit. <i>Earth System Science Data</i> 13(6), 2541–2553. <a href="https://doi.org/10.5194/essd-13-2541-2021" target="_blank" rel="noopener">doi:10.5194/essd-13-2541-2021</a></li>
+      <li>Haines, W.B. (1930). Studies in the physical properties of soil. V. The hysteresis effect in capillary properties, and the modes of moisture distribution associated therewith. <i>Journal of Agricultural Science</i> 20(1), 97–116. <a href="https://doi.org/10.1017/S002185960008864X" target="_blank" rel="noopener">doi:10.1017/S002185960008864X</a></li>
+      <li>Hassanizadeh, S.M., Celia, M.A., Dahle, H.K. (2002). Dynamic effect in the capillary pressure–saturation relationship and its impacts on unsaturated flow. <i>Vadose Zone Journal</i> 1, 38–57.</li>
+      <li>Kool, J.B., Parker, J.C. (1987). Development and evaluation of closed-form expressions for hysteretic soil hydraulic properties. <i>Water Resources Research</i> 23(1), 105–114. <a href="https://doi.org/10.1029/WR023i001p00105" target="_blank" rel="noopener">doi:10.1029/WR023i001p00105</a></li>
+      <li>Likos, W.J., Lu, N., Godt, J.W. (2014). Hysteresis and uncertainty in soil water-retention curve parameters. <i>Journal of Geotechnical and Geoenvironmental Engineering</i> 140(4). <a href="https://doi.org/10.1061/(ASCE)GT.1943-5606.0001071" target="_blank" rel="noopener">doi:10.1061/(ASCE)GT.1943-5606.0001071</a></li>
+      <li>Menne, D., Hübner, C., Trebbels, D., Willenbacher, N. (2022). Robust soil water potential sensor to optimize irrigation in agriculture. <i>Sensors</i> 22, 4465. <a href="https://doi.org/10.3390/s22124465" target="_blank" rel="noopener">doi:10.3390/s22124465</a></li>
+      <li>METER Group. TEROS 21 – specifiche tecniche. <a href="https://metergroup.com/products/teros-21/teros-21-tech-specs/" target="_blank" rel="noopener">metergroup.com/products/teros-21/teros-21-tech-specs</a></li>
+      <li>Mualem, Y. (1974). A conceptual model of hysteresis. <i>Water Resources Research</i> 10(3), 514–520. <a href="https://doi.org/10.1029/WR010i003p00514" target="_blank" rel="noopener">doi:10.1029/WR010i003p00514</a></li>
+      <li>Pham, H.Q., Fredlund, D.G., Barbour, S.L. (2005). A study of hysteresis models for soil-water characteristic curves. <i>Canadian Geotechnical Journal</i> 42(6), 1548–1568. <a href="https://doi.org/10.1139/t05-071" target="_blank" rel="noopener">doi:10.1139/t05-071</a></li>
+    </ol>
+  </section>
+</main>
+
+<footer class="foot muted small page" style="display:block">
+  Dati: Università di Salerno (stazioni Salerno Meter NV e V) · Centro Funzionale Multirischi, Regione Campania (pluviometri 21521, 18925, 18957).
+  Elaborazione: <code>pipeline/curve_caratteristiche.py</code> → <code>data/curve_caratteristiche.json</code>. Generato: <span id="gen"></span>.
+</footer>
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const KEYS = ["NV_015", "NV_030", "NV_060", "V_015", "V_035", "V_060"];
+  const LAB = { NV_015: "NV · 15 cm", NV_030: "NV · 30 cm", NV_060: "NV · 60 cm", V_015: "V · 15 cm", V_035: "V · 35 cm", V_060: "V · 60 cm" };
+  const PCOL = { NV_015: "--s2", NV_030: "--s8", NV_060: "--s10", V_015: "--s3", V_035: "--s12", V_060: "--s6" };
+  const PSYM = { NV_015: "circle", NV_030: "square", NV_060: "diamond", V_015: "circle", V_035: "square", V_060: "diamond" };
+  const PH = () => ({ D: css("--s4"), W: css("--s7"), T: css("--s13"), E: css("--s11"), R: css("--s13"), TH: css("--s7"), S: css("--s2") });
+  const MONTHS = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+  const T0 = Date.UTC(2025, 0, 31, 12, 0);
+  let J = null, P = {}, EV = [], TS = [], per = "all", evSort = { k: "t", d: 1 };
+
+  // -------------------------------------------------------------- utilità
+  const fmt = (v, d = 1) => (v == null || !Number.isFinite(v) ? "–" : v.toFixed(d).replace("-", "−").replace(".", ","));
+  const sg = (v, d = 2) => (v == null || !Number.isFinite(v) ? "–" : (v > 0 ? "+" : "") + fmt(v, d));
+  const tstr = (i) => new Date(T0 + i * 3600e3).toISOString().slice(0, 16).replace("T", " ");
+  const dstr = (i) => { const d = new Date(T0 + i * 3600e3); return `${String(d.getUTCDate()).padStart(2, "0")}/${String(d.getUTCMonth() + 1).padStart(2, "0")}/${d.getUTCFullYear()}`; };
+  const hstr = (i) => tstr(i).slice(11);
+  const sorted = (a) => a.filter((x) => x != null && Number.isFinite(x)).sort((x, y) => x - y);
+  const quant = (a, q) => { const s = sorted(a); if (!s.length) return null; const p = (s.length - 1) * q, lo = Math.floor(p), hi = Math.ceil(p); return s[lo] + (s[hi] - s[lo]) * (p - lo); };
+  const med = (a) => quant(a, 0.5);
+  const rng = (a, d = 2) => { const s = sorted(a); return s.length ? (fmt(s[0], d) + "–" + fmt(s[s.length - 1], d)) : "–"; };
+  const rngS = (a, d = 2) => { const s = sorted(a); return s.length ? `da ${sg(s[0], d)} a ${sg(s[s.length - 1], d)}` : "–"; };
+  const slog = (v) => (v == null ? null : Math.sign(v) * Math.log10(1 + Math.abs(v)));
+  const SLT = [-10, 0, 1, 3, 10, 30, 100, 300, 1000];
+  const logTicks = (lo, hi) => { const v = []; for (let e = Math.floor(Math.log10(lo)) - 1; e <= Math.ceil(Math.log10(hi)); e++) [1, 2, 5].forEach((m) => { const x = m * Math.pow(10, e); if (x >= lo * 0.8 && x <= hi * 1.25) v.push(+x.toPrecision(2)); }); return v; };
+  const logAx = (title, vals) => { const f = vals.filter((v) => v != null && v > 0); const t = f.length ? logTicks(Math.min(...f), Math.max(...f)) : [1, 10]; return ax({ type: "log", tickvals: t, ticktext: t.map((x) => String(x).replace(".", ",")), title: ttl(title) }); };
+  const star = (p) => (p == null ? "" : p < 0.01 ? "**" : p < 0.05 ? "*" : "");
+  const hex2rgba = (h, a) => { h = h.trim(); if (h[0] !== "#") return h; const n = parseInt(h.slice(1), 16); return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`; };
+  const thin = (idx, m) => { const st = Math.ceil(idx.length / m); return st <= 1 ? idx : idx.filter((_, j) => j % st === 0); };
+  const ttl = (t) => ({ text: t, font: { color: css("--text-2"), size: 12 } });
+  const ax = (o = {}) => ({ gridcolor: css("--grid"), zerolinecolor: css("--grid"), linecolor: css("--border"), tickfont: { color: css("--text-2"), size: 11 }, title: { font: { color: css("--text-2"), size: 12 } }, ...o });
+  const base = (extra = {}) => Object.assign({
+    paper_bgcolor: css("--surface"), plot_bgcolor: css("--surface"),
+    font: { family: "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", color: css("--text") },
+    margin: { l: 58, r: 18, t: 28, b: 46 },
+    legend: { orientation: "h", x: 0, y: 1.0, yanchor: "bottom", font: { size: 12, color: css("--text-2") } },
+    hoverlabel: { bgcolor: css("--surface"), bordercolor: css("--border"), font: { color: css("--text"), size: 12 } },
+    xaxis: ax(), yaxis: ax(),
+  }, extra);
+  const cfg = { responsive: true, displaylogo: false, locale: "it", modeBarButtonsToRemove: ["lasso2d", "select2d"] };
+  const plot = (id, tr, lay) => Plotly.react($(id), tr, lay, cfg);
+  const SX = [3, 10, 30, 100, 300, 1000, 3000];
+  const sAxis = (title) => ax({ type: "log", range: [Math.log10(2.5), Math.log10(3500)], tickvals: SX, ticktext: SX.map(String), title: ttl(title) });
+
+  function decode() {
+    const n = J.n;
+    TS = new Array(n);
+    for (let i = 0; i < n; i++) TS[i] = tstr(i);
+    KEYS.forEach((k) => {
+      const p = P[k];
+      p.thv = p.th.map((v) => (v == null ? null : v / 1000));
+      p.sv = p.ls.map((v) => (v == null ? null : Math.pow(10, v / 100)));
+      p.iD = []; p.iW = []; p.iT = [];
+      for (let i = 0; i < n; i++) {
+        if (p.thv[i] == null || p.sv[i] == null || p.sv[i] < J.params.s_fit_min) continue;
+        const c = p.ph.charAt(i);
+        if (c === "D") p.iD.push(i); else if (c === "W") p.iW.push(i); else if (c === "T") p.iT.push(i);
+      }
+      p.events.forEach((e) => { e.key = k; e.t = TS[e.i0]; });
+      p.peaks = p.events.filter((e) => !e.partial && e.interior && e.dls > 0.1 && Math.pow(10, e.ls_end) >= J.params.s_fit_min);
+      p.good = p.events.filter((e) => !e.partial && e.P >= 1);
+    });
+    EV = KEYS.flatMap((k) => P[k].events);
+  }
+
+  // -------------------------------------------------------------- KPI, sintesi, limiti
+  function stats() {
+    const S = {};
+    KEYS.forEach((k) => {
+      const p = P[k], seg = p.segments, W = seg.filter((s) => s.ty === "W"), D = seg.filter((s) => s.ty === "D");
+      S[k] = {
+        nW: W.length, nD: D.length,
+        durW: med(W.filter((s) => !s.partial).map((s) => s.b - s.a)),
+        durD: med(D.filter((s) => !s.partial).map((s) => (s.b - s.a) / 24)),
+        dthW: med(W.filter((s) => !s.partial).map((s) => s.th1 - s.th0)),
+        fracW: W.reduce((a, s) => a + (s.b - s.a + 1), 0) / seg.reduce((a, s) => a + (s.b - s.a + 1), 0),
+      };
+    });
+    return S;
+  }
+
+  function renderText(S) {
+    const C = J.correlations, R = J.response, Pk = KEYS.map((k) => P[k]);
+    const shiftP = KEYS.map((k) => P[k].shifts.peaks), shiftW = KEYS.map((k) => P[k].shifts.wvalid);
+    const up = KEYS.map((k) => (P[k].shifts.peaks ? Math.pow(10, P[k].shifts.peaks.ci[1]) : null));
+    const nLow = up.filter((v) => v != null && v < 2.24);
+    const nH = KEYS.reduce((a, k) => a + P[k].counts.valid_fit_D, 0), nWv = KEYS.reduce((a, k) => a + P[k].counts.valid_fit_W, 0);
+    const totW = KEYS.reduce((a, k) => a + S[k].nW, 0), totD = KEYS.reduce((a, k) => a + S[k].nD, 0);
+    const rhoP = KEYS.map((k) => C[k].rho_P);
+    $("lead").innerHTML = `Per ciascuna delle sei coppie θ–ψ delle stazioni Meter (NV a 15, 30 e 60 cm; V a 15, 35 e 60 cm) la pagina divide la serie dal 31/01/2025 al 30/09/2026 in fasi di <b>drying</b> e di <b>wetting</b>, stima la curva caratteristica nei due versi, la confronta con quanto riportato in letteratura (curve principali, scanning, isteresi) e collega le fasi di wetting alla pioggia dei tre pluviometri CF. Il risultato, in breve: il ramo di drying è ben definito; il wetting in campo è dominato dal ritardo di ψ rispetto a θ e l'isteresi non è risolvibile con questi sensori, se non come limite superiore.`;
+    $("gen").textContent = J.generated.replace("T", " ").slice(0, 16);
+    const k = [];
+    k.push(`<div class="kpi"><div class="v">${totD}<small> drying · </small>${totW}<small> wetting</small></div><div class="l">fasi individuate in totale sulle 6 coppie (${rng(KEYS.map((q) => S[q].nW), 0)} fasi di wetting per coppia)</div></div>`);
+    k.push(`<div class="kpi"><div class="v">${fmt(100 * Math.min(...KEYS.map((q) => S[q].fracW)), 0)}–${fmt(100 * Math.max(...KEYS.map((q) => S[q].fracW)), 0)}<small> % del tempo</small></div><div class="l">trascorso in fasi di wetting; il resto è drying (i sensori sono quasi sempre in asciugamento)</div></div>`);
+    k.push(`<div class="kpi"><div class="v">${rng(KEYS.map((q) => P[q].fits.D.rmse), 3)}<small> m³/m³</small></div><div class="l">RMSE del fit van Genuchten del drying sulle mediane per classe: curve ben definite</div></div>`);
+    k.push(`<div class="kpi"><div class="v">≤ ${rng(nLow, 1)}<small> in ${nLow.length}/6 coppie</small></div><div class="l">limite superiore (95 %) di α<sub>w</sub>/α<sub>d</sub> dagli stati di fine wetting; riferimento di letteratura 2,24 ± 1,25</div></div>`);
+    k.push(`<div class="kpi"><div class="v">ρ = ${rng(rhoP, 2)}</div><div class="l">correlazione di Spearman tra Δθ del wetting e pioggia dell'evento (${KEYS.filter((q) => C[q].p_P < 0.01).length}/6 coppie con p &lt; 0,01)</div></div>`);
+    $("kpis").innerHTML = k.join("");
+
+    const f = [];
+    const dv = KEYS.map((q) => P[q].devstats), wf = KEYS.map((q) => P[q].fits.joint);
+    f.push(`<b>Il ramo di drying è la parte solida dell'analisi.</b> Ogni coppia ha ${rng(KEYS.map((q) => P[q].counts.valid_fit_D / 1000), 1)} mila ore di drying valide (${fmt(nH / 1000, 0)} mila in totale) e il fit di van Genuchten sulle mediane per classe ha RMSE di ${rng(KEYS.map((q) => P[q].fits.D.rmse), 3)} m³/m³. L'esponente n è compreso tra ${fmt(Math.min(...KEYS.map((q) => P[q].fits.D.p[3])), 2)} e ${fmt(Math.max(...KEYS.map((q) => P[q].fits.D.p[3])), 2)}; θ<sub>s</sub> non è identificato nelle coppie in cui i dati non arrivano a saturazione (parametro al limite del vincolo).`);
+    const d100 = KEYS.map((q) => { const r = P[q].dth_ref["100"]; return r.D2025 != null && r.D2026 != null ? r.D2026 - r.D2025 : null; });
+    f.push(`<b>Tra 2025 e 2026 il drying cambia poco, ma non zero.</b> A 100 kPa la curva del secondo ciclo differisce da quella del primo (2026 − 2025) ${rngS(d100, 3)} m³/m³. È la stessa grandezza dell'isteresi attesa dalla letteratura per questi suoli (${rng(KEYS.map((q) => { const r = P[q].dth_ref["100"]; return r.Dfit - r.E; }), 3)} m³/m³ a 100 kPa con α<sub>w</sub> = 2α<sub>d</sub> e θ<sub>s,w</sub> = 0,85 θ<sub>s,d</sub>), quindi un'eventuale isteresi non si distingue da deriva dei sensori, invecchiamento o memoria idraulica.`);
+    const nRight = KEYS.filter((q, i) => dv[i] && dv[i].W_valid && dv[i].D_valid && dv[i].W_valid.right > dv[i].D_valid.right).length;
+    const sigLag = KEYS.filter((q) => C[q].p_lag_s0 != null && C[q].p_lag_s0 < 0.05);
+    const sh = ["NV_015", "V_015"].map((q) => 100 * dv[KEYS.indexOf(q)].W_valid.left);
+    f.push(`<b>Il wetting in campo è breve e quasi mai in equilibrio.</b> Le fasi di wetting occupano il ${rng(KEYS.map((q) => 100 * S[q].fracW), 0)} % del tempo e durano mediamente ${rng(KEYS.map((q) => S[q].durW), 0)} h (drying: ${rng(KEYS.map((q) => S[q].durD), 0)} giorni). θ e ψ non si muovono in sincrono: ψ comincia a scendere con un ritardo mediano di ${rng(KEYS.map((q) => C[q].lag_psi_med), 0)} h rispetto alla risalita di θ, tanto maggiore quanto più secco è il terreno (ρ = ${rng(sigLag.map((q) => C[q].rho_lag_s0), 2)} in ${sigLag.length}/6 coppie), con code di giorni. I punti validi di wetting si distribuiscono su entrambi i lati della curva di drying: in ${nRight}/6 coppie stanno a destra (suzione più alta a pari θ) più spesso dei punti di drying stessi (NV 30 cm: ${fmt(100 * dv[1].W_valid.right, 0)} % contro ${fmt(100 * dv[1].D_valid.right, 0)} % oltre 0,1 decadi), mentre nei sensori a 15 cm una parte dei punti (${rng(sh, 0)} %) sta a sinistra, in fasi lente in cui ψ scende di decadi con θ quasi costante. Con questi dati non si distingue se sia isteresi o non equilibrio (volumi di misura diversi di θ e ψ, risposta lenta del disco ceramico, effetto dinamico).`);
+    const wHi = KEYS.filter((q, i) => wf[i] && wf[i].ratio_alpha >= 1.05), wLo = KEYS.filter((q, i) => wf[i] && wf[i].ratio_alpha < 1.05);
+    const maxSh = Math.max(...KEYS.flatMap((q) => P[q].devstats.lag_sens.filter((x) => x.tau > 0 && x.median != null).map((x) => x.median)));
+    f.push(`<b>L'isteresi non è risolvibile: se ne può dare solo un limite superiore.</b> Gli stati di fine wetting (θ al picco, suzione minima dopo il picco: gli unici plausibilmente in equilibrio) stanno a ${rngS(shiftP.map((x) => (x ? x.median : null)), 2)} decadi dalla curva di drying (positivo = lato isteresi), contro +0,35 atteso (α<sub>w</sub>/α<sub>d</sub> = 2,24). In ${nLow.length}/6 coppie il limite superiore al 95 % di α<sub>w</sub>/α<sub>d</sub> è sotto il valore medio di laboratorio (${rng(nLow, 1)}); nelle altre i pochi eventi utili (${rng(KEYS.map((q) => P[q].shifts.peaks.n), 0)} per coppia) non escludono valori fino a ${fmt(Math.max(...up.filter((v) => v != null)), 0)}. La curva di wetting derivata dal drying (θ<sub>r</sub> e n invariati, α<sub>w</sub> ≥ α<sub>d</sub>) e adattata alle ore valide e agli stati di fine wetting dà α<sub>w</sub>/α<sub>d</sub> = 1,0 in ${wLo.length}/6 coppie (limite superiore ${rng(wLo.map((q) => P[q].fits.joint.ratio_alpha_p95), 1)})${wHi.length ? ` e ${wHi.map((q) => `${fmt(P[q].fits.joint.ratio_alpha, 1)} a ${LAB[q]} (IC 95 %: ${fmt(P[q].fits.joint.ratio_alpha_ci[0], 1)}–${fmt(P[q].fits.joint.ratio_alpha_ci[1], 1)})`).join(", ")}, valore trainato dai tratti lenti a θ molto basso, non da stati di equilibrio` : ""}. Il ritardo di ψ sposta le misure verso destra, cioè verso meno isteresi, quindi i limiti superiori sono, se mai, leggermente sottostimati: anticipare la suzione di un ritardo costante (3–12 h) sposta i punti validi a sinistra di non più di ${fmt(maxSh, 2)} decadi.`);
+    const dly = (q) => fmt(C[q].delay_rain_theta_med, 0);
+    f.push(`<b>Il wetting è controllato dalla pioggia dell'evento, con una soglia che cresce con la profondità.</b> Δθ cresce con P (ρ = ${rng(rhoP, 2)}; pendenza log–log da ${fmt(Math.min(...KEYS.map((q) => C[q].loglog.slope)), 2)} a ${fmt(Math.max(...KEYS.map((q) => C[q].loglog.slope)), 2)}). Per rispondere servono ${fmt(R.NV_015.P50, 0)}, ${fmt(R.NV_030.P50, 0)} e ${fmt(R.NV_060.P50, 0)} mm a 15, 30 e 60 cm in NV e ${fmt(R.V_015.P50, 0)}, ${fmt(R.V_035.P50, 0)} e ${fmt(R.V_060.P50, 0)} mm in V a 15, 35 e 60 cm (probabilità di risposta 50 %). Il ritardo pioggia → inizio risalita di θ (mediana) è ${dly("NV_015")} h in NV e ${dly("V_015")} h in V a 15 cm, ${dly("NV_030")} e ${dly("V_035")} h a 30–35 cm, ${dly("NV_060")} e ${dly("V_060")} h a 60 cm. In profondità l'intensità massima oraria (I60) spiega Δθ meglio della cumulata (NV 60: ρ = ${fmt(C.NV_060.rho_I60, 2)} contro ${fmt(C.NV_060.rho_P, 2)}; V 35: ${fmt(C.V_035.rho_I60, 2)} contro ${fmt(C.V_035.rho_P, 2)}); la pioggia dei 7 giorni precedenti non è un predittore significativo, salvo V 35 (ρ = ${fmt(C.V_035.rho_A7, 2)}, cioè meno risposta quando il terreno è già bagnato).`);
+    f.push(`<b>Implicazione pratica.</b> Per modelli idrologici o di stabilità dei versanti conviene usare la curva di drying misurata, con la variabilità tra cicli come incertezza. Per il wetting restano due ipotesi: nessuna isteresi (α<sub>w</sub> = α<sub>d</sub>), compatibile con i dati, oppure i valori di letteratura (α<sub>w</sub> ≈ 2α<sub>d</sub>) come scelta cautelativa; per decidere servono prove di laboratorio sui campioni dei due siti.`);
+    $("findings").innerHTML = f.map((x) => `<li>${x}</li>`).join("");
+
+    const pr = J.params;
+    const L = [
+      `<b>Dati.</b> Serie orarie (mediana dei dati a 5 minuti) dei sensori TEROS 10 (θ) e TEROS 21 (ψ), solo dati non marcati come errati (flag &lt; 2). Suzione s = −ψ (kPa), limitata a ≥ 0,1 kPa. Orari in UTC+1 (CET, senza ora legale).`,
+      `<b>Segmentazione.</b> ZigZag su θ (mediana mobile di 3 h) con soglia di inversione di ${Object.entries(pr.thr).map(([q, v]) => `${LAB[q]}: ${fmt(v, 3)}`).join("; ")} m³/m³ (tarata sul rumore: a 15 cm in NV il ciclo termico diurno estivo arriva a ~0,009). L'inizio del wetting è l'ultimo istante in cui θ resta entro max(${fmt(pr.plateau, 3)} m³/m³; 10 % dell'ampiezza della risalita) dal minimo, così il ciclo termico giornaliero o una deriva lenta non anticipano l'inizio; il massimo è il primo istante sul plateau di arrivo (tolleranza ${fmt(pr.plateau, 3)} m³/m³). Le fasi di bordo (prima e ultima di ogni blocco di dati continuo) sono segnate «incomplete» e non entrano nelle correlazioni con la pioggia.`,
+      `<b>Coerenza θ–ψ.</b> Per ogni ora si usano le velocità centrate su 4 h: un punto di wetting è «valido» se θ sale e log s scende (velocità &lt; −${fmt(pr.tol_s, 3)} decadi/h); uno di drying se θ non sale e log s non scende. Gli altri sono «transitori» (ψ non in equilibrio con θ) e non entrano nei fit; sono esclusi anche i dati con s &lt; ${fmt(pr.s_fit_min, 0)} kPa.`,
+      `<b>Curve.</b> Mediane per classi di ${fmt(pr.bin_w, 1)} decadi (almeno 3 punti per classe) e van Genuchten unimodale (θ<sub>r</sub>, θ<sub>s</sub>, α, n; m = 1 − 1/n) con fit ai minimi quadrati e vincoli fisici. La curva di wetting si ricava da quella di drying alla Kool e Parker: θ<sub>r</sub> e n invariati, α<sub>w</sub> = α<sub>d</sub>·10<sup>δ</sup> con δ ∈ [0; 1,2] (in equilibrio il wetting non può stare a destra del drying) e θ<sub>s,w</sub> = κ·θ<sub>s,d</sub> con κ ∈ [0,5; 1]; i due parametri sono adattati alle ore valide più gli stati di fine wetting (classi di 0,2 decadi, almeno 2 punti). Intervalli di confidenza: bootstrap con ${pr.nboot} repliche, ricampionando gli eventi di wetting (il drying è tenuto fisso: è molto meglio vincolato).`,
+      `<b>Isteresi senza modello.</b> Spostamento orizzontale Δlog₁₀ s tra gli stati di fine wetting (θ al picco; suzione minima raggiunta entro 14 giorni dopo il picco, per annullare il ritardo di ψ) e la curva mediana di drying a pari θ.`,
+      `<b>Pioggia.</b> Media dei tre pluviometri CF (1,7–4,1 km dai siti; negli scrosci convettivi gli scarti tra pluviometri sono grandi). Finestre di attribuzione a monte del wetting: ${Object.entries(pr.delay_h).map(([d, h]) => `${+d} cm ${h} h`).join(", ")}. Episodi per la probabilità di risposta: pausa ≥ 24 h, P ≥ 2 mm; risposta = salita di θ ≥ soglia di rumore del sensore.`,
+      `<b>Limite principale: θ e ψ non sono in equilibrio nel wetting.</b> Il TEROS 21 equilibra il disco ceramico in ore (suzioni basse) o giorni (suzioni alte) e non misura lo stesso volume di terreno del TEROS 10; in più la bagnatura in campo è rapida e non uniforme (flusso preferenziale, fronti di bagnatura). Il risultato sono percorsi «a L» a destra del drying (θ prima, ψ dopo) e, a 15 cm, tratti a sinistra (ψ prima, θ quasi costante). Il ritardo dipende dalla suzione e dalla velocità di bagnatura e non è costante: la correzione con τ fisso è solo un test di sensibilità. Nel confronto con il drying, anche i punti di drying hanno una dispersione propria di ±0,1 decadi (colonna di riferimento nella tabella).`,
+      `<b>Pochi eventi utili.</b> Gli stati di fine wetting con ψ plausibilmente equilibrato sono ${rng(KEYS.map((q) => P[q].peaks.length), 0)} per coppia (${rng(KEYS.map((q) => P[q].shifts.peaks.n), 0)} dentro l'intervallo di θ del drying, usati per lo spostamento orizzontale), quindi gli intervalli sono larghi e i limiti superiori di α<sub>w</sub>/α<sub>d</sub> dipendono da pochissimi eventi. Eventi che coprono tutto l'intervallo di θ («principali») sono ${rng(KEYS.map((q) => P[q].events.filter((e) => e.kind === "principale").length), 0)} per coppia: lo scanning osservato è sempre di ampiezza ridotta.`,
+      `<b>Variabilità tra cicli.</b> La differenza tra il drying 2025 e 2026 (fino a ${fmt(Math.max(...KEYS.map((q) => Math.abs((P[q].dth_ref["100"].D2026 ?? 0) - (P[q].dth_ref["100"].D2025 ?? 0)))), 3)} m³/m³ a 100 kPa) può dipendere da deriva dei sensori, assestamento del terreno, memoria idraulica o variabilità spaziale tra i volumi misurati da θ e ψ: i dati non permettono di separare queste cause.`,
+      `<b>Parametri.</b> θ<sub>s</sub> e, in parte, θ<sub>r</sub> sono poco vincolati (campo di suzione misurato 3–3000 kPa); α e n vanno letti insieme (sono correlati) e valgono per il campo di suzione osservato. Le curve non vanno estrapolate a s &lt; 3 kPa.`,
+      `<b>Periodo.</b> Dati fino al 30/9/2026; l'analisi si può ripetere con <code>python pipeline/curve_caratteristiche.py</code> dopo l'aggiornamento dei dati grezzi.`,
+    ];
+    $("limits").innerHTML = L.map((x) => `<li>${x}</li>`).join("");
+  }
+
+  // -------------------------------------------------------------- tabelle
+  function tabSeg(S) {
+    const pr = J.params;
+    let h = `<thead><tr><th>Coppia</th><th>Soglia ZigZag (m³/m³)</th><th>Fasi wetting</th><th>Fasi drying</th><th>Durata mediana wetting (h)</th><th>Durata mediana drying (g)</th><th>Δθ mediano wetting (m³/m³)</th><th>Ore valide W</th><th>Ore valide D</th><th>Ore transitorie</th></tr></thead><tbody>`;
+    KEYS.forEach((k) => {
+      const p = P[k], s = S[k];
+      h += `<tr><td>${LAB[k]}</td><td>${fmt(pr.thr[k], 3)}</td><td>${s.nW}</td><td>${s.nD}</td><td>${fmt(s.durW, 0)}</td><td>${fmt(s.durD, 1)}</td><td>${fmt(s.dthW, 3)}</td><td>${p.counts.valid_fit_W}</td><td>${p.counts.valid_fit_D}</td><td>${p.counts.T}</td></tr>`;
+    });
+    $("tSeg").innerHTML = h + "</tbody>";
+  }
+
+  function tabDry() {
+    let h = `<thead><tr><th>Coppia</th><th>Classi</th><th>θ<sub>r</sub></th><th>θ<sub>s</sub></th><th>α (kPa⁻¹)</th><th>n</th><th>RMSE</th><th>θ(100 kPa) 2025</th><th>θ(100 kPa) 2026</th><th>Δ (2026 − 2025)</th></tr></thead><tbody>`;
+    KEYS.forEach((k) => {
+      const f = P[k].fits.D, ab = f.at_bound, r = P[k].dth_ref["100"];
+      const a = (v, i, d) => fmt(v, d) + (ab[i] ? "*" : "");
+      const dd = r.D2025 != null && r.D2026 != null ? r.D2026 - r.D2025 : null;
+      h += `<tr><td>${LAB[k]}</td><td>${f.nbins}</td><td>${a(f.p[0], 0, 3)}</td><td>${a(f.p[1], 1, 3)}</td><td>${a(Math.pow(10, f.p[2]), 2, 3)}</td><td>${a(f.p[3], 3, 2)}</td><td>${fmt(f.rmse, 4)}</td><td>${fmt(r.D2025, 3)}</td><td>${fmt(r.D2026, 3)}</td><td>${sg(dd, 3)}</td></tr>`;
+    });
+    $("tDry").innerHTML = h + "</tbody>";
+  }
+
+  function tabHys() {
+    let h = `<thead><tr><th>Coppia</th><th>Fasi wetting (complete / principali)</th><th>Stati di fine wetting (n)</th><th>Δlog₁₀ s fine wetting [IC 95 %]</th><th>α<sub>w</sub>/α<sub>d</sub> equivalente</th><th>Δlog₁₀ s punti validi [IC 95 %]</th><th>Punti di wetting validi a sinistra / a destra (±0,1)</th><th>Punti di drying a sinistra / a destra (riferimento)</th><th>Curva di wetting dal drying: α<sub>w</sub>/α<sub>d</sub> [IC 95 %]</th><th>κ = θ<sub>s,w</sub>/θ<sub>s,d</sub></th></tr></thead><tbody>`;
+    KEYS.forEach((k) => {
+      const p = P[k], sp = p.shifts.peaks, sw = p.shifts.wvalid, j = p.fits.joint, dv = p.devstats && p.devstats.W_valid, dd = p.devstats && p.devstats.D_valid;
+      const ci = (s) => (s && s.ci && s.ci[0] != null ? `${sg(s.median, 2)} [${sg(s.ci[0], 2)}; ${sg(s.ci[1], 2)}]` : s ? sg(s.median, 2) : "–");
+      const lr = (d) => (d ? fmt(100 * d.left, 0) + " % / " + fmt(100 * d.right, 0) + " %" : "–");
+      h += `<tr><td>${LAB[k]}</td><td>${p.events.filter((e) => !e.partial).length} / ${p.events.filter((e) => e.kind === "principale").length}</td><td>${sp ? sp.n : 0}</td><td>${ci(sp)}</td><td>${sp ? fmt(Math.pow(10, sp.median), 2) + " [" + fmt(Math.pow(10, sp.ci[0]), 1) + "; " + fmt(Math.pow(10, sp.ci[1]), 1) + "]" : "–"}</td><td>${ci(sw)}</td><td>${lr(dv)}</td><td>${lr(dd)}</td><td>${j ? fmt(j.ratio_alpha, 2) + (j.ratio_alpha_ci[0] != null ? " [" + fmt(j.ratio_alpha_ci[0], 1) + "; " + fmt(j.ratio_alpha_ci[1], 1) + "]" : "") + (j.at_bound.alpha_w ? "*" : "") : "–"}</td><td>${j ? fmt(j.kappa, 2) + (j.at_bound.kappa ? "*" : "") : "–"}</td></tr>`;
+    });
+    $("tHys").innerHTML = h + "</tbody>";
+  }
+
+  function tabLagSens() {
+    const taus = [0, 3, 6, 12];
+    let h = `<thead><tr><th>Coppia</th>${taus.map((t) => `<th>τ = ${t} h</th>`).join("")}</tr></thead><tbody>`;
+    KEYS.forEach((k) => {
+      const L = P[k].devstats ? P[k].devstats.lag_sens : [];
+      h += `<tr><td>${LAB[k]}</td>${taus.map((t) => { const r = L.find((x) => x.tau === t); return `<td>${r && r.median != null ? sg(r.median, 2) + " (" + r.n + ")" : "–"}</td>`; }).join("")}</tr>`;
+    });
+    $("tLagSens").innerHTML = h + "</tbody>";
+  }
+
+  function tabRain() {
+    const C = J.correlations, R = J.response;
+    const r = (c, n) => (c["rho_" + n] == null ? "–" : sg(c["rho_" + n], 2) + star(c["p_" + n]));
+    let h = `<thead><tr><th>Coppia</th><th>Eventi</th><th>ρ(Δθ, P)</th><th>ρ(Δθ, I60)</th><th>ρ(Δθ, I10)</th><th>ρ(Δθ, API7)</th><th>Pendenza log–log (R²)</th><th>P<sub>50</sub> (mm)</th><th>Ritardo pioggia → θ (h) med [IQR]</th><th>Ritardo θ → ψ (h) med</th><th>ρ(ritardo ψ, s₀)</th><th>ρ(scost. a destra, velocità θ)</th></tr></thead><tbody>`;
+    KEYS.forEach((k) => {
+      const c = C[k], l = c.loglog;
+      h += `<tr><td>${LAB[k]}</td><td>${c.n}</td><td>${r(c, "P")}</td><td>${r(c, "I60")}</td><td>${r(c, "I10")}</td><td>${r(c, "A7")}</td><td>${l ? fmt(l.slope, 2) + " (" + fmt(l.r2, 2) + ")" : "–"}</td><td>${R[k] && R[k].P50 ? fmt(R[k].P50, 0) : "–"}</td><td>${fmt(c.delay_rain_theta_med, 0)} [${fmt(c.delay_rain_theta_q25, 0)}–${fmt(c.delay_rain_theta_q75, 0)}]</td><td>${fmt(c.lag_psi_med, 0)}</td><td>${c.rho_lag_s0 == null ? "–" : sg(c.rho_lag_s0, 2) + star(c.p_lag_s0)}</td><td>${c.rho_dyn_rate == null ? "–" : sg(c.rho_dyn_rate, 2) + star(c.p_dyn_rate)}</td></tr>`;
+    });
+    $("tRain").innerHTML = h + "</tbody>";
+  }
+
+  const EVCOLS = [
+    ["key", "Coppia", (e) => LAB[e.key], "l"], ["t", "Inizio wetting", (e) => e.t, "l"], ["dur_h", "Durata (h)", (e) => fmt(e.dur_h, 0)],
+    ["th0", "θ₀", (e) => fmt(e.th0, 3)], ["th1", "θp", (e) => fmt(e.th1, 3)], ["dth", "Δθ", (e) => fmt(e.dth, 3)],
+    ["s0", "s₀ (kPa)", (e) => fmt(Math.pow(10, e.ls0), 0)], ["smin", "smin (kPa)", (e) => fmt(Math.pow(10, e.ls_end), 1)], ["dls", "Δlog s", (e) => fmt(e.dls, 2)],
+    ["P", "P (mm)", (e) => fmt(e.P, 1)], ["I60", "I60 (mm/h)", (e) => fmt(e.I60, 1)], ["A7", "API7 (mm)", (e) => fmt(e.A7, 0)],
+    ["rain_to_theta_h", "Rit. pioggia→θ (h)", (e) => fmt(e.rain_to_theta_h, 0)], ["lag_on_h", "Rit. θ→ψ (h)", (e) => fmt(e.lag_on_h, 0)],
+    ["shift", "Δlog s da drying", (e) => (e.shift == null ? "–" : sg(e.shift, 2))], ["kind", "Tipo", (e) => (e.partial ? "incompleta" : e.kind), "l"],
+  ];
+  const evVal = (e, k) => (k === "s0" ? e.ls0 : k === "smin" ? e.ls_end : e[k]);
+  function tabEv() {
+    const k = $("tbPair").value, part = $("tbPart").checked;
+    let rows = EV.filter((e) => (k === "all" || e.key === k) && (part || !e.partial));
+    rows.sort((a, b) => { const x = evVal(a, evSort.k), y = evVal(b, evSort.k); if (x == null) return 1; if (y == null) return -1; return (x < y ? -1 : x > y ? 1 : 0) * evSort.d; });
+    let h = `<thead><tr>${EVCOLS.map((c) => `<th class="sortable ${c[3] || ""}" data-k="${c[0]}">${c[1]}${evSort.k === c[0] ? (evSort.d > 0 ? " ▲" : " ▼") : ""}</th>`).join("")}</tr></thead><tbody>`;
+    rows.forEach((e) => { h += `<tr>${EVCOLS.map((c) => `<td class="${c[3] || ""}">${c[2](e)}</td>`).join("")}</tr>`; });
+    $("evTable").innerHTML = h + "</tbody>";
+    $("evTable").querySelectorAll("th.sortable").forEach((th) => { th.onclick = () => { const kk = th.dataset.k; evSort = { k: kk, d: evSort.k === kk ? -evSort.d : 1 }; tabEv(); }; });
+    $("evTable")._rows = rows;
+  }
+  function exportCsv() {
+    const rows = $("evTable")._rows || [];
+    const hdr = EVCOLS.map((c) => c[1]);
+    const csv = [hdr.join(";")].concat(rows.map((e) => EVCOLS.map((c) => String(c[2](e)).replace(/,/g, ".").replace("−", "-")).join(";"))).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "fasi_wetting_curve_caratteristiche.csv"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  // -------------------------------------------------------------- grafici
+  function legendHtml() {
+    const c = PH();
+    const sw = (col, kind, txt) => `<span>${kind === "pt" ? `<b class="pt" style="background:${col}"></b>` : kind === "dm" ? `<b class="dm" style="background:${col}"></b>` : `<i class="${kind}" style="border-color:${col}"></i>`}<span>${txt}</span></span>`;
+    $("lgSeries").innerHTML = sw(c.D, "", "drying valido") + sw(c.W, "pt", "wetting valido") + sw(c.T, "", "transitorio (ψ non in equilibrio con θ)") + sw(c.W, "dm", "inizio e fine wetting");
+    $("lgCurves").innerHTML = sw(c.D, "pt", "drying (ore valide)") + sw(c.D, "", "mediana 10–90 % e fit di drying") + sw(c.W, "pt", "wetting valido") + sw(c.W, "dm", "fine wetting (equilibrato)") +
+      sw(c.W, "dash", "wetting derivato dal drying (fit)") + sw(c.E, "dot", "atteso (α<sub>w</sub> = 2α<sub>d</sub>, θ<sub>s,w</sub> = 0,85 θ<sub>s,d</sub>)") + sw(c.R, "dash", "Richards 4 strati (calibrazione)");
+    $("lgScan").innerHTML = [["<10 mm", "--s13"], ["10–20 mm", "--s16"], ["20–40 mm", "--s1"], ["> 40 mm", "--s14"]].map(([t, v]) => sw(css(v), "", "P " + t)).join("") + sw(c.D, "", "drying") + sw(c.E, "dot", "atteso");
+  }
+
+  function chSeries() {
+    const k = $("sSel").value, p = P[k], n = p.n, c = PH(), rain = J.rain.mm_h;
+    const ri = [], rv = [];
+    for (let i = 0; i < n; i++) if (rain[i] > 0) { ri.push(TS[i]); rv.push(rain[i] / 10); }
+    const pick = (ch, src) => { const a = new Array(n); for (let i = 0; i < n; i++) a[i] = p.ph.charAt(i) === ch ? src[i] : null; return a; };
+    const Wseg = p.segments.filter((s) => s.ty === "W");
+    const tr = [{ type: "bar", x: ri, y: rv, width: 3600e3, name: "Pioggia (mm/h)", marker: { color: css("--s1") }, yaxis: "y3", xaxis: "x", hovertemplate: "%{y:.1f} mm/h<extra>pioggia</extra>", showlegend: false }];
+    const line = (name, y, col, yax, o = {}) => ({ type: "scatter", mode: "lines", x: TS, y, name, line: { color: col, width: 1.3 }, yaxis: yax, connectgaps: false, showlegend: false, hovertemplate: yax === "y" ? "%{y:.3f}<extra>" + name + "</extra>" : "%{y:.1f} kPa<extra>" + name + "</extra>", ...o });
+    tr.push(line("tutte le ore", p.thv, hex2rgba(css("--muted"), 0.45), "y", { line: { color: hex2rgba(css("--muted"), 0.45), width: 0.8 } }));
+    tr.push(line("transitorio", pick("T", p.thv), c.T, "y")); tr.push(line("drying valido", pick("D", p.thv), c.D, "y", { line: { color: c.D, width: 1.8 } }));
+    tr.push(line("wetting valido", pick("W", p.thv), c.W, "y", { mode: "lines+markers", marker: { size: 4, color: c.W }, line: { color: c.W, width: 2 } }));
+    tr.push({ type: "scatter", mode: "markers", x: Wseg.map((s) => TS[s.a]), y: Wseg.map((s) => s.th0), yaxis: "y", marker: { symbol: "triangle-down", size: 7, color: css("--surface"), line: { color: c.W, width: 1.4 } }, hovertemplate: "minimo %{y:.3f}<br>%{x}<extra></extra>", showlegend: false });
+    tr.push({ type: "scatter", mode: "markers", x: Wseg.map((s) => TS[s.b]), y: Wseg.map((s) => s.th1), yaxis: "y", marker: { symbol: "triangle-up", size: 7, color: c.W, line: { color: css("--surface"), width: 1 } }, hovertemplate: "massimo %{y:.3f}<br>%{x}<extra></extra>", showlegend: false });
+    tr.push(line("tutte le ore", p.sv, hex2rgba(css("--muted"), 0.45), "y2", { line: { color: hex2rgba(css("--muted"), 0.45), width: 0.8 } }));
+    tr.push(line("transitorio", pick("T", p.sv), c.T, "y2")); tr.push(line("drying valido", pick("D", p.sv), c.D, "y2", { line: { color: c.D, width: 1.8 } }));
+    tr.push(line("wetting valido", pick("W", p.sv), c.W, "y2", { mode: "lines+markers", marker: { size: 4, color: c.W }, line: { color: c.W, width: 2 } }));
+    const shapes = Wseg.map((s) => ({ type: "rect", xref: "x", yref: "paper", x0: TS[s.a], x1: TS[s.b], y0: 0, y1: 0.76, fillcolor: hex2rgba(c.W, 0.1), line: { width: 0 }, layer: "below" }));
+    const rg = per === "2025" ? ["2025-01-31", "2026-01-01"] : per === "2026" ? ["2026-01-01", "2026-10-01"] : ["2025-01-31", "2026-10-01"];
+    plot("chSeries", tr, base({
+      xaxis: ax({ type: "date", range: rg, anchor: "y2" }),
+      yaxis: ax({ domain: [0.4, 0.76], title: ttl("θ (m³/m³)") }),
+      yaxis2: ax({ domain: [0, 0.36], type: "log", autorange: "reversed", tickvals: [3, 10, 30, 100, 300, 1000, 3000], ticktext: ["3", "10", "30", "100", "300", "1000", "3000"], title: ttl("Suzione s (kPa)") }),
+      yaxis3: ax({ domain: [0.82, 1], autorange: "reversed", title: ttl("Pioggia (mm/h)") }),
+      shapes, hovermode: "x unified", margin: { l: 62, r: 18, t: 14, b: 40 }, showlegend: false,
+    }));
+  }
+
+  function bandTraces(B, col) {
+    if (!B || !B.length) return [];
+    const x = B.map((r) => Math.pow(10, r[0]));
+    return [
+      { type: "scatter", mode: "lines", x: x.concat(x.slice().reverse()), y: B.map((r) => r[3]).concat(B.map((r) => r[2]).reverse()), fill: "toself", fillcolor: hex2rgba(col, 0.2), line: { width: 0 }, hoverinfo: "skip", showlegend: false },
+      { type: "scatter", mode: "lines+markers", x, y: B.map((r) => r[1]), marker: { size: 5, color: col }, line: { color: col, width: 1.5 }, hovertemplate: "s = %{x:.0f} kPa<br>θ = %{y:.3f}<extra>mediana drying</extra>", showlegend: false },
+    ];
+  }
+
+  function curveTraces(k, o) {
+    const p = P[k], c = PH(), cv = p.curves, tr = [];
+    const X = cv.ls.map((v) => Math.pow(10, v)), lr = p.ls_range;
+    const pt = (idx, col, size, op, hover) => ({ type: "scatter", mode: "markers", x: idx.map((i) => p.sv[i]), y: idx.map((i) => p.thv[i]), marker: { size, color: col, opacity: op }, text: idx.map((i) => TS[i]), hovertemplate: hover ? "%{text}<br>s = %{x:.0f} kPa · θ = %{y:.3f}<extra></extra>" : undefined, hoverinfo: hover ? undefined : "skip", showlegend: false });
+    if (o.T) tr.push(pt(thin(p.iT, 900), c.T, 3, 0.35, false));
+    if (o.D) tr.push(pt(thin(p.iD, 1300), c.D, 3, 0.2, false));
+    tr.push(...bandTraces(p.bins_D, c.D));
+    tr.push(pt(p.iW, c.W, 4.5, 0.6, true));
+    const inR = cv.ls.map((v) => v >= lr[0] - 1e-9 && v <= lr[1] + 1e-9);
+    const nn = cv.ls.length;
+    const ln = (y, col, dash, w, name, mask) => ({ type: "scatter", mode: "lines", x: X, y: y.map((v, i) => (mask(i) ? v : null)), line: { color: col, width: w, dash }, hovertemplate: "s = %{x:.0f} kPa<br>θ = %{y:.3f}<extra>" + name + "</extra>", showlegend: false, connectgaps: false });
+    if (o.R) tr.push(ln(cv.R, c.R, "dash", 1.4, "Richards", () => true));
+    if (o.E && cv.E) tr.push(ln(cv.E, c.E, "dot", 2, "atteso (letteratura)", () => true));
+    if (o.W && cv.W) tr.push(ln(cv.W, c.W, "dash", 2, "wetting derivato dal drying", (i) => inR[i]));
+    if (cv.D) {
+      tr.push(ln(cv.D, c.D, "dot", 1, "drying (estrapolato)", (i) => !inR[i] || (i > 0 && !inR[i - 1]) || (i < nn - 1 && !inR[i + 1])));
+      tr.push(ln(cv.D, c.D, "solid", 2.6, "drying, fit van Genuchten", (i) => inR[i]));
+    }
+    const pk = p.peaks;
+    tr.push({ type: "scatter", mode: "markers", x: pk.map((e) => Math.pow(10, e.ls_end)), y: pk.map((e) => e.th1), marker: { symbol: "diamond", size: 9, color: c.W, line: { color: css("--surface"), width: 1.2 } }, text: pk.map((e) => `${dstr(e.i0)} · P ${fmt(e.P, 0)} mm`), hovertemplate: "fine wetting %{text}<br>s = %{x:.1f} kPa · θ = %{y:.3f}<extra></extra>", showlegend: false });
+    return tr;
+  }
+
+  function chCurves() {
+    const o = { D: $("lyD").checked, T: $("lyT").checked, W: $("lyW").checked, E: $("lyE").checked, R: $("lyR").checked };
+    KEYS.forEach((k, i) => {
+      const p = P[k], r = p.th_range, bot = i >= 3;
+      const yr = [Math.max(0, r[0] - 0.02), r[1] + 0.025];
+      plot("chC_" + k, curveTraces(k, o), base({
+        title: { text: `<b>${LAB[k]}</b>`, x: 0.02, xanchor: "left", y: 0.97, font: { size: 13, color: css("--text") } },
+        xaxis: sAxis(bot ? "Suzione s = −ψ (kPa)" : ""), yaxis: ax({ range: yr, title: ttl(i % 3 === 0 ? "θ (m³/m³)" : "") }),
+        margin: { l: i % 3 === 0 ? 56 : 44, r: 10, t: 30, b: bot ? 46 : 28 }, hovermode: "closest", showlegend: false,
+        annotations: [{ xref: "paper", yref: "paper", x: 0.98, y: 0.97, xanchor: "right", yanchor: "top", showarrow: false, align: "right", font: { size: 10.5, color: css("--muted") }, text: `${p.counts.valid_fit_D} h drying · ${p.counts.valid_fit_W} h wetting · ${p.peaks.length} fine wetting` }],
+      }));
+    });
+  }
+
+  function chShift() {
+    const c = PH(), x = KEYS.map((_, i) => i);
+    const mk = (name, key, off, sym, col, filled) => {
+      const S = KEYS.map((k) => P[k].shifts[key]);
+      return { type: "scatter", mode: "markers", name, x: x.map((i) => i + off), y: S.map((s) => (s ? s.median : null)),
+        marker: { symbol: sym, size: 10, color: filled ? col : css("--surface"), line: { color: col, width: 1.8 } },
+        error_y: { type: "data", symmetric: false, array: S.map((s) => (s && s.ci[0] != null ? s.ci[1] - s.median : 0)), arrayminus: S.map((s) => (s && s.ci[0] != null ? s.median - s.ci[0] : 0)), color: col, thickness: 1.5, width: 5 },
+        text: S.map((s, i) => `${LAB[KEYS[i]]}<br>n = ${s ? s.n : 0}<br>mediana ${s ? sg(s.median, 2) : "–"}<br>IC 95 %: ${s && s.ci[0] != null ? sg(s.ci[0], 2) + " ; " + sg(s.ci[1], 2) : "–"}`), hovertemplate: "%{text}<extra></extra>" };
+    };
+    const tr = [mk("Stati di fine wetting", "peaks", -0.1, "diamond", css("--text"), true), mk("Punti di wetting validi (mediana per evento)", "wvalid", 0.1, "circle", css("--muted"), false)];
+    const shapes = [
+      { type: "rect", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0.54, fillcolor: hex2rgba(c.E, 0.13), line: { width: 0 }, layer: "below" },
+      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0.35, y1: 0.35, line: { color: c.E, width: 1.5, dash: "dot" } },
+      { type: "line", xref: "paper", yref: "y", x0: 0, x1: 1, y0: 0, y1: 0, line: { color: css("--text-2"), width: 1 } },
+    ];
+    plot("chShift", tr, base({
+      xaxis: ax({ tickvals: x, ticktext: KEYS.map((k) => LAB[k]), range: [-0.5, 5.5], zeroline: false }),
+      yaxis: ax({ title: ttl("Δlog₁₀ s rispetto al drying (decadi)"), zeroline: false }), shapes, hovermode: "closest",
+      annotations: [{ xref: "paper", yref: "y", x: 0.995, y: 0.52, xanchor: "right", yanchor: "bottom", showarrow: false, text: "atteso (Likos et al. 2014)", font: { size: 11, color: c.E } },
+        { xref: "paper", yref: "paper", x: 0.005, y: 0.02, xanchor: "left", yanchor: "bottom", showarrow: false, text: "sotto lo zero: punto a destra del drying (ψ in ritardo)", font: { size: 11, color: css("--text-2") } }],
+    }));
+  }
+
+  function wAt(k, sr) {
+    const B = P[k].bins_W.slice().sort((a, b) => a[0] - b[0]), x = Math.log10(+sr);
+    for (let i = 0; i < B.length - 1; i++) if (B[i][0] <= x && B[i + 1][0] >= x && B[i + 1][0] - B[i][0] <= 0.7) return B[i][1] + (B[i + 1][1] - B[i][1]) * (x - B[i][0]) / Math.max(1e-9, B[i + 1][0] - B[i][0]);
+    return null;
+  }
+  function chDth() {
+    const sr = $("dthSel").value, c = PH();
+    const g = (f) => KEYS.map((k) => { const r = P[k].dth_ref[sr]; return f(r); });
+    const lab = KEYS.map((k) => LAB[k]);
+    const tr = [
+      { type: "bar", name: "Drying 2026 − 2025", x: lab, y: g((r) => (r.D2025 != null && r.D2026 != null ? r.D2026 - r.D2025 : null)), marker: { color: css("--s13") }, hovertemplate: "%{y:+.3f}<extra>2026 − 2025</extra>" },
+      { type: "bar", name: "Wetting osservato − drying", x: lab, y: KEYS.map((k) => { const w = wAt(k, sr), d = P[k].dth_ref[sr].D; return w != null && d != null ? w - d : null; }), marker: { color: c.W }, hovertemplate: "%{y:+.3f}<extra>wetting osservato − drying</extra>" },
+      { type: "bar", name: "Wetting atteso − drying", x: lab, y: g((r) => (r.E != null && r.Dfit != null ? r.E - r.Dfit : null)), marker: { color: c.E }, hovertemplate: "%{y:+.3f}<extra>atteso − drying</extra>" },
+    ];
+    plot("chDth", tr, base({ barmode: "group", xaxis: ax({ type: "category" }), yaxis: ax({ title: ttl("Δθ a s = " + sr + " kPa (m³/m³)"), zeroline: true, zerolinecolor: css("--text-2") }) }));
+  }
+
+  const PCLS = [["<10 mm", "--s13", 0, 10], ["10–20 mm", "--s16", 10, 20], ["20–40 mm", "--s1", 20, 40], ["> 40 mm", "--s14", 40, 1e9]];
+  function chScan() {
+    const k = $("scSel").value, p = P[k], c = PH(), n = p.n, cv = p.curves, X = cv.ls.map((v) => Math.pow(10, v));
+    const tr = [];
+    const lr = p.ls_range, inR = cv.ls.map((v) => v >= lr[0] - 1e-9 && v <= lr[1] + 1e-9);
+    PCLS.forEach(([name, col, lo, hi]) => {
+      const x = [], y = [];
+      p.events.filter((e) => !e.partial && e.P >= lo && e.P < hi).forEach((e) => {
+        const a = Math.max(0, e.i0 - 3), b = Math.min(n - 1, Math.max(e.i_smin, e.i1) + 3);
+        for (let i = a; i <= b; i++) { if (p.thv[i] == null || p.sv[i] == null) { x.push(null); y.push(null); } else { x.push(p.sv[i]); y.push(p.thv[i]); } }
+        x.push(null); y.push(null);
+      });
+      tr.push({ type: "scatter", mode: "lines", x, y, name: "P " + name, line: { color: css(col), width: 1.2 }, opacity: 0.8, hoverinfo: "skip", showlegend: false });
+    });
+    tr.push({ type: "scatter", mode: "markers", x: p.events.filter((e) => !e.partial).map((e) => Math.pow(10, e.ls0)), y: p.events.filter((e) => !e.partial).map((e) => e.th0), marker: { symbol: "circle-open", size: 6, color: css("--text-2"), line: { width: 1.2 } }, text: p.events.filter((e) => !e.partial).map((e) => `${dstr(e.i0)} · P ${fmt(e.P, 0)} mm`), hovertemplate: "minimo %{text}<br>s = %{x:.0f} kPa · θ = %{y:.3f}<extra></extra>", showlegend: false });
+    tr.push({ type: "scatter", mode: "markers", x: p.peaks.map((e) => Math.pow(10, e.ls_end)), y: p.peaks.map((e) => e.th1), marker: { symbol: "diamond", size: 9, color: c.W, line: { color: css("--surface"), width: 1.2 } }, text: p.peaks.map((e) => `${dstr(e.i0)} · P ${fmt(e.P, 0)} mm`), hovertemplate: "fine wetting %{text}<br>s = %{x:.1f} kPa · θ = %{y:.3f}<extra></extra>", showlegend: false });
+    if (cv.E) tr.push({ type: "scatter", mode: "lines", x: X, y: cv.E, line: { color: c.E, width: 2, dash: "dot" }, hovertemplate: "s = %{x:.0f} kPa<br>θ = %{y:.3f}<extra>atteso (letteratura)</extra>", showlegend: false });
+    if (cv.D) tr.push({ type: "scatter", mode: "lines", x: X, y: cv.D.map((v, i) => (inR[i] ? v : null)), line: { color: c.D, width: 3 }, hovertemplate: "s = %{x:.0f} kPa<br>θ = %{y:.3f}<extra>drying (fit)</extra>", showlegend: false });
+    plot("chScan", tr, base({ xaxis: sAxis("Suzione s = −ψ (kPa)"), yaxis: ax({ rangemode: "tozero", title: ttl("θ (m³/m³)") }), hovermode: "closest", showlegend: false }));
+  }
+
+  function fillEvSel() {
+    const k = $("evPair").value, evs = P[k].events.filter((e) => !e.partial && e.interior).sort((a, b) => a.i0 - b.i0);
+    $("evSel").innerHTML = evs.map((e) => `<option value="${e.i0}">${dstr(e.i0)} · P ${fmt(e.P, 0)} mm · Δθ ${fmt(e.dth, 3)}</option>`).join("");
+    const big = evs.filter((e) => e.P >= 10).sort((a, b) => b.dth - a.dth)[0] || evs[0];
+    if (big) $("evSel").value = String(big.i0);
+  }
+
+  function chEvent() {
+    const k = $("evPair").value, p = P[k], c = PH(), i0 = +$("evSel").value, n = p.n;
+    const e = p.events.find((x) => x.i0 === i0);
+    if (!e) { return; }
+    const a = Math.max(0, e.i0 - 72), b = Math.min(n - 1, Math.max(e.i_smin, e.i1) + 96), idx = [];
+    for (let i = a; i <= b; i++) idx.push(i);
+    const rain = J.rain.mm_h, ri = idx.filter((i) => rain[i] > 0);
+    const tp = e.i1, ts = e.i_smin;
+    $("evMeta").innerHTML = `<span><b>${LAB[k]}</b> · inizio wetting ${dstr(e.i0)} ${hstr(e.i0)} (UTC+1)</span><span>durata <b>${fmt(e.dur_h, 0)} h</b></span><span>θ <b>${fmt(e.th0, 3)} → ${fmt(e.th1, 3)}</b> (Δθ ${fmt(e.dth, 3)})</span><span>s <b>${fmt(Math.pow(10, e.ls0), 0)} → ${fmt(Math.pow(10, e.ls_end), 1)} kPa</b> (Δlog s ${fmt(e.dls, 2)})</span><span>pioggia <b>${fmt(e.P, 1)} mm</b>, I60 ${fmt(e.I60, 1)} mm/h, API7 ${fmt(e.A7, 0)} mm</span><span>ritardi: pioggia→θ <b>${fmt(e.rain_to_theta_h, 0)} h</b>, θ→ψ <b>${fmt(e.lag_on_h, 0)} h</b></span><span>tipo: <b>${e.kind}</b></span>`;
+    const tr = [
+      { type: "bar", x: ri.map((i) => TS[i]), y: ri.map((i) => rain[i] / 10), width: 3600e3, marker: { color: css("--s1") }, yaxis: "y3", name: "Pioggia", hovertemplate: "%{y:.1f} mm/h<extra>pioggia</extra>", showlegend: false },
+      { type: "scatter", mode: "lines+markers", x: idx.map((i) => TS[i]), y: idx.map((i) => p.thv[i]), marker: { size: 3.5 }, line: { color: c.TH, width: 2 }, yaxis: "y", name: "θ", hovertemplate: "%{y:.3f}<extra>θ</extra>", showlegend: false },
+      { type: "scatter", mode: "lines+markers", x: idx.map((i) => TS[i]), y: idx.map((i) => p.sv[i]), marker: { size: 3.5 }, line: { color: c.S, width: 2 }, yaxis: "y2", name: "s", hovertemplate: "%{y:.1f} kPa<extra>suzione</extra>", showlegend: false },
+    ];
+    const vl = (i, col) => ({ type: "line", xref: "x", yref: "paper", x0: TS[i], x1: TS[i], y0: 0, y1: 0.76, line: { color: col, width: 1.3, dash: "dash" } });
+    plot("chEvTs", tr, base({
+      xaxis: ax({ type: "date", anchor: "y" }),
+      yaxis: ax({ domain: [0, 0.76], title: ttl("θ (m³/m³)"), tickfont: { color: c.TH, size: 11 } }),
+      yaxis2: ax({ domain: [0, 0.76], overlaying: "y", side: "right", type: "log", autorange: "reversed", showgrid: false, tickvals: SX, ticktext: SX.map(String), title: ttl("Suzione s (kPa)"), tickfont: { color: c.S, size: 11 } }),
+      yaxis3: ax({ domain: [0.82, 1], autorange: "reversed", title: ttl("Pioggia (mm/h)") }),
+      shapes: [vl(tp, c.TH), vl(ts, c.S)], hovermode: "x unified", margin: { l: 62, r: 62, t: 14, b: 40 }, showlegend: false,
+    }));
+    const cv = p.curves, X = cv.ls.map((v) => Math.pow(10, v));
+    const pa = idx.filter((i) => p.thv[i] != null && p.sv[i] != null);
+    const tr2 = [];
+    if (cv.E) tr2.push({ type: "scatter", mode: "lines", x: X, y: cv.E, line: { color: c.E, width: 2, dash: "dot" }, hoverinfo: "skip", showlegend: false });
+    if (cv.D) tr2.push({ type: "scatter", mode: "lines", x: X, y: cv.D, line: { color: c.D, width: 3 }, hoverinfo: "skip", showlegend: false });
+    tr2.push({ type: "scatter", mode: "lines+markers", x: pa.map((i) => p.sv[i]), y: pa.map((i) => p.thv[i]), line: { color: hex2rgba(css("--muted"), 0.6), width: 1 },
+      marker: { size: 6, color: pa.map((i) => i - a), colorscale: "Viridis", showscale: true, colorbar: { title: { text: "ore", font: { size: 11, color: css("--text-2") } }, thickness: 10, len: 0.7, tickfont: { size: 10, color: css("--text-2") } } },
+      text: pa.map((i) => TS[i]), hovertemplate: "%{text}<br>s = %{x:.1f} kPa · θ = %{y:.3f}<extra></extra>", showlegend: false });
+    tr2.push({ type: "scatter", mode: "markers", x: [Math.pow(10, e.ls_end)], y: [e.th1], marker: { symbol: "diamond", size: 12, color: c.W, line: { color: css("--surface"), width: 1.5 } }, hovertemplate: "fine wetting<br>s = %{x:.1f} kPa · θ = %{y:.3f}<extra></extra>", showlegend: false });
+    const ys = pa.map((i) => p.thv[i]);
+    plot("chEvPath", tr2, base({ xaxis: sAxis("Suzione s = −ψ (kPa)"), yaxis: ax({ range: [Math.max(0, Math.min(...ys) - 0.02), Math.max(...ys) + 0.025], title: ttl("θ (m³/m³)") }), hovermode: "closest", margin: { l: 58, r: 8, t: 14, b: 46 }, showlegend: false }));
+  }
+
+  const RX = { P: ["Pioggia dell'evento P (mm)", "P", true], I60: ["Intensità massima su 1 h (mm/h)", "I60", true], I10: ["Intensità massima su 10 min (mm/h)", "I10", true], A7: ["Pioggia nei 7 giorni precedenti (mm)", "A7", false] };
+  const RY = { dth: ["Δθ del wetting (m³/m³)", (e) => e.dth, true], dls: ["Δlog₁₀ s del wetting (decadi)", (e) => e.dls, false] };
+  function chRain() {
+    const xk = $("rx").value, yk = $("ry").value, [xl, xf, xlog] = RX[xk], [yl, yg, ylog] = RY[yk], tr = [];
+    KEYS.forEach((k) => {
+      const d = P[k].good.filter((e) => e[xf] != null && yg(e) != null && (!xlog || e[xf] > 0) && (!ylog || yg(e) > 0));
+      tr.push({ type: "scatter", mode: "markers", name: LAB[k], x: d.map((e) => e[xf]), y: d.map(yg), marker: { color: css(PCOL[k]), symbol: PSYM[k], size: 9, opacity: 0.85, line: { color: css("--surface"), width: 1 } },
+        text: d.map((e) => `${LAB[k]} · ${dstr(e.i0)}<br>P ${fmt(e.P, 1)} mm · I60 ${fmt(e.I60, 1)} mm/h · API7 ${fmt(e.A7, 0)} mm<br>Δθ ${fmt(e.dth, 3)} · Δlog s ${fmt(e.dls, 2)}<br>ritardo pioggia→θ ${fmt(e.rain_to_theta_h, 0)} h`), hovertemplate: "%{text}<extra></extra>" });
+      const lr = J.correlations[k].loglog;
+      if (xk === "P" && yk === "dth" && lr && d.length) {
+        const xs = d.map((e) => e.P), x0 = Math.min(...xs), x1 = Math.max(...xs);
+        tr.push({ type: "scatter", mode: "lines", x: [x0, x1], y: [x0, x1].map((v) => Math.pow(10, lr.intercept + lr.slope * Math.log10(v))), line: { color: css(PCOL[k]), width: 1.4, dash: "dash" }, hoverinfo: "skip", showlegend: false });
+      }
+    });
+    const allx = KEYS.flatMap((k) => P[k].good.map((e) => e[xf])), ally = KEYS.flatMap((k) => P[k].good.map(yg));
+    plot("chRain", tr, base({ xaxis: xlog ? logAx(xl, allx) : ax({ title: ttl(xl), rangemode: "tozero" }), yaxis: ylog ? logAx(yl, ally) : ax({ title: ttl(yl) }), hovermode: "closest" }));
+  }
+
+  function chResp() {
+    const cls = J.response.NV_015.classes.map((r) => (r.hi ? `${r.lo}–${r.hi}` : `> ${r.lo}`));
+    const tr = KEYS.map((k) => {
+      const rows = J.response[k].classes;
+      return { type: "scatter", mode: "lines+markers", name: LAB[k], x: cls, y: rows.map((r) => (r.n ? 100 * r.resp / r.n : null)), line: { color: css(PCOL[k]), width: 2 }, marker: { symbol: PSYM[k], size: 8, color: css(PCOL[k]) },
+        text: rows.map((r) => `${r.resp}/${r.n} episodi`), hovertemplate: "%{y:.0f} % (%{text})<extra>" + LAB[k] + "</extra>" };
+    });
+    plot("chResp", tr, base({ xaxis: ax({ type: "category", title: ttl("Pioggia dell'episodio (mm)") }), yaxis: ax({ range: [-3, 103], title: ttl("Episodi con risposta di θ (%)") }), hovermode: "closest" }));
+  }
+
+  function chDelay() {
+    const CAP = 150, LOW = -40, lab = [], r1 = [], r2 = []; let out = 0;
+    const ok = (v) => v != null && v <= CAP && v >= LOW;
+    KEYS.forEach((k) => P[k].good.forEach((e) => {
+      [e.rain_to_theta_h, e.lag_on_h].forEach((v) => { if (v != null && !ok(v)) out++; });
+      lab.push(LAB[k]); r1.push(ok(e.rain_to_theta_h) ? e.rain_to_theta_h : null); r2.push(ok(e.lag_on_h) ? e.lag_on_h : null);
+    }));
+    plot("chDelay", [
+      { type: "box", name: "pioggia → θ", x: lab, y: r1, marker: { color: css("--s1") }, boxpoints: "outliers", line: { width: 1.3 } },
+      { type: "box", name: "θ → ψ", x: lab, y: r2, marker: { color: css("--s2") }, boxpoints: "outliers", line: { width: 1.3 } },
+    ], base({ boxmode: "group", xaxis: ax({ type: "category" }), yaxis: ax({ title: ttl("Ritardo (h)") }),
+      annotations: [{ xref: "paper", yref: "paper", x: 1, y: 1.02, xanchor: "right", yanchor: "bottom", showarrow: false, text: out ? `${out} valori fuori scala (oltre ${CAP} h o sotto ${LOW} h) non mostrati` : "", font: { size: 11, color: css("--muted") } }] }));
+  }
+
+  function chLag() {
+    const A = [], B = [];
+    KEYS.forEach((k) => {
+      const d1 = P[k].good.filter((e) => e.rate_max != null && e.dyn_dev != null), d2 = P[k].good.filter((e) => e.lag_on_h != null);
+      const st = (e) => `${LAB[k]} · ${dstr(e.i0)}`;
+      A.push({ type: "scatter", mode: "markers", name: LAB[k], x: d1.map((e) => e.rate_max * 1000), y: d1.map((e) => e.dyn_dev), marker: { color: css(PCOL[k]), symbol: PSYM[k], size: 8, opacity: 0.85 }, text: d1.map(st), hovertemplate: "%{text}<br>velocità θ %{x:.2f}·10⁻³ m³/m³/h<br>scostamento a destra %{y:.2f} decadi<extra></extra>" });
+      B.push({ type: "scatter", mode: "markers", name: LAB[k], x: d2.map((e) => Math.pow(10, e.ls0)), y: d2.map((e) => slog(e.lag_on_h)), marker: { color: css(PCOL[k]), symbol: PSYM[k], size: 8, opacity: 0.85 }, text: d2.map((e) => `${st(e)}<br>ritardo ψ ${fmt(e.lag_on_h, 0)} h`), hovertemplate: "%{text}<br>s₀ %{x:.0f} kPa<extra></extra>", showlegend: false });
+    });
+    const ax1 = KEYS.flatMap((k) => P[k].good.filter((e) => e.rate_max != null && e.rate_max > 0).map((e) => e.rate_max * 1000));
+    const ax2 = KEYS.flatMap((k) => P[k].good.map((e) => Math.pow(10, e.ls0)));
+    plot("chLagA", A, base({ xaxis: logAx("Velocità massima di risalita di θ (10⁻³ m³/m³ per ora)", ax1), yaxis: ax({ title: ttl("Scostamento a destra del drying (decadi)"), rangemode: "tozero" }), hovermode: "closest" }));
+    plot("chLagB", B, base({ xaxis: logAx("Suzione prima del wetting s₀ (kPa)", ax2), yaxis: ax({ title: ttl("Ritardo di ψ rispetto a θ (h, scala simmetrica)"), tickvals: SLT.map(slog), ticktext: SLT.map(String) }), hovermode: "closest", showlegend: false }));
+  }
+
+  // -------------------------------------------------------------- avvio
+  function renderAll() { legendHtml(); chSeries(); chCurves(); chShift(); chDth(); chScan(); chEvent(); chRain(); chResp(); chDelay(); chLag(); }
+  async function init() {
+    if (window.Plotly) {
+      Plotly.register({ moduleType: "locale", name: "it", dictionary: {}, format: {
+        days: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"], shortDays: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+        months: ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+        shortMonths: MONTHS, date: "%d/%m/%Y", decimal: ",", thousands: " " } });
+    }
+    try {
+      J = await fetch("data/curve_caratteristiche.json").then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); });
+    } catch (e) {
+      $("lead").innerHTML = `Impossibile leggere <code>data/curve_caratteristiche.json</code> (${e.message}). La pagina va aperta da un server web (es. GitHub Pages o <code>python -m http.server</code>), non come file locale.`;
+      return;
+    }
+    P = J.pairs;
+    decode();
+    const opts = KEYS.map((k) => `<option value="${k}">${LAB[k]}</option>`).join("");
+    ["sSel", "scSel", "evPair"].forEach((id) => { $(id).innerHTML = opts; });
+    $("tbPair").innerHTML = `<option value="all">tutte</option>` + opts;
+    $("sSel").value = "NV_030"; $("scSel").value = "NV_030"; $("evPair").value = "NV_030";
+    $("dthSel").innerHTML = J.params.s_ref.map((s) => `<option value="${s}">${s} kPa</option>`).join(""); $("dthSel").value = "100";
+    $("rx").innerHTML = Object.entries(RX).map(([k, v]) => `<option value="${k}">${v[0]}</option>`).join("");
+    $("ry").innerHTML = Object.entries(RY).map(([k, v]) => `<option value="${k}">${v[0]}</option>`).join("");
+    $("curveGrid").innerHTML = KEYS.map((k) => `<div id="chC_${k}" class="plot cell"></div>`).join("");
+    const S = stats();
+    renderText(S); tabSeg(S); tabDry(); tabHys(); tabLagSens(); tabRain(); tabEv();
+    fillEvSel(); renderAll();
+    $("sSel").onchange = chSeries;
+    $("perSeg").querySelectorAll("button").forEach((b) => { b.onclick = () => { per = b.dataset.p; $("perSeg").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); chSeries(); }; });
+    ["lyD", "lyT", "lyW", "lyE", "lyR"].forEach((id) => { $(id).onchange = chCurves; });
+    $("dthSel").onchange = chDth; $("scSel").onchange = chScan;
+    $("evPair").onchange = () => { fillEvSel(); chEvent(); }; $("evSel").onchange = chEvent;
+    $("rx").onchange = $("ry").onchange = chRain;
+    $("tbPair").onchange = $("tbPart").onchange = tabEv; $("csvBtn").onclick = exportCsv;
+    $("themeBtn").onclick = () => {
+      const dark = getComputedStyle(document.documentElement).colorScheme === "dark";
+      document.documentElement.dataset.theme = dark ? "light" : "dark";
+      renderAll();
+    };
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+    window.__ready = true;
+  }
+  init();
+})();
+</script>
+</body>
+</html>
