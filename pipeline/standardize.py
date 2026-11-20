@@ -47,6 +47,13 @@ def read_sheet(fname, sheet):
 def load_series(s):
     parts = []
     for src in s["sources"]:
+        if src["file"] not in paths:
+            # Excel di un anno già elaborato non presente in INPUT_DIR: si riusa il dato originale in data/raw/<serie>/<anno>.csv
+            rp = os.path.join(OUT_DIR, "data", "raw", s["series_id"], f"{src['year']}.csv")
+            if os.path.exists(rp):
+                old = pd.read_csv(rp)
+                parts.append(pd.DataFrame({"time": pd.to_datetime(old["time"]), "value": old["value"]}).dropna())
+                continue
         df = read_sheet(src["file"], src["sheet"])
         # formato storico: colonna B = 'Time UTC+1'; formato compatto (2025-2026): colonna A = 'Time' già in UTC+1
         tcol = 0 if src.get("time_column") == "Time (UTC+1)" else 1
@@ -120,6 +127,11 @@ for s in catalog["series"]:
     if s.get("derived_from"):       # serie derivate (derive_cumulative.py): non hanno file Excel sorgente
         continue
     missing = sorted({x["file"] for x in s["sources"] if x["file"] not in paths})
+    if missing and len(missing) == len({x["file"] for x in s["sources"]}):   # nessun Excel presente
+        pass
+    elif missing and all(os.path.exists(os.path.join(OUT_DIR, "data", "raw", s["series_id"], f"{x['year']}.csv"))
+                         for x in s["sources"] if x["file"] in missing):
+        missing = []                # parte degli Excel manca ma i dati originali ci sono: la serie si riunisce da raw + Excel nuovi
     if missing:                     # modalità incrementale: serie già elaborate, Excel non presenti in INPUT_DIR
         if "data" not in s:
             raise SystemExit(f"{s['series_id']}: file Excel mancanti in INPUT_DIR ({', '.join(missing)}) e serie non ancora elaborata")

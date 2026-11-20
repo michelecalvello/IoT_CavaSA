@@ -1,6 +1,6 @@
 {
   "catalog_version": "0.5",
-  "generated": "2026-11-20T16:46:22+01:00",
+  "generated": "2026-11-20T16:52:30+01:00",
   "conventions": {
     "time_reference": "UTC+1 (ora solare italiana / CET, senza ora legale) per tutte le misure. Timestamp in ISO 8601 con offset '+01:00'. Sorgente: colonna 'Time UTC+1' dei file Excel, arrotondata al minuto (la colonna 'Time' ora locale con ora legale, presente nei file storici, non è usata). Nei file Meter 2025-2026 (formato compatto) l'unica colonna 'Time' è già in UTC+1 (verificato sulla sovrapposizione col 2025).",
     "series_id": "<STAZIONE>_<GRANDEZZA>[_<PROFONDITÀ cm, 3 cifre>]",
@@ -326,14 +326,14 @@
       "aggregation": "sum",
       "step_min": 10.0,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52559,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91870,
       "min": 0.0,
       "max": 9.4,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Anno 2025 completo (passo 10 min). Totale annuo 2025: 1227 mm (356 m); correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
+        "Anno 2025 completo e 2026 dal 1/1 al 30/9 senza lacune (passo 10 min). Totali: 2025 1227 mm, 2026 (fino al 30/9) 683 mm (356 m); correlazione giornaliera 2025 Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
         "Alcuni timestamp con millisecondi spuri (es. 00:10:00.001): arrotondati al minuto."
       ],
       "sources": [
@@ -341,21 +341,30 @@
           "file": "PELLEZZANO_PLUVIOMETRO_CF_2025.xlsx",
           "year": 2025,
           "sheet": "Foglio1",
-          "column": "Rain (mm)"
+          "column": "Rain (mm)",
+          "time_column": "Time UTC+1"
+        },
+        {
+          "file": "PELLEZZANO_PLUVIOMETRO_CF_2026.xlsx",
+          "year": 2026,
+          "sheet": "Foglio1",
+          "column": "Rain (mm)",
+          "time_column": "Time UTC+1"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_18925_RAIN/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_18925_RAIN_1h.csv",
         "agg_1d": "data/agg/CF_18925_RAIN_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52559,
-        "n_valid": 52559,
+        "n_total": 91870,
+        "n_valid": 91870,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -374,15 +383,15 @@
       "aggregation": "last",
       "step_min": 10.0,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52559,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91870,
       "min": 0.0,
       "max": 1227.4,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Serie derivata da CF_18925_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2025: 1227.4 mm."
+        "Totali annui: 2025: 1227.4 mm; 2026: 683.0 mm."
       ],
       "sources": [],
       "derived_from": "CF_18925_RAIN",
@@ -395,20 +404,30 @@
           "last": "2025-12-31 23:50",
           "missing_hours": 0.0,
           "complete": true
+        },
+        {
+          "year": 2026,
+          "total_mm": 683.0,
+          "n": 39311,
+          "first": "2026-01-01 00:10",
+          "last": "2026-09-30 23:50",
+          "missing_hours": 0.0,
+          "complete": true
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_18925_RAINCUM/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_18925_RAINCUM_1h.csv",
         "agg_1d": "data/agg/CF_18925_RAINCUM_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52559,
-        "n_valid": 52559,
+        "n_total": 91870,
+        "n_valid": 91870,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -428,8 +447,8 @@
       "step_min": 10.0,
       "window_hours": 24,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52559,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91870,
       "min": 0.0,
       "max": 180.2,
       "status": "active",
@@ -438,7 +457,7 @@
         "Serie derivata da CF_18925_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
         "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
         "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
-        "Massimo 24 h: 2025: 180.2 mm (2025-02-26 23:00)."
+        "Massimo 24 h: 2025: 180.2 mm (2025-02-26 23:00); 2026: 69.4 mm (2026-01-29 06:00)."
       ],
       "sources": [],
       "derived_from": "CF_18925_RAIN",
@@ -449,20 +468,28 @@
           "time": "2025-02-26 23:00",
           "n": 52559,
           "n_underestimated": 131
+        },
+        {
+          "year": 2026,
+          "max_mm": 69.4,
+          "time": "2026-01-29 06:00",
+          "n": 39311,
+          "n_underestimated": 0
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_18925_RAINCUM24/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_18925_RAINCUM24_1h.csv",
         "agg_1d": "data/agg/CF_18925_RAINCUM24_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52559,
-        "n_valid": 52428,
+        "n_total": 91870,
+        "n_valid": 91739,
         "n_suspect": 131,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -481,14 +508,14 @@
       "aggregation": "sum",
       "step_min": 10.0,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52559,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91870,
       "min": 0.0,
       "max": 12.0,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Anno 2025 completo (passo 10 min). Totale annuo 2025: 987 mm (28 m); correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
+        "Anno 2025 completo e 2026 dal 1/1 al 30/9 senza lacune (passo 10 min). Totali: 2025 987 mm, 2026 (fino al 30/9) 706 mm (28 m); correlazione giornaliera 2025 Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
         "Alcuni timestamp con millisecondi spuri (es. 00:10:00.001): arrotondati al minuto."
       ],
       "sources": [
@@ -496,21 +523,30 @@
           "file": "SALERNO_GENIO_CIVILE_PLUVIOMETRO_CF_2025.xlsx",
           "year": 2025,
           "sheet": "Foglio1",
-          "column": "Rain (mm)"
+          "column": "Rain (mm)",
+          "time_column": "Time UTC+1"
+        },
+        {
+          "file": "SALERNO_GENIO_CIVILE_PLUVIOMETRO_CF_2026.xlsx",
+          "year": 2026,
+          "sheet": "Foglio1",
+          "column": "Rain (mm)",
+          "time_column": "Time UTC+1"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_18957_RAIN/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_18957_RAIN_1h.csv",
         "agg_1d": "data/agg/CF_18957_RAIN_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52559,
-        "n_valid": 52559,
+        "n_total": 91870,
+        "n_valid": 91870,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -529,15 +565,15 @@
       "aggregation": "last",
       "step_min": 10.0,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52559,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91870,
       "min": 0.0,
       "max": 987.4,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Serie derivata da CF_18957_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2025: 987.4 mm."
+        "Totali annui: 2025: 987.4 mm; 2026: 706.2 mm."
       ],
       "sources": [],
       "derived_from": "CF_18957_RAIN",
@@ -550,20 +586,30 @@
           "last": "2025-12-31 23:50",
           "missing_hours": 0.0,
           "complete": true
+        },
+        {
+          "year": 2026,
+          "total_mm": 706.2,
+          "n": 39311,
+          "first": "2026-01-01 00:10",
+          "last": "2026-09-30 23:50",
+          "missing_hours": 0.0,
+          "complete": true
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_18957_RAINCUM/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_18957_RAINCUM_1h.csv",
         "agg_1d": "data/agg/CF_18957_RAINCUM_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52559,
-        "n_valid": 52559,
+        "n_total": 91870,
+        "n_valid": 91870,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -583,8 +629,8 @@
       "step_min": 10.0,
       "window_hours": 24,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52559,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91870,
       "min": 0.0,
       "max": 78.6,
       "status": "active",
@@ -593,7 +639,7 @@
         "Serie derivata da CF_18957_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
         "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
         "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
-        "Massimo 24 h: 2025: 78.6 mm (2025-10-26 06:40)."
+        "Massimo 24 h: 2025: 78.6 mm (2025-10-26 06:40); 2026: 67.2 mm (2026-01-29 05:20)."
       ],
       "sources": [],
       "derived_from": "CF_18957_RAIN",
@@ -604,20 +650,28 @@
           "time": "2025-10-26 06:40",
           "n": 52559,
           "n_underestimated": 131
+        },
+        {
+          "year": 2026,
+          "max_mm": 67.2,
+          "time": "2026-01-29 05:20",
+          "n": 39311,
+          "n_underestimated": 0
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_18957_RAINCUM24/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_18957_RAINCUM24_1h.csv",
         "agg_1d": "data/agg/CF_18957_RAINCUM24_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52559,
-        "n_valid": 52428,
+        "n_total": 91870,
+        "n_valid": 91739,
         "n_suspect": 131,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -636,15 +690,15 @@
       "aggregation": "sum",
       "step_min": 10.0,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52475,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91786,
       "min": 0.0,
       "max": 11.4,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
-        "Anno 2025 completo (passo 10 min). Totale annuo 2025: 1167 mm (125 m); correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
-        "Lacune: 2025-02-12 ~08:10–09:40 (1,5 h) e 2025-11-19 ~10:50–23:40 (12,8 h).",
+        "Anno 2025 completo e 2026 dal 1/1 al 30/9 senza lacune (passo 10 min). Totali: 2025 1167 mm, 2026 (fino al 30/9) 728 mm (125 m); correlazione giornaliera 2025 Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.",
+        "Lacune (2025): 2025-02-12 ~08:10–09:40 (1,5 h) e 2025-11-19 ~10:50–23:40 (12,8 h).",
         "Alcuni timestamp con millisecondi spuri (es. 23:49:59.999): arrotondati al minuto."
       ],
       "sources": [
@@ -652,21 +706,30 @@
           "file": "COLOGNA_PLUVIOMETRO_CF_2025.xlsx",
           "year": 2025,
           "sheet": "Foglio1",
-          "column": "Rain (mm)"
+          "column": "Rain (mm)",
+          "time_column": "Time UTC+1"
+        },
+        {
+          "file": "COLOGNA_PLUVIOMETRO_CF_2026.xlsx",
+          "year": 2026,
+          "sheet": "Foglio1",
+          "column": "Rain (mm)",
+          "time_column": "Time UTC+1"
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_21521_RAIN/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_21521_RAIN_1h.csv",
         "agg_1d": "data/agg/CF_21521_RAIN_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52475,
-        "n_valid": 52475,
+        "n_total": 91786,
+        "n_valid": 91786,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -685,15 +748,15 @@
       "aggregation": "last",
       "step_min": 10.0,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52475,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91786,
       "min": 0.0,
       "max": 1166.6,
       "status": "active",
       "gaps_over_24h": [],
       "qc_notes": [
         "Serie derivata da CF_21521_RAIN: pioggia cumulata dal 1 gennaio ore 00:00 (si azzera ogni anno), calcolata sui dati con flag < 2. Il dato delle 00:00 del 1 gennaio chiude l'anno precedente.",
-        "Totali annui: 2025: 1166.6 mm."
+        "Totali annui: 2025: 1166.6 mm; 2026: 727.7 mm."
       ],
       "sources": [],
       "derived_from": "CF_21521_RAIN",
@@ -706,20 +769,30 @@
           "last": "2025-12-31 23:50",
           "missing_hours": 14.0,
           "complete": true
+        },
+        {
+          "year": 2026,
+          "total_mm": 727.7,
+          "n": 39311,
+          "first": "2026-01-01 00:10",
+          "last": "2026-09-30 23:50",
+          "missing_hours": 0.0,
+          "complete": true
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_21521_RAINCUM/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_21521_RAINCUM_1h.csv",
         "agg_1d": "data/agg/CF_21521_RAINCUM_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52475,
-        "n_valid": 52475,
+        "n_total": 91786,
+        "n_valid": 91786,
         "n_suspect": 0,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -739,8 +812,8 @@
       "step_min": 10.0,
       "window_hours": 24,
       "start": "2025-01-01T00:10+01:00",
-      "end": "2025-12-31T23:50+01:00",
-      "n_values": 52475,
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 91786,
       "min": 0.0,
       "max": 132.4,
       "status": "active",
@@ -749,7 +822,7 @@
         "Serie derivata da CF_21521_RAIN: pioggia caduta nelle 24 h che terminano al timestamp (finestra mobile (t − 24 h, t]), calcolata sui dati con flag < 2.",
         "Flag 1 (tratteggio) dove nella finestra mancano più di 2 h di dati, anche nelle prime 24 h della serie: la cumulata è un valore minimo.",
         "Aggregati orario e giornaliero: massimo della cumulata 24 h nell'intervallo.",
-        "Massimo 24 h: 2025: 132.4 mm (2025-02-26 23:10)."
+        "Massimo 24 h: 2025: 132.4 mm (2025-02-26 23:10); 2026: 63.4 mm (2026-01-29 05:50)."
       ],
       "sources": [],
       "derived_from": "CF_21521_RAIN",
@@ -760,20 +833,28 @@
           "time": "2025-02-26 23:10",
           "n": 52475,
           "n_underestimated": 262
+        },
+        {
+          "year": 2026,
+          "max_mm": 63.4,
+          "time": "2026-01-29 05:50",
+          "n": 39311,
+          "n_underestimated": 0
         }
       ],
       "data": {
         "format": "csv: time,value,flag",
         "raw": "data/raw/CF_21521_RAINCUM24/{year}.csv",
         "years": [
-          2025
+          2025,
+          2026
         ],
         "agg_1h": "data/agg/CF_21521_RAINCUM24_1h.csv",
         "agg_1d": "data/agg/CF_21521_RAINCUM24_1d.csv"
       },
       "qc_summary": {
-        "n_total": 52475,
-        "n_valid": 52213,
+        "n_total": 91786,
+        "n_valid": 91524,
         "n_suspect": 262,
         "n_bad": 0,
         "duplicates_removed": 0
@@ -2920,6 +3001,63 @@
     }
   ],
   "source_files": [
+    {
+      "series_id": "CF_18925_RAIN",
+      "file": "PELLEZZANO_PLUVIOMETRO_CF_2026.xlsx",
+      "year": 2026,
+      "sheet": "Foglio1",
+      "column": "Rain (mm)",
+      "time_column": "Time UTC+1",
+      "local_time_column": null,
+      "start": "2026-01-01T00:10+01:00",
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 39311,
+      "n_rows": 39311,
+      "step_min": 10.0,
+      "gaps_over_1h": 0,
+      "max_gap_h": 0.2,
+      "min": 0.0,
+      "max": 7.5,
+      "mean": 0.0174
+    },
+    {
+      "series_id": "CF_18957_RAIN",
+      "file": "SALERNO_GENIO_CIVILE_PLUVIOMETRO_CF_2026.xlsx",
+      "year": 2026,
+      "sheet": "Foglio1",
+      "column": "Rain (mm)",
+      "time_column": "Time UTC+1",
+      "local_time_column": null,
+      "start": "2026-01-01T00:10+01:00",
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 39311,
+      "n_rows": 39311,
+      "step_min": 10.0,
+      "gaps_over_1h": 0,
+      "max_gap_h": 0.2,
+      "min": 0.0,
+      "max": 8.4,
+      "mean": 0.018
+    },
+    {
+      "series_id": "CF_21521_RAIN",
+      "file": "COLOGNA_PLUVIOMETRO_CF_2026.xlsx",
+      "year": 2026,
+      "sheet": "Foglio1",
+      "column": "Rain (mm)",
+      "time_column": "Time UTC+1",
+      "local_time_column": null,
+      "start": "2026-01-01T00:10+01:00",
+      "end": "2026-09-30T23:50+01:00",
+      "n_values": 39311,
+      "n_rows": 39311,
+      "step_min": 10.0,
+      "gaps_over_1h": 0,
+      "max_gap_h": 0.2,
+      "min": 0.0,
+      "max": 10.0,
+      "mean": 0.0185
+    },
     {
       "series_id": "SAL_NV_VWC_015",
       "file": "Salerno_METER_NV_2025-2026.xlsx",

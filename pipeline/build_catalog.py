@@ -149,15 +149,16 @@ def classify(instrument_id, col):
 
 # Note di qualità (interpretazione) emerse dall'analisi dei dati — orari in UTC+1
 QC_NOTES = {
-    "CF_21521_RAIN": ["Lacune: 2025-02-12 ~08:10–09:40 (1,5 h) e 2025-11-19 ~10:50–23:40 (12,8 h).",
+    "CF_21521_RAIN": ["Lacune (2025): 2025-02-12 ~08:10–09:40 (1,5 h) e 2025-11-19 ~10:50–23:40 (12,8 h).",
                       "Alcuni timestamp con millisecondi spuri (es. 23:49:59.999): arrotondati al minuto."],
     "CF_18925_RAIN": ["Alcuni timestamp con millisecondi spuri (es. 00:10:00.001): arrotondati al minuto."],
     "CF_18957_RAIN": ["Alcuni timestamp con millisecondi spuri (es. 00:10:00.001): arrotondati al minuto."],
 }
 for _code in CF_STATIONS:
-    QC_NOTES[f"CF_{_code}_RAIN"].insert(0, "Anno 2025 completo (passo 10 min). Totale annuo 2025: "
-        + {"21521": "1167 mm (125 m)", "18925": "1227 mm (356 m)", "18957": "987 mm (28 m)"}[_code]
-        + "; correlazione giornaliera Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.")
+    QC_NOTES[f"CF_{_code}_RAIN"].insert(0, "Anno 2025 completo e 2026 dal 1/1 al 30/9 senza lacune (passo 10 min). Totali: 2025 "
+        + {"21521": "1167 mm", "18925": "1227 mm", "18957": "987 mm"}[_code] + ", 2026 (fino al 30/9) "
+        + {"21521": "728 mm (125 m)", "18925": "683 mm (356 m)", "18957": "706 mm (28 m)"}[_code]
+        + "; correlazione giornaliera 2025 Cologna–Pellezzano 0.95, Cologna–Salerno G.C. 0.83, Pellezzano–Salerno G.C. 0.75.")
 _METER_NOTE_PSI = ("Registrazioni dal 2025-01-31 (installazione). In estate il terreno superficiale raggiunge valori "
                    "molto negativi (fino a circa -3300 kPa): oltre i -100 kPa il TEROS 21 è fuori dall'intervallo "
                    "di accuratezza dichiarato, i valori sono indicativi. Le rapide risalite (es. 2025-09-11, "

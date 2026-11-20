@@ -269,7 +269,7 @@
       "<b>Pioggia di riferimento.</b> Media di 3 pluviometri a 1,7–4,1 km; nei temporali convettivi lo scarto fra pluviometri è grande (colonne “P min/max” nel CSV). Le intensità sono quelle della media e quindi attenuate.",
       "<b>Picco e acqua in transito.</b> Lo stoccaggio di picco può superare il riferimento “serbatoio pieno” (es. 23/12 in NV: ~212 mm contro 175): include acqua in transito che drena in poche ore. “Quanto resta” va letto su ΔS a fine finestra, non sul picco.",
       "<b>ΔS e finestra.</b> ΔS è il picco entro 48 h dalla fine della pioggia o fino all'inizio dell'evento successivo (eventi ravvicinati hanno finestre più corte: colonna <code>post_h</code> nel CSV). ΔS a fine finestra include il drenaggio avvenuto nel frattempo.",
-      `<b>Solo il 2025.</b> I pluviometri CF per il 2026 non sono ancora disponibili: l'analisi eventi resta limitata al 2025. ${N.n} eventi per sito con dati dal 31/1; in estate pochi eventi (${N.seasons["Mag–Ago"].n} da maggio ad agosto). Le percentuali stagionali sono indicative.`,
+      `<b>Solo il 2025.</b> Gli eventi del 2026 non sono ancora inclusi nell'analisi. ${N.n} eventi per sito con dati dal 31/1; in estate pochi eventi (${N.seasons["Mag–Ago"].n} da maggio ad agosto). Le percentuali stagionali sono indicative.`,
     ];
     $("limits").innerHTML = L.map((x) => `<li>${x}</li>`).join("");
   }
